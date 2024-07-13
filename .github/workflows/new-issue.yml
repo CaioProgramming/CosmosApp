@@ -1,0 +1,25 @@
+on:
+    issues:
+        types: [opened]
+jobs:
+  createBranch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+      - name: Create and Push New Branch
+        env:
+          ISSUE_NUMBER: ${{github.event.issue.title}}/${{github.event.issue.number }}
+        run: |
+          NEW_BRANCH="issue-${ISSUE_NUMBER}"
+          git checkout -b $NEW_BRANCH
+          git push origin $NEW_BRANCH
+
+      - name: Checking issue
+        run: echo "New issue opened and branch $NEW_BRANCH created." 
