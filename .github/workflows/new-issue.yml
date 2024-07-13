@@ -20,7 +20,7 @@ jobs:
           ISSUE_NUMBER: ${{github.event.issue.title}}/${{github.event.issue.number }}
           ISSUE_BODY: ${{github.event.issue.body}}
         run: |
-          BRANCH_TITLE=$(echo $ISSUE_TITLE | tr '[:upper:]' '[:lower:]')
+          BRANCH_TITLE=$(echo $ISSUE_TITLE | tr '[:upper:]' '[:lower:] | tr -s ' ' '-'')
           NEW_BRANCH="${BRANCH_TITLE}-${ISSUE_NUMBER}"
           git checkout -b $NEW_BRANCH
           git push origin $NEW_BRANCH
