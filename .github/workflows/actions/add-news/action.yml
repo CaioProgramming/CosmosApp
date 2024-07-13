@@ -1,0 +1,21 @@
+name: 'Update News File'
+description: 'Edits the news file on the new branch'
+inputs:
+  branch-name:
+    description: 'The name of the branch to edit the file on'
+    required: true
+  issue-label: 
+    description: 'The label of the issue'
+    required: true  
+  issue-body:
+    description: 'The body of the issue'
+    required: true  
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout the branch
+      run: git checkout ${{ inputs.branch-name }}
+      shell: bash
+    - name: Edit file
+      run: bash add-news.sh ${{ inputs.branch-name }} ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      shell: bash
