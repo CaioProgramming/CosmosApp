@@ -2,7 +2,7 @@ name: Implement new Issue
 on:
     push:
         branches:
-            - git-actions/news-actions
+            - 'git-actions/news-actions'
     issues:
         types: [opened]
 jobs:
