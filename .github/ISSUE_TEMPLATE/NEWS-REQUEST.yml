@@ -13,11 +13,19 @@ body:
       description: Título da notícia
       placeholder: Título da notícia
   - type: input
+    id: author
+    attributes:
+      label: Autor
+      description: Autor da notícia
+      placeholder: Autor da notícia
+          
+  - type: input
     id: reference
     attributes:
       label: Fonte da notícia
       description: Inclue o link da notícia.
       placeholder: www.astronomos.com.br
+  
   - type: input
     id: thumbnail
     attributes:
@@ -79,3 +87,4 @@ body:
       label: Conteúdo
       description: Conteúdo da página 5
       placeholder: Conteúdo da página 5
+labels: ["news", "pending publication"]     
