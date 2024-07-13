@@ -1,0 +1,58 @@
+
+{
+  "collections": [
+    {
+      "title": "Nebulosas",
+        "description": "Uma coleção de imagens de nebulosas",
+      "items": [
+        {
+          "title": "Blue dust",
+          "description": "A beautiful nebula",
+          "thumbnailURL": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1211&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Poeira Dourada",
+          "description": "A golden nebula",
+          "thumbnailURL": "https://images.unsplash.com/photo-1462332420958-a05d1e002413?q=80&w=1207&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Cosmic Universe",
+          "description": "The universe in a nebula",
+          "thumbnailURL": "https://images.unsplash.com/photo-1447433819943-74a20887a81e?q=80&w=1199&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Center of the universe",
+          "description": "The zero point of the universe",
+          "thumbnailURL": "https://images.unsplash.com/photo-1614727187331-285522b20eaf?q=80&w=1121&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+      ]
+    },
+    {
+      "title": "Voo espacial",
+      "description": "Uma coleção de imagens de lançamentos de foguetes e voo espacial",
+      "items": [
+        {
+          "title": "FireStar",
+          "description": "Incrivel lancamento de foguete da NASA",
+          "thumbnailURL": "https://images.unsplash.com/photo-1614728994041-9a7ce006c57e?q=80&w=1060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Top of the world",
+          "description": "An Astronaut in space",
+          "thumbnailURL": "https://images.unsplash.com/photo-1614727187346-ec3a009092b0?q=80&w=1178&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Rocket Dust",
+          "description": "Lançamento de foguete da NASA saindo da terra.",
+          "thumbnailURL": "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1308&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+          "title": "Moon Hover",
+          "description": "A short ride to the moon",
+          "thumbnailURL": "https://images.unsplash.com/photo-1614315517650-3771cf72d18a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,39 @@
+{
+  "curiosities": [
+    {
+      "id": 0,
+      "title": "Mundo da Lava",
+      "callOut": "Voce ja imaginou como seria o mundo da lava? Clique aqui e descubra!",
+      "description": "É uma classe composta por planetas terrestres com órbitas muito próximas às suas estrelas, interior muito quente e intensa atividade vulcânica e tectônica, criando rios de lava na sua superfície.\nHá diversas hipóteses sobre sua origem. Dentre elas, o surgimento a partir do impacto entre corpos celestes grandes ou pelos efeitos da gravidade da sua estrela central, resultando em intensa irradiação e forças de maré\nA possibilidade de vida como conhecemos em um ambiente tão hostil é mínima. São necessários mais estudos e observações para determinar o seu surgimento, a formação da sua crosta e atmosfera.",
+      "thumbnailURL": "https://images.unsplash.com/photo-1553949345-eb786bb3f7ba?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 1,
+      "title": "Gigantes gelados",
+      "callOut": "Descubra os segredos dos gigantes gelados. ",
+      "description": "Eles são uma classe de planetas feitos principalmente por elementos mais pesados como Oxigênio, Carbono e Nitrogênio, não tão grandes quanto os Gigantes Gasosos, mas não tão pequenos quanto os Planetas Terrestres. Não é preciso ir longe para encontrá-los.",
+      "thumbnailURL": "https://images.unsplash.com/photo-1639921884918-8d28ab2e39a4?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 2,
+      "title": "Super puffs",
+      "callOut": "Ja ouviu falar dos Super Puffs? Os planetas fofos como algodão doce.",
+      "description": "Eles são apelidados de “super-puffs” (uma referência do inglês para “super-fofos”, em livre tradução). São os exoplanetas (planetas que estão fora do nosso sistema solar), descobertos por astrônomos utilizando dados do Telescópio Espacial Hubble, da Nasa. O apelido é uma uma referência à densidade desses corpos celestes, muito próxima à do algodão doce.\n\nA pesquisa sugere que essas baixas densidades sejam, em parte, por consequência da idade do sistema, ainda muito novo, com apenas 500 milhões de anos. Eles foram descobertos em 2012, mas apenas em 2014 os estudos foram aprofundados, revelando suas características.\n\n“Os planetas têm tamanho semelhante ao de Júpiter, mas com massa equivalente a algumas vezes à da Terra, o que torna sua densidade baixa”, explica João Eduardo Fonseca, diretor da Divisão dos Planetários Municipais da Secretaria do Verde e do Meio Ambiente (SVMA). Na verdade, o sistema exoplanetário no qual se encontram esses corpos celestes já foi batizado de Kepler 51.\n\n\"Este tipo de descoberta fascina a comunidade científica\" reforça João Fonseca. Quantos outros mistérios se escondem na imensidão do universo? O achado de astros fora do nosso Sistema Solar possibilita que façamos essa aventura pelo Cosmos. É só visitar um dos Planetários para entender mais sobre esses fenômenos, na sessão ‘Planetas do Universo’.",
+      "thumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Super-puff_planet-bpk.png/220px-Super-puff_planet-bpk.png"
+    },
+    {
+      "id": 3,
+      "title": "A primeira imagem de um buraco negro",
+      "callOut": "Já imaginou como seria a imagem de um buraco negro? Veja a seguir",
+      "description": "Em abril de 2019, astrônomos divulgaram um dos resultados do projeto Event Horizon Telescope (EHT), que uniu diversos radiotelescópios espalhados pela Terra. Classificado como ‘supermassivo’ por possuir 6,5 bilhões de vezes a massa do Sol, esse buraco negro está localizado no centro da galáxia supergigante Messier 87, há 53,5 milhões de anos-luz do nosso planeta.",
+      "thumbnailURL": "https://s2-g1.glbimg.com/X1P9eemvyPurnQ4i-tS0jkiExK8=/0x0:3414x3447/1008x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/g/K/y0xxgaRFmv56TCsb48jA/eso2105a.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Anel de fogo no céu",
+      "callOut": "Veja mais sobre o incrível evento do eclipse anular.",
+      "description": "O Eclipse Anular ocorre quando a Lua está mais distante do nosso planeta do que o usual, e alinhado entre a Terra e o Sol, — de maneira parcial ou total — causando a impressão de que o satélite natural diminuiu de tamanho na perspectiva do observador. Por isso, é possível ver",
+      "thumbnailURL": "https://img.odcdn.com.br/wp-content/uploads/2023/09/eclipse-anular-do-Sol.jpg"
+    }
+  ]
+}

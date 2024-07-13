@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "title": "Lua próxima a saturno",
+      "description": "Neste dia, a Lua, iluminada em 46,7%, estará próxima a Saturno.",
+      "date": "2021-08-02",
+      "visiblePlaces": ["ARG", "BR", "CHL", "COL", "URU"],
+      "thumbnailURL": "https://images.unsplash.com/photo-1637984135921-301a7d39e3b7?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "extraInfo": [
+        "Hora da aproximação: 21:00 UTC",
+        "Distância entre a Lua e Saturno: 3.5°"
+      ]
+    },
+    {
+      "title": "Lua próxima a Marte",
+      "description": "a Lua, iluminada em 24%, estará próxima a Marte (mag 1.1). Ambos os objetos estarão na constelação de Peixes. Observe-os a olho nu ou através de um par de binóculos.",
+      "date": "2021-08-02",
+      "visiblePlaces": ["BR", "COL", "URU"],
+      "thumbnailURL": "https://images.unsplash.com/photo-1630694093867-4b947d812bf0?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "extraInfo": [
+        "Hora da aproximação: 21:00 UTC",
+        "Distância entre a Lua e Saturno: 3.5°"
+      ]
+    }
+  ]
+}

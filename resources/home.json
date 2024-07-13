@@ -1,0 +1,117 @@
+{
+  "latestNews": [
+    {
+      "title": "Teoria de Albert Einstein é comprovada",
+      "description": "A teoria da relatividade geral de Albert Einstein foi comprovada por cientistas que observaram uma estrela passando",
+      "thumbnailURL": "https://images.unsplash.com/photo-1634337071580-ab2032bf7e01?q=80&w=2493&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "title": "Tempestade solar",
+      "description": "A tempestade solar que atingiu a Terra foi a mais forte dos últimos 50 anos",
+      "thumbnailURL": "https://images.unsplash.com/photo-1614642264762-d0a3b8bf3700?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "title": "James Webb descobre galáxia mais antiga já observada",
+      "description": "A galáxia JADES-GS-z14-0 foi vista pelo Telescópio Espacial James Webb como era 290 milhões de anos após o Big Bang, no início do Universo",
+      "thumbnailURL": "https://img.odcdn.com.br/wp-content/uploads/2024/05/JADES-GS-z14-0.jpg"
+    }
+  ],
+  "events": [
+    {
+      "title": "Lua próxima a saturno",
+      "description": "Neste dia, a Lua, iluminada em 46,7%, estará próxima a Saturno.",
+      "date": "2021-08-02",
+      "visiblePlaces": [
+        "ARG",
+        "BR",
+        "CHL",
+        "COL",
+        "URU"
+      ],
+      "thumbnailURL": "https://images.unsplash.com/photo-1637984135921-301a7d39e3b7?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "extraInfo": [
+        "Hora da aproximação: 21:00 UTC",
+        "Distância entre a Lua e Saturno: 3.5°"
+      ]
+    },
+    {
+      "title": "Lua próxima a Marte",
+      "description": "a Lua, iluminada em 24%, estará próxima a Marte (mag 1.1). Ambos os objetos estarão na constelação de Peixes. Observe-os a olho nu ou através de um par de binóculos.",
+      "date": "2021-08-02",
+      "visiblePlaces": [
+        "BR",
+        "COL",
+        "URU"
+      ],
+      "thumbnailURL": "https://images.unsplash.com/photo-1630694093867-4b947d812bf0?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "extraInfo": [
+        "Hora da aproximação: 21:00 UTC",
+        "Distância entre a Lua e Saturno: 3.5°"
+      ]
+    }
+  ],
+  "discoveryCards": [
+    {
+      "id": 0,
+      "title": "Mundo da Lava",
+      "callOut": "Voce ja imaginou como seria o mundo da lava? Clique aqui e descubra!",
+      "description": "É uma classe composta por planetas terrestres com órbitas muito próximas às suas estrelas, interior muito quente e intensa atividade vulcânica e tectônica, criando rios de lava na sua superfície.\nHá diversas hipóteses sobre sua origem. Dentre elas, o surgimento a partir do impacto entre corpos celestes grandes ou pelos efeitos da gravidade da sua estrela central, resultando em intensa irradiação e forças de maré\nA possibilidade de vida como conhecemos em um ambiente tão hostil é mínima. São necessários mais estudos e observações para determinar o seu surgimento, a formação da sua crosta e atmosfera.",
+      "thumbnailURL": "https://images.unsplash.com/photo-1553949345-eb786bb3f7ba?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 1,
+      "title": "Gigantes gelados",
+      "callOut": "Descubra os segredos dos gigantes gelados. ",
+      "description": "Eles são uma classe de planetas feitos principalmente por elementos mais pesados como Oxigênio, Carbono e Nitrogênio, não tão grandes quanto os Gigantes Gasosos, mas não tão pequenos quanto os Planetas Terrestres. Não é preciso ir longe para encontrá-los.",
+      "thumbnailURL": "https://images.unsplash.com/photo-1639921884918-8d28ab2e39a4?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 2,
+      "title": "Super puffs",
+      "callOut": "Ja ouviu falar dos Super Puffs? Os planetas fofos como algodão doce.",
+      "description": "A resposta é densidade. Essa classe é chamada de Super-Puffs ou Super-Inchados, caracterizados por serem muito gasosos, formados em maior parte por Hidrogênio e Hélio, e tem uma camada atmosférica de metano. A densidade deste tipo de planeta é 0.1 g/cm³, o que é praticamente igual a densidade do algodão doce.",
+      "thumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Super-puff_planet-bpk.png/220px-Super-puff_planet-bpk.png"
+    },
+    {
+      "id": 3,
+      "title": "A primeira imagem de um buraco negro",
+      "callOut": "Já imaginou como seria a imagem de um buraco negro? Veja a seguir",
+      "description": "Em abril de 2019, astrônomos divulgaram um dos resultados do projeto Event Horizon Telescope (EHT), que uniu diversos radiotelescópios espalhados pela Terra. Classificado como ‘supermassivo’ por possuir 6,5 bilhões de vezes a massa do Sol, esse buraco negro está localizado no centro da galáxia supergigante Messier 87, há 53,5 milhões de anos-luz do nosso planeta.",
+      "thumbnailURL": "https://s2-g1.glbimg.com/X1P9eemvyPurnQ4i-tS0jkiExK8=/0x0:3414x3447/1008x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/g/K/y0xxgaRFmv56TCsb48jA/eso2105a.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Anel de fogo no céu",
+      "callOut": "Veja mais sobre o incrível evento do eclipse anular.",
+      "description": "O Eclipse Anular ocorre quando a Lua está mais distante do nosso planeta do que o usual, e alinhado entre a Terra e o Sol, — de maneira parcial ou total — causando a impressão de que o satélite natural diminuiu de tamanho na perspectiva do observador. Por isso, é possível ver",
+      "thumbnailURL": "https://img.odcdn.com.br/wp-content/uploads/2023/09/eclipse-anular-do-Sol.jpg"
+    }
+  ],
+  "educationCard": {
+    "title": "Planetas e constelações",
+    "description": "Descubra mais sobre os planetas do nosso sistema solar e as constelações do nosso universo!",
+    "thumbnailURL": "https://static.vecteezy.com/system/resources/previews/002/898/782/large_2x/outer-space-with-bright-shiny-stars-blue-and-purple-glow-background-free-vector.jpg"
+  },
+  "gallery": [
+    {
+      "title": "Gigante vazio",
+      "description": "O que nos espera no espaço?",
+      "thumbnailURL": "https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "title": "A Odisséia",
+      "description": "Uma jornada pelo espaço e tempo",
+      "thumbnailURL": "https://images.unsplash.com/photo-1614121181207-4b6c334d353d?q=80&w=2352&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "title": "Andromeda",
+      "description": "A galáxia mais próxima da nossa",
+      "thumbnailURL": "https://images.unsplash.com/photo-1614910767616-d11ce66fcb5d?q=80&w=2364&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "title": "Nosso pequeno planeta",
+      "description": "Sera que somos os unicos?",
+      "thumbnailURL": "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2525&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+  ]
+}

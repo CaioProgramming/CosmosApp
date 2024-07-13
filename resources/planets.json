@@ -1,0 +1,167 @@
+{
+  "planets": [
+    {
+      "title": "Mercúrio",
+      "description": "Mercúrio é o planeta mais próximo do Sol. É um planeta rochoso, destituído de satélites e atmosfera rarefeita, sendo também o menor planeta do sistema solar.",
+      "resource": "mercury",
+      "earthDistance": 77,
+      "sunDistance": 57.9,
+      "temperature": 350,
+      "yearDuration": 88,
+      "rotationSpeed": 10.892
+    },
+    {
+      "title": "Vênus",
+      "description": "Vênus é o segundo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, sem satélites e com uma atmosfera densa e quente.",
+      "resource": "venus",
+      "sunDistance": 108.2,
+      "earthDistance": 38,
+      "temperature": 465,
+      "yearDuration": 225,
+      "rotationSpeed": 6.52
+    },
+    {
+      "title": "Terra",
+      "description": "A Terra é o terceiro planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, com um satélite natural, a Lua, e uma atmosfera que permite a existência de vida.",
+      "resource": "earth",
+      "earthDistance": 0,
+      "sunDistance": 147.1,
+      "temperature": 15,
+      "yearDuration": 365,
+      "rotationSpeed": 1.670
+    },
+    {
+      "title": "Marte",
+      "description": "Marte é o quarto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, com dois satélites naturais, Fobos e Deimos, e uma atmosfera rarefeita.",
+      "resource": "mars",
+      "earthDistance": 54,
+      "sunDistance": 227.9,
+      "temperature": -65,
+      "yearDuration": 687,
+      "rotationSpeed": 870
+    },
+    {
+      "title": "Júpiter",
+      "description": "Júpiter é o quinto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 79 satélites naturais conhecidos e uma atmosfera rica em hidrogênio e hélio.",
+      "resource": "jupiter",
+      "earthDistance": 588,
+      "sunDistance": 778.6,
+      "temperature": -110,
+      "yearDuration": 4333,
+      "rotationSpeed": 45
+    },
+    {
+      "title": "Saturno",
+      "description": "Saturno é o sexto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 82 satélites naturais conhecidos e um sistema de anéis.",
+      "resource": "saturn",
+      "earthDistance": 1195,
+      "sunDistance": 1433.5,
+      "temperature": -140,
+      "yearDuration": 10759,
+      "rotationSpeed": 34
+    },
+    {
+      "title": "Urano",
+      "description": "Urano é o sétimo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 27 satélites naturais conhecidos e um eixo de rotação inclinado.",
+      "resource": "uranus",
+      "earthDistance": 1785,
+      "sunDistance": 2872.5,
+      "temperature": -195,
+      "yearDuration": 30687,
+      "rotationSpeed": 17
+    },
+    {
+      "title": "Netuno",
+      "description": "Netuno é o oitavo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 14 satélites naturais conhecidos e uma atmosfera rica em metano.",
+      "resource": "neptune",
+      "earthDistance": 2795,
+      "sunDistance": 4495.1,
+      "temperature": -200,
+      "yearDuration": 60190,
+      "rotationSpeed": 16
+    }
+  ],
+  "constellations": [
+    {
+      "name": "Andrômeda",
+      "description": "Constelação visível do Hemisfério Norte. Recebe esse nome em homenagem à princesa Andrômeda, da Mitologia Grega, esposa de Perseu.",
+      "location": "H.Norte",
+      "nickNames": [
+        "M31", "NGC 224", "Nebulosa de Andrômeda"
+      ],
+      "distance": 2537000,
+      "magnitude": 3.44,
+      "icon": "ANDROMEDA"
+    },
+    {
+      "name": "Órion",
+      "description": "É uma constelação visível do Hemisfério Sul. As famosasTrês Marias, conjunto de três estrelas que aparecem alinhadas no céu noturno, fazem parte dessa constelação. Órion tem 81 estrelas.",
+      "location": "H.Sul",
+      "nickNames": [
+        "M42", "Nebulosa de Órion"
+      ],
+      "distance": 1500,
+      "icon": "ORION"
+    },
+    {
+      "name": "Ursa Maior",
+      "description": "É a constelação mais famosa do Hemisfério Norte, conhecida há milhares de anos e muito citada em obras literárias e cinematográficas. É composta por 7 estrelas.",
+      "location": "H.Norte",
+      "nickNames": [
+        "Grande Carro", "Ursa Maior"
+      ],
+      "distance": 250000,
+      "magnitude": 4.01,
+      "icon": "URSA_MAJOR"
+    },
+    {
+      "name": "Ursa Menor",
+      "description": "É uma versão menor da Ursa Maior, também com 7 estrelas. Entre elas está a Estrela Polar, fundamental para a localização em navegações na parte norte do mundo.",
+      "location": "H.Norte",
+      "nickNames": [
+        "Grande Carro", "Ursa Maior"
+      ],
+      "distance": 530,
+      "magnitude": 5.04,
+      "icon": "URSA_MAJOR"
+    },
+    {
+      "name": "Cão Maior",
+      "description": "Constelação visível do Hemisfério Sul, está próxima à Constelação de Órion. Tem o formato característico de um cachorro. A famosa estrela Sirius faz parte dessa constelação.",
+      "location": "H.Sul",
+      "nickNames": [
+        "Grande Carro", "Ursa Maior"
+      ],
+      "distance": 25000,
+      "magnitude": -0.1,
+      "icon": "CANIS_MAJOR"
+    },
+    {
+      "name": "Perseu",
+      "description": "Outra constelação nomeada por inspiração da Mitologia Grega e também pode ser vista do Hemisfério Norte. Sua localização, quando vista da Terra, é próxima à Constelação de Andrômeda.",
+      "location": "H.Norte",
+      "nickNames": [],
+      "distance": 240000000,
+      "magnitude": 2.1,
+      "icon": "PERSEU"
+    },
+    {
+      "name": "Pegasus",
+      "description": "É uma constelação antiga, nomeada pelos gregos baseados em sua mitologia. Pode ser vista do Hemisfério Norte e possui 4 estrelas principais. Também é chamada de Quadrado de Pegasus.",
+      "location": "H.Norte",
+      "nickNames": [],
+      "distance": 40,
+      "magnitude": 2.04,
+      "icon": "PEGASUS"
+    },
+    {
+      "name": "Hércules",
+      "description": "É uma constelação boreal, ou seja, pode ser vista do Hemisfério Norte. A constelação recebe o nome de um dos heróis mais importantes da Mitologia Grega.",
+      "location": "H. Norte",
+      "nickNames": [],
+      "distance": 25000,
+      "magnitude": 2.8,
+      "icon": "HERCULES"
+    }
+  ]
+}
