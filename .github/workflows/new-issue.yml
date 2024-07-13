@@ -1,3 +1,4 @@
+name: Implement new Issue
 on:
     issues:
         types: [opened]
