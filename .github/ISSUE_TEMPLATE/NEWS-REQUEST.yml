@@ -1,6 +1,5 @@
-name: Notícia
-description: Adicione uma notícia ao site
-label: News
+name: "News Request 📰"
+description: Adicione uma notícia ao app.
 body:
   - type: markdown
     attributes:
@@ -13,21 +12,18 @@ body:
       label: Título
       description: Título da notícia
       placeholder: Título da notícia
-      required: true
   - type: input
     id: reference
     attributes:
       label: Fonte da notícia
       description: Inclue o link da notícia.
       placeholder: www.astronomos.com.br
-      required: true
   - type: input
     id: thumbnail
     attributes:
       label: Imagem de capa
       description: Insira o link da imagem de capa da notícia.
       placeholder: www.astronomos.com.br/imagem.jpg
-      required: true
   - type: markdown
     attributes:
       value: |
@@ -42,7 +38,6 @@ body:
       label: Conteúdo
       description: Conteúdo da página 1
       placeholder: Conteúdo da página 1
-      required: true     
   - type: markdown
     attributes:
       value: |
@@ -53,8 +48,6 @@ body:
       label: Conteúdo
       description: Conteúdo da página 2
       placeholder: Conteúdo da página 2
-      required: true    
-
   - type: markdown
     attributes:
       value: |
