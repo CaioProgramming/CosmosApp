@@ -17,7 +17,7 @@ jobs:
       - name: Create and Push New Branch
         env:
           ISSUE_TITLE: ${{github.event.issue.title}}
-          ISSUE_NUMBER: ${{github.event.issue.title}}/${{github.event.issue.number }}
+          ISSUE_NUMBER: ${{github.event.issue.number }}
           ISSUE_BODY: ${{github.event.issue.body}}
         run: |
           BRANCH_TITLE=$(echo $ISSUE_TITLE | tr '[:upper:]' '[:lower:] | tr -s ' ' '-'')
