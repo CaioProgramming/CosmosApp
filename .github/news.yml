@@ -1,0 +1,88 @@
+name: Notícia
+description: Adicione uma notícia ao site
+label: News
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Adicione uma notícia ao site
+        Preencha os campos abaixo para adicionar uma notícia ao site.
+  - type: input
+    id: title
+    attributes:
+      label: Título
+      description: Título da notícia
+      placeholder: Título da notícia
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: Fonte da notícia
+      description: Inclue o link da notícia.
+      placeholder: www.astronomos.com.br
+      required: true
+  - type: input
+    id: thumbnail
+    attributes:
+      label: Imagem de capa
+      description: Insira o link da imagem de capa da notícia.
+      placeholder: www.astronomos.com.br/imagem.jpg
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### As notícias podem ter até 5 páginas no máximo. Preencha da melhor forma para que possamos publicar.
+  - type: markdown
+    attributes:
+      value: |
+        ## Página 1
+  - type: textarea
+    id: page1
+    attributes:
+      label: Conteúdo
+      description: Conteúdo da página 1
+      placeholder: Conteúdo da página 1
+      required: true     
+  - type: markdown
+    attributes:
+      value: |
+        ## Página 2
+  - type: textarea
+    id: page2
+    attributes:
+      label: Conteúdo
+      description: Conteúdo da página 2
+      placeholder: Conteúdo da página 2
+      required: true    
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Página 3
+
+  - type: textarea
+    id: page3
+    attributes:
+      label: Conteúdo
+      description: Conteúdo da página 1
+      placeholder: Conteúdo da página 1
+  - type: markdown
+    attributes:
+      value: |
+        ## Página 4
+  - type: textarea
+    id: page4
+    attributes:
+      label: Conteúdo
+      description: Conteúdo da página 4
+      placeholder: Conteúdo da página 4
+  - type: markdown
+    attributes:
+      value: |
+        ## Página 5
+  - type: textarea
+    id: page5
+    attributes:
+      label: Conteúdo
+      description: Conteúdo da página 5
+      placeholder: Conteúdo da página 5
