@@ -2,7 +2,7 @@ name: New Action Test
 
 on:
     pull_request:
-        types: [opened]
+        types: [labeled]
 jobs:
   create-test-branch:
     runs-on: ubuntu-latest
@@ -15,27 +15,21 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
 
-      - name: Check Branch
-        id: check-branch
-        run: |    
-          PR_BRANCH=$(jq --raw-output .pull_request.head.ref $GITHUB_EVENT_PATH)
-          echo "PR_BRANCH=$PR_BRANCH"
-          if [[ "$PR_BRANCH" == *"git-action"* ]]; then
-            echo "::set-output name=should_run::true"
-          else
-            echo "::set-output name=should_run::false"
-          fi
-        shell: bash
-      - name: Create Test Branch
+      - name: Get Label
+        id: get-label
         run: |
-          PR_BRANCH=$(jq --raw-output .pull_request.head.ref $GITHUB_EVENT_PATH)
-          TEST_BRANCH="test/${PR_BRANCH}"
-          git checkout -b $TEST_BRANCH
-          git push origin $TEST_BRANCH
+            PR_LABEL=$(jq --raw-output .label.name $GITHUB_EVENT_PATH)
+            echo "Captured PR Label: $PR_LABEL"
+            echo "::set-output name=pr_label::$PR_LABEL"
 
-      - name: Trigger Another Workflow
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: trigger-test-workflow
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+       # Trigger another workflow using the GitHub API
+      - name: Trigger Workflow with Label
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+         curl -X POST https://api.github.com/repos/caioProgramming/cosmosApp/actions/workflows/other-workflow.yml/dispatches \
+         -H "Accept: application/vnd.github.v3+json" \
+         -H "Authorization: token $GITHUB_TOKEN" \
+         --data '{"ref":""}'
+
+
