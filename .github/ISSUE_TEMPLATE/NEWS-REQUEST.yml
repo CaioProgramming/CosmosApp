@@ -79,3 +79,4 @@ body:
       label: Conteúdo
       description: Conteúdo da página 5
       placeholder: Conteúdo da página 5
+labels: ["news", "pending publication"]     
