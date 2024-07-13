@@ -1,5 +1,8 @@
 name: Implement new Issue
 on:
+    push:
+        branches:
+            - git-actions/news-actions
     issues:
         types: [opened]
 jobs:
@@ -15,12 +18,8 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
       
       - name: Create and Push New Branch
-        env:
-          ISSUE_TITLE: ${{github.event.issue.title}}
-          ISSUE_NUMBER: ${{github.event.issue.title}}/${{github.event.issue.number }}
-          ISSUE_BODY: ${{github.event.issue.body}}
         run: |
-          NEW_BRANCH="news/${ISSUE_NUMBER}"
+          NEW_BRANCH="news/update-$(date +'%Y%m%d')"
           git checkout -b $NEW_BRANCH
           git push origin $NEW_BRANCH
 
