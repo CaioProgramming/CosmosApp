@@ -1,5 +1,5 @@
-name: Notícia
-description: Adicione uma notícia ao site
+name: "News Request 📰"
+description: Adicione uma notícia ao app.
 body:
   - type: markdown
     attributes:
