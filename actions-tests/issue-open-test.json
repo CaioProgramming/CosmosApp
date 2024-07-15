@@ -1,0 +1,22 @@
+{
+    "action": "opened",
+    "issue": {
+        "number": 1,
+        "title": "Test issue",
+        "body": "This is a test issue",
+        "labels": [
+            {
+                "name": "news"
+            }
+        ]
+    },
+    "repository": {
+        "name": "actions-tests",
+        "owner": {
+            "login": "github"
+        }
+    },
+    "sender": {
+        "login": "octocat"
+    }
+}
