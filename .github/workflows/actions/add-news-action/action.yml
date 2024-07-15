@@ -17,6 +17,7 @@ runs:
       run: |
         cd .github/workflows/scripts/news
         chmod u+r+x *.sh
+        git update-index --chmod=+x .github/workflows/scripts/news/*.sh
         echo "News Scripts allowed"
         ls -l
       shell: bash
