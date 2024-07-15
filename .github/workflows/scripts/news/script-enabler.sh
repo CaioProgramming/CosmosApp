@@ -4,12 +4,12 @@ required_scripts=(
     "get-news-reference"
     "get-news-pages"
     "issue-body-mapper"
-    "format-page.sh"
+    "format-page"
 )
 
 for script in "${required_scripts[@]}"; do
     echo "enabling script $script"
-    chmod u+r+x "$mappers_dir/$script"
+    chmod u+r+x "$mappers_dir/$script.sh"
     git update-index --chmod=+x "$mappers_dir/$script.sh"
 done
 echo "News Scripts allowed"
