@@ -6,7 +6,6 @@ ISSUE_NAME=$3
 ISSUE_BODY=$4
 
 echo "Adding news item for issue #$ISSUE_NUMBER"
-echo "Edited by Issue $ISSUE_NAME including $ISSUE_BODY" >> README.md
 
 mappers_dir="./.github/workflows/scripts/news/mapper"
 
@@ -26,12 +25,11 @@ NEW_ITEM=$(
 
 )
 
-newsPath="./resources/news.json"
+newsPath="./resources/"
 
-jq --argjson item "$NEW_ITEM" '.newsItems += [$item]' "$newsPath" > temp.json && mv temp.json "$newsPath"
+jq --argjson item "$NEW_ITEM" '.newsItems += [$item]' "$newsPath" > news.json && mv temp.json "$newsPath"
 git add "$newsPath"
 git commit -m "Add news item for issue #$ISSUE_NUMBER"
 git config --global user.name 'github-actions[bot]'
 git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-git commit -am "Edit README.md to include branch name"
 git push origin "$BRANCH_NAME"
