@@ -4,14 +4,18 @@ inputs:
   branch-name:
     description: 'The name of the branch to edit the file on'
     required: true
-  issue-label: 
-    description: 'The label of the issue'
+  issue-number: 
+    description: 'The number of the issue'
     required: true  
   issue-body:
     description: 'The body of the issue'
     required: true  
 runs:
   using: 'composite'
+  steps:
+    - name: Allow Scripts
+      run: chmod +x ./.github/workflows/scripts/news/*
+      shell: bash
   steps:
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
