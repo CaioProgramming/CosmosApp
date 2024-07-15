@@ -5,8 +5,22 @@ FILE_NAME=$2
 ISSUE_NUMBER=$3
 ISSUE_BODY=$4
 
-
 mappers_dir="./.github/workflows/scripts/news/mapper"
+
+required_scripts=(
+    "get-news-reference.sh"
+    "get-news-pages.sh"
+    "issue-body-mapper.sh"
+)
+
+for script in "${required_scripts[@]}"; do
+    enabling script $script
+    chmod u+r+x $script
+    git update-index --chmod=+x $mappers/$script
+done 
+echo "News Scripts allowed"
+ls -l
+
 
 reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
 news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")

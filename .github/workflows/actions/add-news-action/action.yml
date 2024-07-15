@@ -13,14 +13,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Allow Scripts
-      run: |
-        cd .github/workflows/scripts/news
-        chmod u+r+x *.sh
-        git update-index --chmod=+x .github/workflows/scripts/news/*.sh
-        echo "News Scripts allowed"
-        ls -l
-      shell: bash
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
