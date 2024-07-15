@@ -9,9 +9,9 @@ mappers_dir="./.github/workflows/scripts/news/mapper"
 cd $mappers_dir
 
 
-reference_data=$("get-news-reference.sh" "$ISSUE_BODY")
-news_pages=$("get-news-pages.sh" "$ISSUE_BODY")
-news_thumbnail=$("issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
+reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
+news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")
+news_thumbnail=$("$mappers_dir/issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
 
 # Assuming you want to append the branch name to README.md
 
@@ -25,7 +25,7 @@ NEW_ITEM=$(
 
 )
 
-newsPath="./resources/$FILE_PATH"
+newsPath="./resources$FILE_PATH"
 
 jq --arg item "$NEW_ITEM" '.news += [$item]' "$newsPath" > news.json && mv news.json "$newsPath"
 git add "$newsPath"
