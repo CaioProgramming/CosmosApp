@@ -32,9 +32,9 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
         with:
-          branch: ${{ env.NEW_BRANCH }}
-          issue_number: ${{ github.event.issue.body }}
-          issue_body: ${{ github.event.issue.body }}
+          branch-name: ${{ env.NEW_BRANCH }}
+          issue-number: ${{ github.event.issue.number }}
+          issue-body: ${{ github.event.issue.body }}
 
       - name: "Opening PR for new issue"
         env:
