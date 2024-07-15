@@ -26,9 +26,11 @@ jobs:
 
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
-        run: |
-          echo "This issue is a news request"
-          ./add-news.sh "$NEW_BRANCH" "$ISSUE_NUMBER" "$ISSUE_BODY"
+        uses: ./.github/actions/add-news-action
+        with:
+          branch: ${{ env.NEW_BRANCH }}
+          issue_number: ${{ github.event.issue.body }}
+          issue_body: ${{ github.event.issue.body }}
 
       - name: "Opening PR for new issue"
         env:

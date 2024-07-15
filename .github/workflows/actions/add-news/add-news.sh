@@ -5,6 +5,7 @@ ISSUE_NUMBER=$2
 ISSUE_NAME=$3
 ISSUE_BODY=$4
 
+echo "Adding news item for issue #$ISSUE_NUMBER"
 echo "Edited by Issue $ISSUE_NAME including $ISSUE_BODY" >> README.md
 
 reference_data=$(./get-news-reference.sh "$ISSUE_BODY")

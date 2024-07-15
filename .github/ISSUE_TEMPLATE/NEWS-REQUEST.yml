@@ -7,12 +7,6 @@ body:
         ## Adicione uma notícia ao site
         Preencha os campos abaixo para adicionar uma notícia ao site.
   - type: input
-    id: title
-    attributes:
-      label: Título
-      description: Título da notícia
-      placeholder: Título da notícia
-  - type: input
     id: author
     attributes:
       label: Autor
