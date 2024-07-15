@@ -1,11 +1,10 @@
 #!/bin/bash
 
-BRANCH_NAME=$1
-ISSUE_NUMBER=$2
-ISSUE_NAME=$3
+FILE_PATH=$1
+FILE_NAME=$2
+ISSUE_NUMBER=$3
 ISSUE_BODY=$4
 
-echo "Adding news item for issue #$ISSUE_NUMBER"
 
 mappers_dir="./.github/workflows/scripts/news/mapper"
 
@@ -25,11 +24,8 @@ NEW_ITEM=$(
 
 )
 
-newsPath="./resources/"
+newsPath="./resources/$FILE_PATH"
 
-jq --argjson item "$NEW_ITEM" '.newsItems += [$item]' "$newsPath" > news.json && mv temp.json "$newsPath"
+jq --argjson item "$NEW_ITEM" '.news += [$item]' "$newsPath" > news.json && mv news.json "$newsPath"
 git add "$newsPath"
 git commit -m "Add news item for issue #$ISSUE_NUMBER"
-git config --global user.name 'github-actions[bot]'
-git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-git push origin "$BRANCH_NAME"
