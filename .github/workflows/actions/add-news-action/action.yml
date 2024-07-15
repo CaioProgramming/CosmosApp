@@ -15,7 +15,10 @@ runs:
   steps:
     - name: Allow Scripts
       run: |
-        chmod +x .github/workflows/scripts/news/*.sh
+        cd .github/workflows/scripts/news
+        chmod +x *.sh
+        ls -l
+        git add *.sh
         echo "News Scripts allowed"
       shell: bash
     - name: Checkout the branch
