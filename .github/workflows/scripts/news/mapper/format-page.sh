@@ -1,10 +1,12 @@
 $BODY=$1
-
-
+$FIELD=$2
+mappers_dir="./.github/workflows/scripts/news/mapper"
+$MAPPER_SCRIPT = "$mappers_dir/issue-body-mapper.sh"
+$DESCRIPTION= $($MAPPER_SCRIPT "$BODY" "$FIELD")
 NEWS_PAGE=$(
     jq -n \
-    --arg title "$BODY" \
-    '{title: $title, description: '', thumbnailURL: '' }'
+    --arg title "$DESCRIPTION" \
+    '{title: '', description: '$title', thumbnailURL: '' }'
 )
 
 echo $NEWS_PAGE
