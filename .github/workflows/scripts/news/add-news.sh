@@ -14,10 +14,9 @@ required_scripts=(
 )
 
 for script in "${required_scripts[@]}"; do
-    script_path="$mappers_dir/$script"
-    echo "enabling script $script_path"
-    chmod u+r+x $script_path
-    git update-index --chmod=+x $script_path
+    echo "enabling script $script"
+    chmod u+r+x "$mappers_dir/$script_path"
+    git update-index --chmod=+x "$mappers_dir/$script_path"
 done 
 echo "News Scripts allowed"
 ls -l
