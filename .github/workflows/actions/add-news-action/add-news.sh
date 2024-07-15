@@ -9,8 +9,8 @@ mappers_dir="./.github/workflows/scripts/news/mapper"
 
 
 reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
-news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")
 news_thumbnail=$("$mappers_dir/issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
+news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")
 
 # Assuming you want to append the branch name to README.md
 
