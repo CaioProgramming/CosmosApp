@@ -6,25 +6,12 @@ ISSUE_NUMBER=$3
 ISSUE_BODY=$4
 
 mappers_dir="./.github/workflows/scripts/news/mapper"
-
-required_scripts=(
-    "get-news-reference.sh"
-    "get-news-pages.sh"
-    "issue-body-mapper.sh"
-)
-
-for script in "${required_scripts[@]}"; do
-    echo "enabling script $script"
-    chmod u+r+x "$mappers_dir/$script"
-    git update-index --chmod=+x "$mappers_dir/$script"
-done
-echo "News Scripts allowed"
-ls -l
+cd $mappers_dir
 
 
-reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
-news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")
-news_thumbnail=$("$mappers_dir/issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
+reference_data=$("get-news-reference.sh" "$ISSUE_BODY")
+news_pages=$("get-news-pages.sh" "$ISSUE_BODY")
+news_thumbnail=$("issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
 
 # Assuming you want to append the branch name to README.md
 

@@ -16,6 +16,9 @@ runs:
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
+    - name: Enable Script Permissions
+      run: bash ./.github/workflows/scripts/news/script-enabler.sh
+      shell: bash   
     - name: Edit file
-      run: bash ./.github/workflows/scripts/news/add-news.sh ${{ inputs.branch-name }} ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      run: bash ./.github/workflows/actions/add-news-action/add-news.sh ${{ inputs.branch-name }} ${{ inputs.issue-label }} ${{ inputs.issue-body }}
       shell: bash
