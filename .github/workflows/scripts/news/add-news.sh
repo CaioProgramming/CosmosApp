@@ -15,9 +15,9 @@ required_scripts=(
 
 for script in "${required_scripts[@]}"; do
     echo "enabling script $script"
-    chmod u+r+x "$mappers_dir/$script_path"
-    git update-index --chmod=+x "$mappers_dir/$script_path"
-done 
+    chmod u+r+x "$mappers_dir/$script"
+    git update-index --chmod=+x "$mappers_dir/$script"
+done
 echo "News Scripts allowed"
 ls -l
 
@@ -40,6 +40,8 @@ NEW_ITEM=$(
 
 newsPath="./resources/$FILE_PATH"
 
-jq --argjson item "$NEW_ITEM" '.news += [$item]' "$newsPath" > news.json && mv news.json "$newsPath"
+jq --arg item "$NEW_ITEM" '.news += [$item]' "$newsPath" > news.json && mv news.json "$newsPath"
 git add "$newsPath"
-git commit -m "Add news item for issue #$ISSUE_NUMBER"
+git commit -m "Add news item for issue # $ISSUE_NUMBER"
+git push
+echo "News item added successfully"
