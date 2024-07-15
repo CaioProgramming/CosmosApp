@@ -29,7 +29,7 @@ jobs:
 
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
-        uses: ./.github/actions/add-news-action
+        uses: ./.github/actions/add-news-action/
         with:
           branch: ${{ env.NEW_BRANCH }}
           issue_number: ${{ github.event.issue.body }}
