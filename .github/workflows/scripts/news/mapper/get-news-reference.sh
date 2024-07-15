@@ -8,5 +8,5 @@ json_output=$(jq -n \
     --arg reference "$news_reference"\
     '{ "author": $author, "reference": $reference }'
     )
-
+echo "Reference data: $json_output"
 echo $json_output    
