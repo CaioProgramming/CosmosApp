@@ -1,5 +1,5 @@
 name: 'Add News Action'
-description: 'Include news in the json resources based on opened issue'ß
+description: 'Include news in the json resources based on opened issue'
 inputs:
   branch-name:
     description: 'The name of the branch to edit the file on'
