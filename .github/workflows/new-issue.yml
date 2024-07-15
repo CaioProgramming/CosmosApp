@@ -24,6 +24,7 @@ jobs:
             git push origin $NEW_BRANCH
           else
             echo "Branch $NEW_BRANCH already exists."
+            exit 1
           fi
 
       - name: Checking issue
