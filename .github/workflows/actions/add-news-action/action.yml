@@ -18,6 +18,7 @@ runs:
         cd .github/workflows/scripts/news
         chmod u+r+x *.sh
         echo "News Scripts allowed"
+        ls -l
       shell: bash
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
