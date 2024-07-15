@@ -16,7 +16,6 @@ runs:
     - name: Allow Scripts
       run: chmod +x ./.github/workflows/scripts/news/*
       shell: bash
-  steps:
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
