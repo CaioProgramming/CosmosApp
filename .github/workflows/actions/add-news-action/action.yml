@@ -14,7 +14,7 @@ runs:
   using: 'composite'
   steps:
     - name: Allow Scripts
-      run: chmod +x ./.github/workflows/scripts/news/*
+      run: chmod +x .github/workflows/scripts/news/*.sh
       shell: bash
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
