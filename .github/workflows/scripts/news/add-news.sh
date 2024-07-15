@@ -8,9 +8,11 @@ ISSUE_BODY=$4
 echo "Adding news item for issue #$ISSUE_NUMBER"
 echo "Edited by Issue $ISSUE_NAME including $ISSUE_BODY" >> README.md
 
-reference_data=$(./get-news-reference.sh "$ISSUE_BODY")
-news_pages=$(./get-news-pages.sh "$ISSUE_BODY")
-news_thumbnail=$(./issue-body-mapper.sh "$ISSUE_BODY" "thumbnail")
+mappers_dir="./.github/workflows/scripts/news/mapper"
+
+reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
+news_pages=$("$mappers_dir/get-news-pages.sh" "$ISSUE_BODY")
+news_thumbnail=$("$mappers_dir/issue-body-mapper.sh" "$ISSUE_BODY" "thumbnail")
 
 # Assuming you want to append the branch name to README.md
 
@@ -24,7 +26,7 @@ NEW_ITEM=$(
 
 )
 
-newsPath="resources/news.json"
+newsPath="./resources/news.json"
 
 jq --argjson item "$NEW_ITEM" '.newsItems += [$item]' "$newsPath" > temp.json && mv temp.json "$newsPath"
 git add "$newsPath"

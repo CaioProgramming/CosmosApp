@@ -17,5 +17,5 @@ runs:
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
     - name: Edit file
-      run: bash .\add-news.sh ${{ inputs.branch-name }} ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      run: bash ./.github/workflows/scripts/news/add-news.sh ${{ inputs.branch-name }} ${{ inputs.issue-label }} ${{ inputs.issue-body }}
       shell: bash
