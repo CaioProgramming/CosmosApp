@@ -14,7 +14,7 @@ required_scripts=(
 )
 
 for script in "${required_scripts[@]}"; do
-    enabling script $script
+    echo "enabling script $script"
     chmod u+r+x $script
     git update-index --chmod=+x $mappers/$script
 done 
