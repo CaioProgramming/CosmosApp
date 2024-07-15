@@ -1,7 +1,7 @@
 name: Implement new Issue
 on:
     issues:
-        types: [opened]
+        types: [opened, labeled]
 jobs:
   createBranch:
     runs-on: ubuntu-latest
@@ -14,9 +14,22 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
       
-      - name: Create and Push New Branch
+      - name: Check if branch exists
         env:
           ISSUE_TITLE: ${{github.event.issue.title}}
+          ISSUE_NUMBER: ${{github.event.issue.number}}
+          ISSUE_BODY: ${{github.event.issue.body}}
+        run: |
+          NEW_BRANCH="news/${ISSUE_NUMBER}"
+          git fetch origin $NEW_BRANCH
+          if [ $? -eq 0 ]; then
+            echo "Branch for this issue already exists"
+            exit 1
+          fi    
+        
+      - name: Create and Push New Branch
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_NUMBER: ${{github.event.issue.number }}
           ISSUE_BODY: ${{github.event.issue.body}}
         run: |
