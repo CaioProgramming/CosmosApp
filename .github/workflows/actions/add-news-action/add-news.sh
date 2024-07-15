@@ -6,7 +6,6 @@ ISSUE_NUMBER=$3
 ISSUE_BODY=$4
 
 mappers_dir="./.github/workflows/scripts/news/mapper"
-cd $mappers_dir
 
 
 reference_data=$("$mappers_dir/get-news-reference.sh" "$ISSUE_BODY")
