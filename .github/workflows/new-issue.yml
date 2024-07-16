@@ -27,7 +27,14 @@ jobs:
             git checkout -b $NEW_BRANCH
 
           fi
-
+      - name: Download Kotlin Serialization Plugin
+        run: |
+          curl -L -o kotlinx-serialization-compiler-plugin.jar https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-serialization/1.5.21/kotlin-serialization-1.5.21.jar
+          echo "Downloaded Kotlin Serialization Plugin"
+      - name: Run Plugin
+        run: |
+          kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
+          echo "Ran Plugin"
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
