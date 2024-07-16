@@ -13,17 +13,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Prepare Env
-      run: |
-         chmod u+r+x ./.github/workflows/actions/add-news-action/run-enabler.kts
-         git update-index --chmod=+x ./.github/workflows/actions/add-news-action/run-enabler.kts
+    - name: Enable scripts
+      run: kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
       shell: bash
     - name: Checkout the branch
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
-    - name: Enable scripts
-      run: kotlinc -script ./.github/workflows/scripts/news/run-enabler.main.kts
-      shell: bash
     - name: Edit file
-      run: bash ./.github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.branch-name }}" ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.branch-name }}" ${{ inputs.issue-label }} ${{ inputs.issue-body }}
       shell: bash
