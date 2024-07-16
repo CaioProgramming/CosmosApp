@@ -1,17 +1,13 @@
 BODY=$1
 
-mappers_dir="./.github/workflows/scripts/news/mapper"
+pages_formatter="./.github/workflows/scripts/news/mapper/format-page.sh"
 pages=()
-for in in {1..5}
+for i in {1..5}
 do 
-  echo "Mapping page $i"
-  page=$($("$mappers_dir/format-page.sh" "$BODY" "page_$i"))
-  pages+=($page)
+  pages+=$("$pages_formatter" "$BODY" "page_$i")
 done
-echo "Pages: ${pages[@]}"
 
-pages_json=$(jq -n \
-                  --arg pages "$pages" \
-                  '[$pages]')
+pages_json=$(printf '%s\n' "${pages[@]}" | jq -R . | jq -s .)
 
+echo "${#pages[@]} pages: $pages_json"
 echo $pages_json

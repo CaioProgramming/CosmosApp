@@ -1,13 +1,12 @@
 BODY="$1"
 FIELD="$2"
-echo "Mapping Body => $BODY"
-mappers_dir= "./.github/workflows/scripts/news/mapper"
-mapper_script= "$mappers_dir/issue-body-mapper.sh"
-DESCRIPTION= $($mapper_script "$BODY" "$FIELD")
-NEWS_PAGE=$(
+#echo "Mapping Body => $BODY"
+#echo "Requiring => $FIELD"
+mapper_script="./.github/workflows/scripts/news/mapper/issue-body-mapper.sh"
+description=$("$mapper_script" "$BODY" "$FIELD")
+news_page=$(
     jq -n \
-    --arg title "$DESCRIPTION" \
-    '{title: '', description: '$title', thumbnailURL: '' }'
+    --arg description "$description" \
+    '{title: "", description: $description, thumbnailURL: "" }'
 )
-
-echo $NEWS_PAGE
+echo $news_page
