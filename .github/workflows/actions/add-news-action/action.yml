@@ -25,5 +25,5 @@ runs:
       run: kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
       shell: bash
     - name: Edit file
-      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.kts "${{ inputs.branch-name }}" ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.branch-name }}" ${{ inputs.issue-label }} ${{ inputs.issue-body }}
       shell: bash
