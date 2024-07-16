@@ -3,7 +3,6 @@
 import java.io.File
 
 fun main() {
-
     println("Enabling scripts")
     val rootPath = System.getProperty("user.dir")
     val rootFile = File(rootPath)
@@ -27,7 +26,6 @@ fun main() {
         }
     }
     println("Enabled ${scripts.size} scripts")
-
 }
 
 main()

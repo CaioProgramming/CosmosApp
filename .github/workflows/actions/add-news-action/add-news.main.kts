@@ -88,7 +88,6 @@ fun updateRemote(message: String) {
 
 fun String.getStringForField(field: String) = this.substring(this.indexOf(field), this.indexOf("\n", this.indexOf(field)))
 
-
 fun executeGitCommand(command: List<String>) {
     val processBuilder = ProcessBuilder(command)
     processBuilder.redirectErrorStream(true)
@@ -105,7 +104,6 @@ fun executeGitCommand(command: List<String>) {
         println("Error executing command: $command")
     }
 }
-
 
 fun parseStringPages(pagesArray: String): List<NewsItem> {
     val pagesStringArray = pagesArray
