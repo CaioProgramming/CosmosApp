@@ -1,10 +1,14 @@
 #!/usr/bin/env kotlinc -script
 @file:Repository("https://repo1.maven.org/maven2")
 @file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+@file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 @file:Suppress("PLUGIN_IS_NOT_ENABLED")
 
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
+
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -44,14 +48,17 @@ main(args)
 fun main(args: Array<String>) {
 
     println("Adding news to file")
-    println("received arguments: \n${args.joinToString { it }}")
-    
-    val filePath = args.first()
-    val issueNumber = args[1]
-    val issueBody = args.last()
+    val argumentsList = args.joinToString().split(" , ")
+    println("received arguments(${argumentsList.size}):\n${argumentsList.mapIndexed { index, s -> "$index: $s" }.joinToString("\n")}")
 
-    val id = issueNumber
+    val filePath = argumentsList.first()
+    println("resource => $filePath")
 
+    val issueNumber = argumentsList[1]
+    println("issue number => $issueNumber")
+
+    val issueBody = argumentsList.last()
+    println("body => $issueBody")
     val authorData = fetchAuthorData(issueBody)
     println("Author data => $authorData")
 
@@ -68,8 +75,8 @@ fun main(args: Array<String>) {
     val pages = pageData.toMutableList()
     pages[0] = pages.first().copy(thumbnailURL = thumbnail)
     
-    val newItem = NewsObject(id, pageData, authorData)
-
+    val newItem = NewsObject(issueNumber, pageData, authorData)
+    println("\n\nNew item => $newItem\n\n")
     val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
     val newJsonContent = json.encodeToString(modifiedNews)
@@ -109,6 +116,7 @@ fun parseStringPages(pagesArray: String): List<NewsItem> {
     val pagesStringArray = pagesArray
         .replace("[", "")
         .replace("]", "")
+    println("Formating pages => $pagesStringArray")
     val pagesItems = pagesStringArray.split("},").map {
         json.decodeFromString<NewsItem>(it)
     }

@@ -4,11 +4,11 @@ inputs:
   branch-name:
     description: 'The name of the branch to edit the file on'
     required: true
-  issue-number:
-    description: 'The number of the issue'
-    required: true
   issue-body:
     description: 'The body of the issue'
+    required: true
+  issue-number:
+    description: 'The number of the issue'
     required: true
 runs:
   using: 'composite'
@@ -20,5 +20,5 @@ runs:
       run: git checkout ${{ inputs.branch-name }}
       shell: bash
     - name: Edit file
-      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.branch-name }}" ${{ inputs.issue-label }} ${{ inputs.issue-body }}
+      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
       shell: bash
