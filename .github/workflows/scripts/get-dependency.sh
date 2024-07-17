@@ -10,7 +10,7 @@ ls -l $tempFolder
 foundFiles=$(find $tempFolder -type f -name "$dependencyFile")
 
 if [ -n "$foundFiles" ]; then
-    echo $foundFiles
+    echo "$foundFiles" | head -n 1
 else
     exit 1
 fi
