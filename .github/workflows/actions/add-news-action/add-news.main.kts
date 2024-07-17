@@ -92,8 +92,8 @@ fun main(args: Array<String>) {
 }
 
 fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String): File? {
-    val rootPath = System.getProperty(dir)
-    val rootFile = File(rootPath)
+    val rootPath = System.getProperty("user.dir")
+    val rootFile = File("$rootPath/$dir")
     val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
     println("Current files => $folders")
     println("Searching for file $filePath in $rootPath")
