@@ -131,7 +131,7 @@ fun updateLocalBranch(issueNumber: String) {
 fun updateRemote(message: String, issue: String) {
     println(message)
     updateLocalBranch(issue)
-    deleteTempFiles(issue)
+    deleteTempFiles()
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
@@ -158,7 +158,7 @@ fun executeGitCommand(command: List<String>): String {
     return output.toString()
 }
 
-fun deleteTempFiles(issue: String) {
+fun deleteTempFiles() {
     // Step 1: Identify the temporary files
     val tempDirPath = ".github/workflows/.temp"
     val tempDir = File(tempDirPath)
@@ -174,7 +174,6 @@ fun deleteTempFiles(issue: String) {
     // Step 3: Push the changes
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", "Deleted temporary files"))
-    updateRemote("Deleted temporary files", issue)
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
