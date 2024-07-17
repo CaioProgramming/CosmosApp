@@ -107,30 +107,53 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
+fun updateLocalBranch(issueNumber: String) {
+    // Fetch changes from the remote repository
+    executeGitCommand(listOf("git", "fetch", "origin", "news/$issueNumber"))
+
+    // Merge the fetched changes into your local branch
+    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/news/$issueNumber"))
+    println(mergeResult)
+
+    executeGitCommand(listOf("git", "pull", "--rebase"))
+
+
+    // Check if merge was successful or if there were conflicts
+    if (mergeResult.contains("Automatic merge failed; fix conflicts and then commit the result.")) {
+        println("Merge conflicts detected. Please resolve them before pushing.")
+    } else {
+        // Push your changes after successful merge
+        updateRemote("pushing to news/$issueNumber", issueNumber)
+    }
+}
 
 fun updateRemote(message: String, issue: String) {
     println(message)
-    executeGitCommand(listOf("git", "pull", "--rebase"))
+    updateLocalBranch(issue)
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
 }
 
-fun executeGitCommand(command: List<String>) {
+fun executeGitCommand(command: List<String>): String {
     val processBuilder = ProcessBuilder(command)
     processBuilder.redirectErrorStream(true)
     val process = processBuilder.start()
 
     val reader = BufferedReader(InputStreamReader(process.inputStream))
     var line: String?
+    val output = StringBuilder()
+
     while (reader.readLine().also { line = it } != null) {
         println(line)
+        output.append(line)
     }
 
     val exitCode = process.waitFor()
     if (exitCode != 0) {
         println("Error executing command: $command")
     }
+    return output.toString()
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
