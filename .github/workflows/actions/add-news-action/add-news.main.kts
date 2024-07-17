@@ -111,7 +111,7 @@ fun updateRemote(message: String) {
     println(message)
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
-    executeGitCommand(listOf("git", "push"))
+    executeGitCommand(listOf("git", "--set-upstream", "origin", "push"))
 }
 
 fun executeGitCommand(command: List<String>) {
