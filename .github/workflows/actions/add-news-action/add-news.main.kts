@@ -110,6 +110,7 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
 
 fun updateRemote(message: String, issue: String) {
     println(message)
+    executeGitCommand(listOf("git", "pull", "--rebase"))
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
