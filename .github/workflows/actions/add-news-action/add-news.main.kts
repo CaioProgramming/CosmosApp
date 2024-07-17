@@ -116,6 +116,7 @@ fun setGitUpstreamBranch(issueNumber: String) {
 fun updateRemote(message: String, issue: String) {
     println(message)
     setGitUpstreamBranch(issue)
+    executeGitCommand(listOf("git", "pull"))
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push"))
