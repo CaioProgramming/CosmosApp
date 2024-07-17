@@ -93,13 +93,18 @@ fun main(args: Array<String>) {
 
 fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String): File? {
     val rootPath = System.getProperty("user.dir")
+    println("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
     val rootFile = File("$rootPath/$dir")
-    val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
-    println("Current files => $folders")
-    println("Searching for file $filePath in $rootPath")
+    if (rootFile.exists()) {
+        val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
+        println("Current files on $dir => $folders")
+        println("Searching for file $filePath in $rootPath")
 
-    val requiredFile = rootFile.listFiles().find { it.name == filePath }
-    return requiredFile
+        val requiredFile = rootFile.listFiles().find { it.name == filePath }
+        return requiredFile
+    }
+    println("Cant find file $filePath on $dir")
+    return null
 }
 
 fun updateRemote(message: String) {
