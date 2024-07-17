@@ -11,8 +11,10 @@ jobs:
       - uses: fwilhe2/setup-kotlin@main
         with:
             version: 1.9.22
-      - name: Fetching dependency resolver
-        run:  chmod u+r+x .github/workflows/scripts/dependency-resolver.sh 
+      - name: Enabling dependency scripts
+        run: |
+         chmod u+r+x .github/workflows/scripts/dependency-resolver.sh 
+         chmod u+r+x .github/workflows/scripts/get-dependency.sh
       - name: Setup Git
         run: |
           git config --global user.name 'github-actions[bot]'
