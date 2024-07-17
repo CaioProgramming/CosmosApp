@@ -47,7 +47,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           PR_URL=$(gh pr create --base main --head $ISSUE_BRANCH --title "[ News ] - ${{ github.event.issue.title }}" --body "This PR adds news for issue ${{ github.event.issue.number }}" --repo ${{ github.repository }} -w)
-          echo "PR created: $PR_URL"
+          echo "PR created for branch $ISSUE_BRANCH: $PR_URL"
       - name: "Adding PR to issue"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

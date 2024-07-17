@@ -120,7 +120,7 @@ fun parseStringPages(bodyPages: String): List<NewsItem> {
         val pages =
             List(5) {
                 if (it > 0) {
-                    val page = bodyPages.getFieldForTag("page_$it")
+                    val page = bodyPages.getFieldForTag("pagina_$it")
                     page?.let { it1 -> NewsItem("", it1, "") } ?: run {
                         null
                     }
@@ -138,7 +138,7 @@ fun parseStringPages(bodyPages: String): List<NewsItem> {
 fun fetchAuthorData(body: String): AuthorObject? {
     return try {
         val author = body.getFieldForTag("author")
-        val reference = body.getFieldForTag("reference")
+        val reference = body.getFieldForTag("link")
         safeLet(author, reference) { a, r ->
             AuthorObject(a, r)
         } ?: run {
@@ -172,7 +172,7 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
 
 fun String.getFieldForTag(field: String): String? {
     val tagRef = "###$field "
-    val lineBreakTag = "\\n"
+    val lineBreakTag = "#"
     println("getting value for tag { $field } on $this")
     return try {
         if (!this.contains(tagRef)) {

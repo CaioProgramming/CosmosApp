@@ -16,7 +16,7 @@ body:
   - type: input
     id: reference
     attributes:
-      label: Fonte da notícia
+      label: link
       description: Inclue o link da notícia.
       placeholder: www.astronomos.com.br
   
@@ -37,7 +37,7 @@ body:
   - type: textarea
     id: page1
     attributes:
-      label: Conteúdo
+      label: pagina_1
       description: Conteúdo da página 1
       placeholder: Conteúdo da página 1
   - type: markdown
@@ -47,7 +47,7 @@ body:
   - type: textarea
     id: page2
     attributes:
-      label: Conteúdo
+      label: pagina_2
       description: Conteúdo da página 2
       placeholder: Conteúdo da página 2
   - type: markdown
@@ -58,7 +58,7 @@ body:
   - type: textarea
     id: page3
     attributes:
-      label: Conteúdo
+      label: pagina_3
       description: Conteúdo da página 1
       placeholder: Conteúdo da página 1
   - type: markdown
@@ -68,7 +68,7 @@ body:
   - type: textarea
     id: page4
     attributes:
-      label: Conteúdo
+      label: pagina_4
       description: Conteúdo da página 4
       placeholder: Conteúdo da página 4
   - type: markdown
@@ -78,7 +78,7 @@ body:
   - type: textarea
     id: page5
     attributes:
-      label: Conteúdo
+      label: pagina_5
       description: Conteúdo da página 5
       placeholder: Conteúdo da página 5
 labels: ["news", "pending publication"]     
