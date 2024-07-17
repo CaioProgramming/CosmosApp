@@ -4,9 +4,12 @@ GROUP_PATH=$3
 tempFolder="./.github/workflows/.temp"
 mavenUrl="https://repo1.maven.org/maven2/org"
 echo requested dependency: $DEPENDENCY version: $VERSION
+
 mkdir -p tempFolder
 echo "Temp dir created"
+
 dependencyURL="$mavenUrl/$GROUP_PATH/$DEPENDENCY/$VERSION/$DEPENDENCY-$VERSION.jar"
+
 echo "Downloading $DEPENDENCY-$VERSION on $dependencyURL"
 
 curl -L -o $tempFolder/$DEPENDENCY-$VERSION.jar $dependencyURL

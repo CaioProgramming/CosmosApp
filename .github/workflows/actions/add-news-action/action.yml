@@ -15,7 +15,7 @@ runs:
   
   steps:
     - name: Download Kotlin Serialization Plugin
-      run: .github/workflows/scripts/dependency-resolver.sh "kotlin-serialization-compiler-plugin 1.9.22 jetbrains/kotlin"
+      run: .github/workflows/scripts/dependency-resolver.sh kotlin-serialization-compiler-plugin 1.9.22 jetbrains/kotlin
       shell: bash
     - name: Edit file
       run: |
