@@ -171,7 +171,7 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
 }
 
 fun String.getFieldForTag(field: String): String? {
-    val tagRef = "###$field "
+    val tagRef = "### $field"
     val lineBreakTag = "#"
     println("getting value for tag { $field } on $this")
     return try {
