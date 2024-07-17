@@ -117,13 +117,12 @@ fun updateLocalBranch(issueNumber: String) {
 
     executeGitCommand(listOf("git", "pull", "--rebase"))
 
-
     // Check if merge was successful or if there were conflicts
     if (mergeResult.contains("Automatic merge failed; fix conflicts and then commit the result.")) {
         println("Merge conflicts detected. Please resolve them before pushing.")
     } else {
         // Push your changes after successful merge
-        updateRemote("pushing to news/$issueNumber", issueNumber)
+        println("Update sucessful")
     }
 }
 
