@@ -9,7 +9,7 @@ body:
   - type: input
     id: author
     attributes:
-      label: Autor
+      label: author
       description: Autor da notícia
       placeholder: Autor da notícia
           
