@@ -67,7 +67,7 @@ fun main(args: Array<String>) {
 
     authorData?.let {
         var newItem = NewsObject(issueNumber, pageData, authorData)
-        searchForFile("news.json")?.let {
+        searchForFile("resource","news.json")?.let {
             val jsonContent = it.readText()
             val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
@@ -91,8 +91,8 @@ fun main(args: Array<String>) {
     }
 }
 
-fun searchForFile(filePath: String): File? {
-    val rootPath = System.getProperty("user.dir")
+fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String): File? {
+    val rootPath = System.getProperty(dir)
     val rootFile = File(rootPath)
     val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
     println("Current files => $folders")
