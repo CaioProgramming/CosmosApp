@@ -107,6 +107,8 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
+
+
 fun updateLocalBranch(issueNumber: String) {
     // Fetch changes from the remote repository
     executeGitCommand(listOf("git", "fetch", "origin", "news/$issueNumber"))
@@ -129,6 +131,7 @@ fun updateLocalBranch(issueNumber: String) {
 fun updateRemote(message: String, issue: String) {
     println(message)
     updateLocalBranch(issue)
+    deleteTempFiles(issue)
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
@@ -153,6 +156,25 @@ fun executeGitCommand(command: List<String>): String {
         println("Error executing command: $command")
     }
     return output.toString()
+}
+
+fun deleteTempFiles(issue: String) {
+    // Step 1: Identify the temporary files
+    val tempDirPath = ".github/workflows/.temp"
+    val tempDir = File(tempDirPath)
+
+    // Step 2: Delete the files
+    if (tempDir.exists() && tempDir.isDirectory) {
+        tempDir.deleteRecursively()
+        println("Temporary files deleted successfully.")
+    } else {
+        println("Temporary directory does not exist or is not a directory.")
+    }
+
+    // Step 3: Push the changes
+    executeGitCommand(listOf("git", "add", "."))
+    executeGitCommand(listOf("git", "commit", "-m", "Deleted temporary files"))
+    updateRemote("Deleted temporary files", issue)
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
