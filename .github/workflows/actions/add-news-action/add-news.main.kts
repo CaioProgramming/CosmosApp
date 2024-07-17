@@ -107,19 +107,12 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
-fun setGitUpstreamBranch(issueNumber: String) {
-    val setUpstreamCommand = listOf("git", "push", "--set-upstream", "origin", "news/$issueNumber")
-
-    executeGitCommand(setUpstreamCommand)
-}
 
 fun updateRemote(message: String, issue: String) {
     println(message)
-    setGitUpstreamBranch(issue)
-    executeGitCommand(listOf("git", "pull"))
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
-    executeGitCommand(listOf("git", "push"))
+    executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
 }
 
 fun executeGitCommand(command: List<String>) {
