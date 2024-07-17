@@ -1,0 +1,1 @@
+This is a temporary folder, and will be added to git ignore
