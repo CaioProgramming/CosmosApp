@@ -5,7 +5,7 @@ tempFolder="./.github/workflows/.temp"
 mavenUrl="https://repo1.maven.org/maven2/org"
 echo requested dependency: $DEPENDENCY version: $VERSION
 
-mkdir -p tempFolder
+mkdir -p $tempFolder
 echo "Temp dir created"
 
 dependencyURL="$mavenUrl/$GROUP_PATH/$DEPENDENCY/$VERSION/$DEPENDENCY-$VERSION.jar"
