@@ -88,35 +88,6 @@
             "reference": {
                 "author": "Space Today"
             }
-        },
-        {
-            "id": "1",
-            "pages": [
-                {
-                    "title": "",
-                    "description": "this is the first news ",
-                    "thumbnailURL": "icon.png "
-                },
-                {
-                    "title": "",
-                    "description": "this is page 2 ###page_3 this page 3 ###page_4 page four ###page_5 page five ",
-                    "thumbnailURL": ""
-                },
-                {
-                    "title": "",
-                    "description": "this page 3 ###page_4 page four ###page_5 page five ",
-                    "thumbnailURL": ""
-                },
-                {
-                    "title": "",
-                    "description": "page four ###page_5 page five ",
-                    "thumbnailURL": ""
-                }
-            ],
-            "reference": {
-                "author": "caio ",
-                "reference": "www.caio.com "
-            }
         }
     ]
 }
