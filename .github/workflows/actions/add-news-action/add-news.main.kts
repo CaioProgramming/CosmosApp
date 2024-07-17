@@ -67,7 +67,7 @@ fun main(args: Array<String>) {
 
     authorData?.let {
         var newItem = NewsObject(issueNumber, pageData, authorData)
-        searchForFile("resource","news.json")?.let {
+        searchForFile("resources","news.json")?.let {
             val jsonContent = it.readText()
             val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
