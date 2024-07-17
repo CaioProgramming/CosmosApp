@@ -85,7 +85,7 @@ fun main(args: Array<String>) {
             val newJsonContent = json.encodeToString(modifiedNews)
 
             it.writeText(newJsonContent)
-            updateRemote("News added to $filePath")
+            updateRemote("News added to $filePath", issueNumber)
         }
 
     }
@@ -107,11 +107,18 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
-fun updateRemote(message: String) {
+fun setGitUpstreamBranch(issueNumber: String) {
+    val setUpstreamCommand = listOf("git", "push", "--set-upstream", "origin", "news/$issueNumber")
+
+    executeGitCommand(setUpstreamCommand)
+}
+
+fun updateRemote(message: String, issue: String) {
     println(message)
+    setGitUpstreamBranch(issue)
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
-    executeGitCommand(listOf("git", "--set-upstream", "origin", "push"))
+    executeGitCommand(listOf("git", "push"))
 }
 
 fun executeGitCommand(command: List<String>) {
