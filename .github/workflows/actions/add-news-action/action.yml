@@ -27,6 +27,6 @@ runs:
       run: |
         plugin=$(.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION)
         echo "Using plugin $plugin" &&
-        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
+        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts " ./resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
       shell: bash
 
