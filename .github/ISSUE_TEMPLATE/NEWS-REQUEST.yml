@@ -23,7 +23,7 @@ body:
   - type: input
     id: thumbnail
     attributes:
-      label: Imagem de capa
+      label: thumbnail
       description: Insira o link da imagem de capa da notícia.
       placeholder: www.astronomos.com.br/imagem.jpg
   - type: markdown
