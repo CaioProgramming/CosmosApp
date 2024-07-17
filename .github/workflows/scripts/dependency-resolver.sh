@@ -22,8 +22,11 @@ echo "Downloading $DEPENDENCY-$VERSION on $dependencyURL"
 curl -L -o $tempFolder/$DEPENDENCY-$VERSION.jar $dependencyURL
 
 # Check if the file exists
-if [ -f "$tempFolder/$DEPENDENCY-$VERSION.jar" ]; then
+tempFile="$tempFolder/$DEPENDENCY-$VERSION.jar"
+if [ -f "$tempfile ]; then
     echo "Downloaded $DEPENDENCY-$VERSION.jar successfully."
+    git add "$tempFolder/$DEPENDENCY-$VERSION.jar"
+    git commit -m "Add $DEPENDENCY-$VERSION.jar depedency"
 else
     echo "Failed to download $DEPENDENCY-$VERSION.jar."
     exit 1
