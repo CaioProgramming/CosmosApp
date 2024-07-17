@@ -67,27 +67,39 @@ fun main(args: Array<String>) {
 
     authorData?.let {
         var newItem = NewsObject(issueNumber, pageData, authorData)
-        val file = File(filePath)
-        val jsonContent = file.readText()
-        val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
+        searchForFile("news.json")?.let {
+            val jsonContent = it.readText()
+            val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
-        thumbnail?.let {
-            if (pageData.isNotEmpty()) {
-                val pages = pageData.toMutableList()
-                pages[0] = pages.first().copy(thumbnailURL = it)
-                newItem = newItem.copy(pages = pages)
+            thumbnail?.let { thumb ->
+                if (pageData.isNotEmpty()) {
+                    val pages = pageData.toMutableList()
+                    pages[0] = pages.first().copy(thumbnailURL = thumb)
+                    newItem = newItem.copy(pages = pages)
+                }
             }
+
+            println("\n\nNew item => $newItem\n\n")
+            val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
+
+            val newJsonContent = json.encodeToString(modifiedNews)
+
+            it.writeText(newJsonContent)
+            updateRemote("News added to $filePath")
         }
 
-        println("\n\nNew item => $newItem\n\n")
-        val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
-
-        val newJsonContent = json.encodeToString(modifiedNews)
-
-        file.writeText(newJsonContent)
-
-        updateRemote("News added to $filePath")
     }
+}
+
+fun searchForFile(filePath: String): File? {
+    val rootPath = System.getProperty("user.dir")
+    val rootFile = File(rootPath)
+    val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
+    println("Current files => $folders")
+    println("Searching for file $filePath in $rootPath")
+
+    val requiredFile = rootFile.listFiles().find { it.name == filePath }
+    return requiredFile
 }
 
 fun updateRemote(message: String) {
@@ -173,7 +185,7 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
 fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
     val lineBreakTag = "#"
-    println("getting value for tag { $field } on $this")
+    println("getting value for tag { $field }")
     return try {
         if (!this.contains(tagRef)) {
             println("tag $field not found")
