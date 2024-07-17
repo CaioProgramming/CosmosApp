@@ -1,9 +1,7 @@
-#!/usr/bin/env kotlinc -script
-@file:Repository("https://repo1.maven.org/maven2")
-@file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-@file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-@file:Suppress("PLUGIN_IS_NOT_ENABLED")
+#!/usr/bin/env kotlinc -script -Xplugin=.github/workflows/.temp/kotlinx-serialization-compiler-1.9.22-plugin.jar
 
+@file:Repository("https://repo1.maven.org/maven2")
+@file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -13,43 +11,44 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 
-@Serializable
-data class NewsResponse(
-    val news: List<NewsObject>
-)
+
 
 @Serializable
 data class NewsObject(
-    val id: String,
-    val pages: List<NewsItem>,
-    val reference: AuthorObject?
+    val id: String? = null,
+    val pages: List<NewsItem> = emptyList(),
+    val reference: AuthorObject? = null,
 )
 
 @Serializable
 data class NewsItem(
-    val title: String,
-    val description: String,
-    val thumbnailURL: String
+    val title: String? = null,
+    val description: String? = null,
+    val thumbnailURL: String? = null,
 )
 
 @Serializable
 data class AuthorObject(
-    val author: String,
-    val reference: String
+    val author: String? = null,
+    val reference: String? = null,
 )
 
-val json = Json {
-    prettyPrint = true
-    ignoreUnknownKeys = true
+@Serializable
+data class NewsResponse(
+    val news: List<NewsObject> = emptyList(),
+)
 
-}
+val json =
+    Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+    }
 
 main(args)
-fun main(args: Array<String>) {
 
+fun main(args: Array<String>) {
     println("Adding news to file")
     val argumentsList = args.joinToString().split(" , ")
-    println("received arguments(${argumentsList.size}):\n${argumentsList.mapIndexed { index, s -> "$index: $s" }.joinToString("\n")}")
 
     val filePath = argumentsList.first()
     println("resource => $filePath")
@@ -58,32 +57,37 @@ fun main(args: Array<String>) {
     println("issue number => $issueNumber")
 
     val issueBody = argumentsList.last()
-    println("body => $issueBody")
     val authorData = fetchAuthorData(issueBody)
     println("Author data => $authorData")
 
     val pageData = parseStringPages(issueBody)
     println("Page data => $pageData")
-    
-    val thumbnail = issueBody.getStringForField("thumbnail")
 
+    val thumbnail = issueBody.getFieldForTag("thumbnail")
 
-    val file = File(filePath)
-    val jsonContent = file.readText()
-    val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
+    authorData?.let {
+        var newItem = NewsObject(issueNumber, pageData, authorData)
+        val file = File(filePath)
+        val jsonContent = file.readText()
+        val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
-    val pages = pageData.toMutableList()
-    pages[0] = pages.first().copy(thumbnailURL = thumbnail)
-    
-    val newItem = NewsObject(issueNumber, pageData, authorData)
-    println("\n\nNew item => $newItem\n\n")
-    val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
+        thumbnail?.let {
+            if (pageData.isNotEmpty()) {
+                val pages = pageData.toMutableList()
+                pages[0] = pages.first().copy(thumbnailURL = it)
+                newItem = newItem.copy(pages = pages)
+            }
+        }
 
-    val newJsonContent = json.encodeToString(modifiedNews)
+        println("\n\nNew item => $newItem\n\n")
+        val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
-    file.writeText(newJsonContent)
+        val newJsonContent = json.encodeToString(modifiedNews)
 
-    updateRemote("News added to $filePath")
+        file.writeText(newJsonContent)
+
+        updateRemote("News added to $filePath")
+    }
 }
 
 fun updateRemote(message: String) {
@@ -92,8 +96,6 @@ fun updateRemote(message: String) {
     executeGitCommand(listOf("git", "commit", "-m", message))
     executeGitCommand(listOf("git", "push"))
 }
-
-fun String.getStringForField(field: String) = this.substring(this.indexOf(field), this.indexOf("\n", this.indexOf(field)))
 
 fun executeGitCommand(command: List<String>) {
     val processBuilder = ProcessBuilder(command)
@@ -112,57 +114,102 @@ fun executeGitCommand(command: List<String>) {
     }
 }
 
-fun parseStringPages(pagesArray: String): List<NewsItem> {
-    val pagesStringArray = pagesArray
-        .replace("[", "")
-        .replace("]", "")
-    println("Formating pages => $pagesStringArray")
-    val pagesItems = pagesStringArray.split("},").map {
-        json.decodeFromString<NewsItem>(it)
+fun parseStringPages(bodyPages: String): List<NewsItem> {
+    println("mapping pages for $bodyPages")
+    try {
+        val pages =
+            List(5) {
+                if (it > 0) {
+                    val page = bodyPages.getFieldForTag("page_$it")
+                    page?.let { it1 -> NewsItem("", it1, "") } ?: run {
+                        null
+                    }
+                } else {
+                    null
+                }
+            }.filterNotNull()
+        return pages
+    } catch (e: Exception) {
+        println("Error getting pages")
+        return emptyList()
     }
-    return pagesItems
-}
-
-fun getCommand(script: String): String? {
-    val rootPath = System.getProperty("user.dir")
-    val workFlowPath = ".github/workflows/actions/"
-    val actionPath = "add-news-action"
-    val scriptFile = File("$rootPath/$workFlowPath/$actionPath/$script")
-    if (scriptFile.exists()) {
-        return scriptFile.name
-    } else return null
 }
 
 fun fetchAuthorData(body: String): AuthorObject? {
-    getCommand("/helpers/news-reference-builder.kts")?.let {
-        val command = listOf("kotlinc", "-script", it, body)
-
-        val processBuilder = ProcessBuilder(command)
-        processBuilder.redirectErrorStream(true)
-
-        val process = processBuilder.start()
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-
-        var result: String?
-        while (reader.readLine().also { result = it } != null) {
-            println(result)
-        }
-
-        process.waitFor()
-        val authorData = result
-        val json = Json {
-            prettyPrint = true
-            ignoreUnknownKeys = true
-        }
-        try {
-            return json.decodeFromString<AuthorObject>(authorData ?: "")
-        } catch (e: Exception) {
-            e.printStackTrace()
+    return try {
+        val author = body.getFieldForTag("author")
+        val reference = body.getFieldForTag("reference")
+        safeLet(author, reference) { a, r ->
+            AuthorObject(a, r)
+        } ?: run {
             return null
         }
-
-
-    } ?: return null
+    } catch (e: Exception) {
+        println("Error getting reference data => ${e.message}")
+        return null
+    }
 }
 
+fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, R : Any> safeLet(
+    p1: T1?,
+    p2: T2?,
+    p3: T3?,
+    p4: T4?,
+    block: (T1, T2, T3, T4) -> R?,
+): R? {
+    if (p1 != null && p2 != null && p3 != null && p4 != null) return block(p1, p2, p3, p4)
+    return null
+}
 
+fun <T1 : Any, T2 : Any, R : Any> safeLet(
+    p1: T1?,
+    p2: T2?,
+    block: (T1, T2) -> R?,
+): R? {
+    if (p1 != null && p2 != null) return block(p1, p2)
+    return null
+}
+
+fun String.getFieldForTag(field: String): String? {
+    val tagRef = "###$field "
+    val lineBreakTag = "\\n"
+    println("getting value for tag { $field } on $this")
+    return try {
+        if (!this.contains(tagRef)) {
+            println("tag $field not found")
+            null
+        } else {
+            val start = this.indexOf(tagRef) + tagRef.length
+
+            fun String.getFieldForTag(field: String): String? {
+                val tagRef = "###$field "
+                return try {
+                    if (!this.contains(tagRef)) {
+                        null
+                    } else {
+                        if (!this.contains(lineBreakTag)) {
+                            println("No line break found, cant map tag.")
+                            return null
+                        }
+
+                        val start = this.indexOf(tagRef) + tagRef.length
+                        val valueAfterTag = this.substring(start)
+                        var endIndex =
+                            valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                                ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                        endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
+                        valueAfterTag.substring(0, endIndex)
+                    }
+                } catch (e: Exception) {
+                    null
+                }
+            }
+            val valueAfterTag = this.substring(start)
+            println("tag($field) value = $valueAfterTag")
+            return valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
+        }
+    } catch (e: Exception) {
+        println("error getting $field value => ${e.message}")
+        null
+    }
+}

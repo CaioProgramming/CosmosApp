@@ -12,13 +12,14 @@ inputs:
     required: true
 runs:
   using: 'composite'
+  
   steps:
-    - name: Enable scripts
-      run: kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
-      shell: bash
-    - name: Checkout the branch
-      run: git checkout ${{ inputs.branch-name }}
+    - name: Download Kotlin Serialization Plugin
+      run: .github/workflows/scripts/dependency-resolver.sh "kotlin-serialization-compiler-plugin 1.9.22 jetbrains/kotlin"
       shell: bash
     - name: Edit file
-      run: kotlinc -script .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
+      run: |
+        PLUGIN_VERSION=1.9.22
+        COMPILER_PLUGIN=kotlinx-serialization-compiler-plugin.jar
+        kotlinc -script -Xplugin=./.github/workflows/.temp/$COMPILER_PLUGIN .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
       shell: bash

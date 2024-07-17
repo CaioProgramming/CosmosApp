@@ -8,7 +8,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
+      - uses: fwilhe2/setup-kotlin@main
+        with:
+            version: 1.9.22
+      - name: Fetching dependency resolver
+        run:  chmod chmod u+r+x .github/workflows/scripts/dependency-resolver.sh 
       - name: Setup Git
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -25,16 +29,6 @@ jobs:
           else
             echo "Branch $NEW_BRANCH already exists."
             git checkout -b $NEW_BRANCH
-
-          fi
-      - name: Download Kotlin Serialization Plugin
-        run: |
-          curl -L -o kotlinx-serialization-compiler-plugin.jar https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-serialization/1.5.21/kotlin-serialization-1.5.21.jar
-          echo "Downloaded Kotlin Serialization Plugin"
-      - name: Run Plugin
-        run: |
-          kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
-          echo "Ran Plugin"
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
