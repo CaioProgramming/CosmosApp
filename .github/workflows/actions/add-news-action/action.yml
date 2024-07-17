@@ -20,6 +20,6 @@ runs:
     - name: Edit file
       run: |
         PLUGIN_VERSION=1.9.22
-        COMPILER_PLUGIN=kotlinx-serialization-compiler-plugin.jar
+        COMPILER_PLUGIN=kotlinx-serialization-compiler-1.9.22-plugin.jar
         kotlinc -script -Xplugin=./.github/workflows/.temp/$COMPILER_PLUGIN .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
       shell: bash
