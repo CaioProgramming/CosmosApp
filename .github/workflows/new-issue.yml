@@ -36,21 +36,22 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
         with:
-          branch-name: ${{ env.NEW_BRANCH }}
+          branch-name: "news/${{ github.event.issue.number }}"
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
 
       - name: "Opening PR for new issue"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          ISSUE_BRANCH: "news/${{ github.event.issue.number }}"
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          PR_URL=$(gh pr create --base main --head $NEW_BRANCH --title "Add news for issue $ISSUE_NUMBER" --body "This PR adds news for issue $ISSUE_NUMBER" --repo ${{ github.repository }} -w)
+          PR_URL=$(gh pr create --base main --head $ISSUE_BRANCH --title "Add news for issue $ISSUE_NUMBER" --body "This PR adds news for issue $ISSUE_NUMBER" --repo ${{ github.repository }} -w)
           echo "PR created: $PR_URL"
       - name: "Adding PR to issue"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_BODY="This PR adds news for issue #$ISSUE_NUMBER. \n\nCloses #$ISSUE_NUMBER"
-          PR_URL=$(gh pr create --base main --head $NEW_BRANCH --title "Add news for issue $ISSUE_NUMBER" --body "$PR_BODY" --repo ${{ github.repository }} -w)
+          PR_BODY="This PR adds news for issue #${{ github.event.issue.number }}."
           echo "PR created: $PR_URL"
 
