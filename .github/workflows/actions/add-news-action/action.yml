@@ -21,9 +21,9 @@ runs:
       run: .github/workflows/scripts/dependency-resolver.sh $COMPILER_PLUGIN $PLUGIN_VERSION $COMPILER_GROUP
       shell: bash
     - name: Edit file
-      run: |
+      env:
         PLUGIN_VERSION: 1.9.22
         PLUGIN_NAME: kotlinx-serialization-compiler-plugin.jar
-        COMPILER_PLUGIN=.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION
-        kotlinc -script -Xplugin=$COMPILER_PLUGIN .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
+        COMPILER_PLUGIN: .github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION
+      run: kotlinc -script -Xplugin=$COMPILER_PLUGIN .github/workflows/actions/add-news-action/add-news.main.kts " resources/news.json , ${{ inputs.issue-number }} , { ${{ inputs.branch-name }} , ${{ inputs.issue-body }} "
       shell: bash
