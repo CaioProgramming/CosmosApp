@@ -26,12 +26,8 @@ jobs:
       - name: Enabling dependency scripts
         run: |  
          currentDir=${{ github.workspace }}
-         echo "Listing all directories"
-         echo "Current directory: $(pwd)"
-         echo "env dir $currentDir"
-         find . -type d
-         chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
-         chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
+         chmod u+r+x $currentDir/.github/workflows/scripts/dependency-resolver.sh
+         chmod u+r+x $currentDir/.github/workflows/scripts/get-dependency.sh     
   validate-issue:
     needs: [setup-git, download-kotlin, setup-enablers]
     runs-on: ubuntu-latest
