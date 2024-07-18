@@ -63,6 +63,8 @@ fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObjec
         val newPages = pageData.toMutableList()
         newPages[0] = newPages.first().copy(thumbnailURL = it)
         pageData = newPages
+    } ?: kotlin.run {
+        logHelper.logWarning("Thumbnail not found")
     }
     logHelper.endGroup()
 
@@ -70,20 +72,24 @@ fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObjec
 }
 
 fun updateData(newItem: NewsObject) {
+    logHelper.startGroup("Updating news data")
     searchForFile("resources", "news.json")?.let {
+        logHelper.logDebug("Including $newItem")
         val jsonContent = it.readText()
         val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
         val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
         val newJsonContent = json.encodeToString(modifiedNews)
-        deleteTempFiles()
         it.writeText(newJsonContent)
         noticeFileUpdate("News ${newItem.id} added to ${it.path}", it)
         updateRemote("News added to ${it.path}")
+        deleteTempFiles()
+
     } ?: run {
         logHelper.logError("File news.json not found")
     }
+    logHelper.endGroup()
 }
 
 fun getArgsMap() = json.decodeFromString<Map<String, String>>(getIssueFile().readText())
@@ -100,9 +106,13 @@ fun main(args: Array<String>) {
     val issueTitle = issueData["title"]
     val issueNumber = issueData["number"]
 
+    issueBody?.let { logHelper.maskLog(it) }
+
     safeLet(issueNumber, issueBody, issueTitle) { number, body, title ->
         val data = parseBody(number, title, body)
         updateData(data)
+    } ?: kotlin.run {
+        logHelper.logError("Issue data not found")
     }
 
 }
@@ -207,11 +217,12 @@ fun deleteTempFiles() {
         if (tempDir.exists() && tempDir.isDirectory) {
             tempDir.deleteRecursively()
             logDebug("Temporary files deleted successfully.")
+            endGroup()
             updateRemote("Deleted temporary files")
         } else {
             logWarning("Temporary directory does not exist or is not a directory.")
+            endGroup()
         }
-        endGroup()
     }
 }
 
@@ -337,5 +348,9 @@ class LogHelper {
 
     fun endGroup() {
         println("::endgroup::")
+    }
+
+    fun maskLog(message: String) {
+        println("::add-mask::$message")
     }
 }
