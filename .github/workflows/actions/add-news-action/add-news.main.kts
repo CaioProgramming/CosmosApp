@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
     val argumentsList = args.joinToString().split(" , ")
 
     groupLog("Arguments") {
-        logDebug("Arguments => $argumentsList")
+        logDebug("Arguments => $args")
     }
 
     val issueBody = argumentsList.last()
