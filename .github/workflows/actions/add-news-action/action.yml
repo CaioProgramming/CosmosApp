@@ -29,16 +29,16 @@ runs:
         COMPILER_GROUP: jetbrains/kotlin
       run: .github/workflows/scripts/dependency-resolver.sh $COMPILER_PLUGIN $PLUGIN_VERSION $COMPILER_GROUP
       shell: bash
+    - name: Upload Issue To Json File
+      run: '.github/workflows/actions/add-news-action/generate-issue-file.main.kts "{ number: ${{inputs.issue-number}}, title: \"${{inputs.issue-title}}\", body: \"${{inputs.issue-body}}\" }"'
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
       env:
         PLUGIN_VERSION: 1.9.22
         PLUGIN_NAME: kotlin-serialization-compiler-plugin
-        QUOTATION_MARK: \\\"
       run: |
         plugin=$(.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION)
         echo "::debug::Using plugin $plugin" &&
-        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts  $QUOTATION_MARK{ $QUOTATION_MARKnumber$QUOTATION_MARK: 
-          $QUOTATION_MARK${{ inputs.issue-number }} $QUOTATION_MARK, $QUOTATION_MARKtitle$QUOTATION_MARK: $QUOTATION_MARK${{ inputs.issue-title }}$QUOTATION_MARK,$QUOTATION_MARKbody$QUOTATION_MARK: $QUOTATION_MARK${{ inputs.issue-body }} }$QUOTATION_MARK
+        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
       shell: bash
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
       uses: peter-evans/create-pull-request@v6.1.0

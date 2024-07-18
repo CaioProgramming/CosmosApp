@@ -42,82 +42,78 @@ val json =
         ignoreUnknownKeys = true
     }
 val logHelper = LogHelper()
-val issueNumber = getArguments()["number"]
-val branch = "news/$issueNumber"
 main(args)
 
-fun getArguments() : Map<String, String> = Json.decodeFromString(args.first())
-fun main(args: Array<String>) {
-    val argumentsList = getArguments()
 
-    logHelper.run {
-        startGroup("Arguments")
-        logDebug("Arguments => ${getArguments()}")
-        endGroup()
+fun getIssueFile(): File = File(".github/workflows/.temp/issue.json")
+
+fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObject {
+    logHelper.startGroup("Parsing body data")
+    val authorData = fetchAuthorData(body)
+
+    var pageData = parseStringPages(body).also { logHelper.endGroup() }
+    
+
+    pageData = pageData.toMutableList().apply {
+        this[0] = this.first().copy(title = issueTitle)
     }
 
-    val issueBody = argumentsList["body"]
-    val issueTitle = argumentsList["title"]
-    
-    
-    val authorData = issueBody?.let { fetchAuthorData(it) }
-
-    val pageData = issueBody?.let { parseStringPages(it) }
-
-    val thumbnail = issueBody?.getFieldForTag("thumbnail")
+    val thumbnail = body.getFieldForTag("thumbnail")
+    thumbnail?.let {
+        val newPages = pageData.toMutableList()
+        newPages[0] = newPages.first().copy(thumbnailURL = it)
+        pageData = newPages
+    }
     logHelper.endGroup()
 
-    logHelper.run {
-        startGroup("News Data")
-        logInfo("Issue number => $issueNumber")
-        logInfo("Issue title => $issueTitle")
-        logInfo("Branch => $branch")
-        logInfo("Pages => $pageData")
-        logInfo("Author => $authorData")
-        logInfo("Thumbnail => $thumbnail")
-        endGroup()
+    return NewsObject(issueNumber, pageData, authorData)
+}
 
-    }
+fun updateData(newItem: NewsObject) {
+    searchForFile("resources", "news.json")?.let {
+        val jsonContent = it.readText()
+        val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
-    safeLet(pageData, authorData) { page, a ->
-        var newItem = NewsObject(issueNumber, page, a)
-        searchForFile("resources","news.json")?.let {
-            val jsonContent = it.readText()
-            val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
+        val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
-            thumbnail?.let { thumb ->
-                if (page.isNotEmpty()) {
-                    val pages = page.toMutableList()
-                    pages[0] = pages.first().copy(thumbnailURL = thumb, title = issueTitle)
-                    newItem = newItem.copy(pages = pages)
-                }
-            }
-
-            val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
-
-            val newJsonContent = json.encodeToString(modifiedNews)
-            deleteTempFiles()
-            it.writeText(newJsonContent)
-            noticeFileUpdate("News $issueNumber added to ${it.path}", it)
-            updateRemote("News added to ${it.path}")
-
-        } ?: run {
-            logHelper.logError("File news.json not found")
-        }    } ?: run {
-        logHelper.logError("Can't fetch data for new issue")
-    }
-    authorData?.let {
-
-
+        val newJsonContent = json.encodeToString(modifiedNews)
+        deleteTempFiles()
+        it.writeText(newJsonContent)
+        noticeFileUpdate("News ${newItem.id} added to ${it.path}", it)
+        updateRemote("News added to ${it.path}")
+    } ?: run {
+        logHelper.logError("File news.json not found")
     }
 }
 
+fun getArgsMap() = json.decodeFromString<Map<String, String>>(getIssueFile().readText())
+
+fun main(args: Array<String>) {
+
+    logHelper.startGroup("Issue temp data")
+    val issueData = getArgsMap()
+    logHelper.logDebug("Issue data: $issueData")
+    logHelper.endGroup()
 
 
-fun searchForFile(dir: String = System.getProperty("user.dir"), fileName: String): File? {
+    val issueBody = issueData["body"]
+    val issueTitle = issueData["title"]
+    val issueNumber = issueData["number"]
+
+    safeLet(issueNumber, issueBody, issueTitle) { number, body, title ->
+        val data = parseBody(number, title, body)
+        updateData(data)
+    }
+
+}
+
+fun searchForFile(
+    dir: String = System.getProperty("user.dir"),
+    fileName: String,
+): File? {
     val rootPath = System.getProperty("user.dir")
     logHelper.startGroup("File search")
-    logHelper.logDebug("Root files =>\n${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
+    logHelper.logDebug("Root files =>\n${File(rootPath).listFiles()?.joinToString("\n -") { it.name }}")
     logHelper.logInfo("Requested directory => $dir")
     val rootFile = File("$rootPath/$dir")
     return if (rootFile.exists()) {
@@ -131,19 +127,23 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), fileName: String
         logHelper.endGroup()
         null
     }
-
 }
 
+fun getBranch() = getArgsMap()["branch"] ?: "main"
+
 fun pullBranch() {
+    val branch = getBranch()
     executeGitCommand(listOf("git", "pull", "--rebase", "origin", branch))
 }
 
+
+
 fun fetchBranch() {
     // Fetch changes from the remote repository
-    executeGitCommand(listOf("git", "fetch", "origin", branch))
+    executeGitCommand(listOf("git", "fetch", "origin", getBranch()))
 
     // Merge the fetched changes into your local branch
-    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/$branch"))
+    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/${getBranch()}"))
 
     // Check if merge was successful or if there were conflicts
     logHelper.startGroup("Branch fetch result")
@@ -164,7 +164,7 @@ fun updateRemote(message: String) {
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit", "-m", message))
         pullBranch()
-        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", getBranch()))
         endGroup()
     }
 }
@@ -191,12 +191,12 @@ fun executeGitCommand(command: List<String>): String {
     return output.toString()
 }
 
-fun noticeFileUpdate(message: String, file: File) {
+fun noticeFileUpdate(
+    message: String,
+    file: File,
+) {
     println("::notice file=${file.path}::$message")
-
 }
-
-
 
 fun deleteTempFiles() {
     // Step 1: Identify the temporary files
@@ -208,7 +208,6 @@ fun deleteTempFiles() {
             tempDir.deleteRecursively()
             logDebug("Temporary files deleted successfully.")
             updateRemote("Deleted temporary files")
-
         } else {
             logWarning("Temporary directory does not exist or is not a directory.")
         }
@@ -217,30 +216,24 @@ fun deleteTempFiles() {
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
-    var newsItems = emptyList<NewsItem>()
     logHelper.startGroup("Parsing pages")
-    newsItems = try {
-        val pages =
-            List(5) {
-                if (it > 0) {
-                    val page = bodyPages.getFieldForTag("pagina_$it")
-                    logHelper.endGroup()
-                    page?.let { it1 -> NewsItem("", it1, "") } ?: run {
-                        logHelper.logWarning("Page $it not found")
+    return try {
+                List(5) {
+                    if (it > 0) {
+                        val page = bodyPages.getFieldForTag("pagina_$it")
+                        logHelper.endGroup()
+                        page?.let { it1 -> NewsItem("", it1, "") } ?: run {
+                            logHelper.logWarning("Page $it not found")
+                            null
+                        }
+                    } else {
                         null
                     }
-                } else {
-                    null
-                }
-            }.filterNotNull()
-        pages
-    } catch (e: Exception) {
-        logHelper.logError("Error getting pages")
-        emptyList()
-    }
-    logHelper.endGroup()
-    return newsItems
-
+                }.filterNotNull()
+        } catch (e: Exception) {
+            logHelper.logError("Error getting pages")
+            emptyList()
+        }
 }
 
 fun fetchAuthorData(body: String): AuthorObject? {
@@ -257,7 +250,6 @@ fun fetchAuthorData(body: String): AuthorObject? {
             logHelper.endGroup()
             return null
         }
-
     } catch (e: Exception) {
         logHelper.logError("Error getting reference data => ${e.message}")
         logHelper.endGroup()
@@ -265,14 +257,13 @@ fun fetchAuthorData(body: String): AuthorObject? {
     }
 }
 
-fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, R : Any> safeLet(
+fun <T1 : Any, T2 : Any, T3 : Any, R : Any> safeLet(
     p1: T1?,
     p2: T2?,
     p3: T3?,
-    p4: T4?,
-    block: (T1, T2, T3, T4) -> R?,
+    block: (T1, T2, T3) -> R?,
 ): R? {
-    if (p1 != null && p2 != null && p3 != null && p4 != null) return block(p1, p2, p3, p4)
+    if (p1 != null && p2 != null && p3 != null) return block(p1, p2, p3)
     return null
 }
 
@@ -284,7 +275,6 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
     if (p1 != null && p2 != null) return block(p1, p2)
     return null
 }
-
 
 fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
@@ -316,12 +306,9 @@ fun String.getFieldForTag(field: String): String? {
         logHelper.logError("error getting $field value => ${e.message}")
         null
     }
-
 }
 
-
 class LogHelper {
-
     fun startGroup(title: String) {
         println("::group::$title")
         logInfo("Group started: $title")
@@ -351,5 +338,4 @@ class LogHelper {
     fun endGroup() {
         println("::endgroup::")
     }
-
 }
