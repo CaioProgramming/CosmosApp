@@ -16,6 +16,7 @@ runs:
   steps:
     - name: Checkout New Issue Branch
       uses: actions/checkout@v2
+      with:
           ref: news/${{ inputs.issue-number }}
     - name: Download Kotlin Serialization Plugin
       env:
