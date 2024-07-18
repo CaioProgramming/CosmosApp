@@ -16,6 +16,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Enable Action Scripts
+    - run: |
+          chmod u+r+x .github/workflows/actions/add-news-action/run-enabler.main.kts
+          kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts       
     - name: Checkout Branch for issue ${{ inputs.issue-number }}
       uses: actions/checkout@v2
       with:
@@ -30,7 +34,7 @@ runs:
       run: .github/workflows/scripts/dependency-resolver.sh $COMPILER_PLUGIN $PLUGIN_VERSION $COMPILER_GROUP
       shell: bash
     - name: Upload Issue To Json File
-      run: '.github/workflows/actions/add-news-action/generate-issue-file.main.kts "{ number: ${{inputs.issue-number}}, title: \"${{inputs.issue-title}}\", body: \"${{inputs.issue-body}}\" }"'
+      run: 'kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts "{ number: ${{inputs.issue-number}}, title: \"${{inputs.issue-title}}\", body: \"${{inputs.issue-body}}\" }"'
       shell: bash  
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
       env:

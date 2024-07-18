@@ -2,30 +2,67 @@
 
 import java.io.File
 
+main()
+val logHelper = LogHelper()
 fun main() {
-    println("Enabling scripts")
+    logHelper.startGroup("Enabling scripts")
     val rootPath = System.getProperty("user.dir")
     val rootFile = File(rootPath)
-    println("Root => $rootPath")
+    logHelper.logDebug("Root => $rootPath")
     val folders = rootFile.listFiles()?.filter { it.isDirectory }?.joinToString { it.name }
-    println("Project folders => $folders")
-    val scriptsDir = File("$rootPath/.github/workflows/actions/add-news-action/helpers")
+    logHelper.logDebug("Project folders => $folders")
+    val scriptsDir = File(".github/workflows/actions/add-news-action")
     if (!scriptsDir.exists()) {
-        println("Folder not found")
+        logHelper.logError("$scriptsDir directory not found")
         return
     }
     val scripts = scriptsDir.listFiles()?.filter { it.isFile && it.name.endsWith(".kts") }?.map { it.name } ?: emptyList()
-    println("Scripts on folder $scriptsDir: $scripts")
+    logHelper.logDebug("Scripts on $scriptsDir: $scripts")
     scripts.forEach {
         val file = File("$scriptsDir/$it")
         if (file.exists()) {
-            println("Enabling $it")
+            logHelper.logNotice("Enabling $it")
             file.setExecutable(true)
         } else {
-            println("File $it does not exist")
+            logHelper.logError("File $it does not exist")
         }
     }
-    println("Enabled ${scripts.size} scripts")
+    logHelper.logDebug("Enabled ${scripts.size} scripts")
+    logHelper.endGroup()
 }
 
-main()
+
+
+class LogHelper {
+
+    fun startGroup(title: String) {
+        println("::group::$title")
+        logInfo("Group started: $title")
+        logWarning("Remember to close the group")
+    }
+
+    fun logNotice(message: String) {
+        println("::notice::$message")
+    }
+
+    fun logError(message: String) {
+        println("::error::$message")
+    }
+
+    fun logWarning(message: String) {
+        println("::warning::$message")
+    }
+
+    fun logInfo(message: String) {
+        println("::notice::$message")
+    }
+
+    fun logDebug(message: String) {
+        println("::debug::$message")
+    }
+
+    fun endGroup() {
+        println("::endgroup::")
+    }
+
+}
