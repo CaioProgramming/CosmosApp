@@ -9,11 +9,11 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 
-main(args)
 val logHelper = LogHelper()
-val json = Json { prettyPrint = true 
+val json = Json { prettyPrint = true
     ignoreUnknownKeys = true
 }
+
 fun main(args: Array<String>) {
     
     logHelper.startGroup("Parsing issue data to json")
@@ -88,3 +88,5 @@ class LogHelper {
     }
 
 }
+
+main(args)
