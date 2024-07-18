@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Enabling dependency scripts
         run: |
+         echo "Listing all directories:"
+         find . -type d
          chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
          chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
   validate-issue:
