@@ -42,15 +42,16 @@ val json =
         prettyPrint = true
         ignoreUnknownKeys = true
     }
-val issueNumber = args.joinToString().split(" , ").first()
-val branch = "news/$issueNumber"
+val issueNumber = getArguments().first()
+val branch = "news/${getArguments().first()}"
 main(args)
 
+fun getArguments() = args.joinToString().split(" , ")
 fun main(args: Array<String>) {
     val argumentsList = args.joinToString().split(" , ")
 
     groupLog("Arguments") {
-        println("Arguments => $argumentsList")
+        logDebug("Arguments => $argumentsList")
     }
 
     val issueBody = argumentsList.last()
@@ -61,11 +62,11 @@ fun main(args: Array<String>) {
     val thumbnail = issueBody.getFieldForTag("thumbnail")
 
     groupLog("News Data") {
-        println("Issue number => $issueNumber")
-        println("Branch => $branch")
-        println("Pages => $pageData")
-        println("Author => $authorData")
-        println("Thumbnail => $thumbnail")
+        logInfo("Issue number => $issueNumber")
+        logInfo("Branch => $branch")
+        logInfo("Pages => $pageData")
+        logInfo("Author => $authorData")
+        logInfo("Thumbnail => $thumbnail")
     }
 
     authorData?.let {
@@ -82,7 +83,7 @@ fun main(args: Array<String>) {
                 }
             }
             groupLog("News object") {
-                println(newItem)
+                logInfo("New item value => { $newItem }")
             }
             val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
@@ -109,16 +110,16 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     val rootPath = System.getProperty("user.dir")
     var requiredFile: File? = null
     groupLog("Searching for file $filePath") {
-        println("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
-        println("Current dir => $dir")
+        logDebug("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
+        logInfo("Current dir => $dir")
         val rootFile = File("$rootPath/$dir")
         if (rootFile.exists()) {
             val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
-            println("Current files on $dir => $folders")
-            println("Searching for file $filePath in $rootPath")
+            logDebug("Current files on $dir => $folders")
+            logDebug("Searching for file $filePath in $rootPath")
             requiredFile = rootFile.listFiles().find { it.name == filePath }
         }
-        println("Cant find file $filePath on $dir")
+        logWarning("Cant find file $filePath on $dir")
     }
 
     return requiredFile
@@ -134,23 +135,23 @@ fun fetchBranch() {
 
     // Merge the fetched changes into your local branch
     val mergeResult = executeGitCommand(listOf("git", "merge", "origin/$branch"))
-    println(mergeResult)
+    logInfo(mergeResult)
 
     // Check if merge was successful or if there were conflicts
     groupLog("Branch fetch result") {
         if (mergeResult.contains("Already up to date.")) {
-            println("Branch is already up to date.")
+            logWarning("Branch is already up to date.")
         } else if (mergeResult.contains("CONFLICT")) {
             logError("Merge conflicts detected. Please resolve them before pushing.")
         } else {
-            println("Branch fetch successful.")
+            logDebug("Branch fetch successful.")
         }
     }
 }
 
 fun updateRemote(message: String) {
     groupLog("Updating remote") {
-        println(message)
+        logInfo(message)
         fetchBranch()
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit", "-m", message))
@@ -177,7 +178,6 @@ fun executeGitCommand(command: List<String>): String {
 
         val exitCode = process.waitFor()
         if (exitCode != 0) {
-
             logError("Error executing command: $command")
         }
     }
@@ -194,6 +194,18 @@ fun logError(message: String) {
     println("::error::$message")
 }
 
+fun logWarning(message: String) {
+    println("::warning::$message")
+}
+
+fun logInfo(message: String) {
+    println("::info::$message")
+}
+
+fun logDebug(message: String) {
+    println("::debug::$message")
+}
+
 fun deleteTempFiles() {
     // Step 1: Identify the temporary files
     val tempDirPath = ".github/workflows/.temp"
@@ -203,9 +215,9 @@ fun deleteTempFiles() {
     groupLog("Temp Files delete"){
         if (tempDir.exists() && tempDir.isDirectory) {
             tempDir.deleteRecursively()
-            println("Temporary files deleted successfully.")
+            logDebug("Temporary files deleted successfully.")
         } else {
-            println("Temporary directory does not exist or is not a directory.")
+            logWarning("Temporary directory does not exist or is not a directory.")
         }
 
         updateRemote("Deleted temporary files")
@@ -214,24 +226,29 @@ fun deleteTempFiles() {
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
-    println("mapping pages for $bodyPages")
-    try {
-        val pages =
-            List(5) {
-                if (it > 0) {
-                    val page = bodyPages.getFieldForTag("pagina_$it")
-                    page?.let { it1 -> NewsItem("", it1, "") } ?: run {
+    var newsItems = emptyList<NewsItem>()
+    groupLog("Map pages on { $bodyPages }") {
+       newsItems = try {
+            val pages =
+                List(5) {
+                    if (it > 0) {
+                        val page = bodyPages.getFieldForTag("pagina_$it")
+                        page?.let { it1 -> NewsItem("", it1, "") } ?: run {
+                            logError("Page $it not found")
+                            null
+                        }
+                    } else {
                         null
                     }
-                } else {
-                    null
-                }
-            }.filterNotNull()
-        return pages
-    } catch (e: Exception) {
-        println("Error getting pages")
-        return emptyList()
+                }.filterNotNull()
+            pages
+        } catch (e: Exception) {
+            logError("Error getting pages")
+            emptyList()
+        }
     }
+    return newsItems
+   
 }
 
 fun fetchAuthorData(body: String): AuthorObject? {
@@ -244,7 +261,7 @@ fun fetchAuthorData(body: String): AuthorObject? {
             return null
         }
     } catch (e: Exception) {
-        println("Error getting reference data => ${e.message}")
+        logError("Error getting reference data => ${e.message}")
         return null
     }
 }
