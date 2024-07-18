@@ -9,7 +9,6 @@ import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
-import kotlin.math.log
 
 
 @Serializable
@@ -51,7 +50,7 @@ fun main(args: Array<String>) {
     val argumentsList = getArguments()
 
     groupLog("Arguments") {
-        logDebug("Arguments => $args")
+        logDebug("Arguments => ${getArguments()}")
     }
 
     val issueBody = argumentsList.last()
@@ -109,20 +108,21 @@ fun groupLog(title: String, logs: () -> Unit) {
     println("::endgroup::")
 }
 
-fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String): File? {
+fun searchForFile(dir: String = System.getProperty("user.dir"), fileName: String): File? {
     val rootPath = System.getProperty("user.dir")
     var requiredFile: File? = null
-    groupLog("Searching for file $filePath") {
-        logDebug("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
-        logInfo("Current dir => $dir")
+    groupLog("Searching for file $fileName in $dir") {
+        logDebug("Root files =>\n${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
+        logInfo("Requested directory => $dir")
         val rootFile = File("$rootPath/$dir")
         if (rootFile.exists()) {
             val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
-            logDebug("Current files on $dir => $folders")
-            logDebug("Searching for file $filePath in $rootPath")
-            requiredFile = rootFile.listFiles().find { it.name == filePath }
+            logDebug("Current files on ${rootFile.path} => $folders")
+            logDebug("Searching for file $fileName in ${rootFile.path}")
+            requiredFile = rootFile.listFiles().find { it.name == fileName }
+        } else {
+            logError("Cant find file $fileName on $dir")
         }
-        logWarning("Cant find file $filePath on $dir")
     }
 
     return requiredFile
@@ -194,19 +194,19 @@ fun noticeFileUpdate(message: String, file: File) {
 }
 
 fun logError(message: String) {
-    println("::error $message")
+    println("::error::$message")
 }
 
 fun logWarning(message: String) {
-    println("::warning $message")
+    println("::warning::$message")
 }
 
 fun logInfo(message: String) {
-    println("::info $message")
+    println("::info::$message")
 }
 
 fun logDebug(message: String) {
-    println("::debug $message")
+    println("::debug::$message")
 }
 
 fun deleteTempFiles() {
