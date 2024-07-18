@@ -24,15 +24,15 @@ jobs:
     steps:
       - name: Enabling dependency scripts
         run: |
-         chmod u+r+x .github/workflows/scripts/dependency-resolver.sh
-         chmod u+r+x .github/workflows/scripts/get-dependency.sh     
+         chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
+         chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
   validate-issue:
     needs: []
     runs-on: ubuntu-latest
     steps:      
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
-        uses: ./.github/workflows/actions/add-news-action
+        uses: ./.github/workflows/actions/add-news-action/action
         with:
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
