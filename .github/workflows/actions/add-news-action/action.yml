@@ -22,12 +22,7 @@ runs:
         kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
       shell: bash           
     - name: Checkout Branch for issue ${{ inputs.issue-number }}
-    - uses: actions/checkout@v4
-      with:
-        ref: "main"
-    - run: |
-        git checkout -b news/${{ inputs.issue-number }}
-      shell: bash  
+      run: git checkout -b news/${{ inputs.issue-number }}
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
