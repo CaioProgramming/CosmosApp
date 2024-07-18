@@ -20,7 +20,7 @@ runs:
     - run: |
           chmod u+r+x .github/workflows/actions/add-news-action/run-enabler.main.kts
           kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
-      shell: bash           
+    shell: bash           
     - name: Checkout Branch for issue ${{ inputs.issue-number }}
       uses: actions/checkout@v2
       with:
