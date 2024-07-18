@@ -7,9 +7,16 @@ inputs:
   issue-body:
     description: 'The body of the issue'
     required: true
+  issue-title:
+    description: 'The title of the issue'
+    required: true  
+    
 runs:
   using: 'composite'
   steps:
+    - name: Checkout New Issue Branch
+      uses: actions/checkout@v2
+          ref: news/${{ inputs.issue-number }}
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
@@ -26,4 +33,28 @@ runs:
         echo "Using plugin $plugin" &&
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.issue-number }} , ${{ inputs.issue-body }}"
       shell: bash
+      - name: "Opening PR for new issue"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        ISSUE_BRANCH: "news/${{ github.event.issue.number }}"
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
+      run: |
+        PR_URL=$(gh pr create --base main --head $ISSUE_BRANCH --title "[ News ] - ${{ github.event.issue.title }}" --body "This PR adds news for issue ${{ github.event.issue.number }}" --repo ${{ github.repository }} -w)
+        echo "PR created for branch $ISSUE_BRANCH: $PR_URL"
+    - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
+      uses: peter-evans/create-pull-request@v6.1.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Add news for issue ${{ inputs.issue-number }}"
+        title: "Add news for issue ${{ inputs.issue-number }}"
+        body: "This PR adds news for issue ${{ inputs.issue-number }}."
+        branch: news/${{ inputs.issue-number }}
+        base: main
+        labels: news
+        assignees: ${{ github.actor }}
+        reviewers: ${{ github.actor }}
+        draft: false
+        signoff: true
+        changes: "This PR adds news for issue ${{ inputs.issue-number }}."
 
+            

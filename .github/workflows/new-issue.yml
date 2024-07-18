@@ -3,56 +3,32 @@ on:
     issues:
         types: [opened, labeled]
 jobs:
-  validate-issue:
+  setup-git:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - uses: fwilhe2/setup-kotlin@main
-        with:
-            version: 1.9.22
-      - name: Enabling dependency scripts
-        run: |
-         chmod u+r+x .github/workflows/scripts/dependency-resolver.sh 
-         chmod u+r+x .github/workflows/scripts/get-dependency.sh
       - name: Setup Git
         run: |
           git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'        
-      - name: Create and Push New Branch
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+  download-kotlin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fwilhe2/setup-kotlin@main
+        with:
+          version: 1.9.22
+  setup-enablers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enabling dependency scripts
         run: |
-          NEW_BRANCH="news/${{ github.event.issue.number }}"
-          # Check if the branch exists on the remote
-          EXISTS=$(git ls-remote --heads origin $NEW_BRANCH)
-          if [[ -z "$EXISTS" ]]; then
-            echo "Branch $NEW_BRANCH does not exist, creating..."
-            git checkout -b $NEW_BRANCH
-            git push origin $NEW_BRANCH
-          else
-            echo "Branch $NEW_BRANCH already exists."
-            git checkout -b $NEW_BRANCH
-          fi
+         chmod u+r+x .github/workflows/scripts/dependency-resolver.sh 
+         chmod u+r+x .github/workflows/scripts/get-dependency.sh        
+  validate-issue:
+    runs-on: ubuntu-latest
+    steps:      
       - name: Checking issue
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
         with:
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
-
-      - name: "Opening PR for new issue"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-          ISSUE_BRANCH: "news/${{ github.event.issue.number }}"
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-        run: |
-          PR_URL=$(gh pr create --base main --head $ISSUE_BRANCH --title "[ News ] - ${{ github.event.issue.title }}" --body "This PR adds news for issue ${{ github.event.issue.number }}" --repo ${{ github.repository }} -w)
-          echo "PR created for branch $ISSUE_BRANCH: $PR_URL"
-      - name: "Adding PR to issue"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_BODY="This PR adds news for issue #${{ github.event.issue.number }}."
-          PR_URL=$(gh pr view --json url --jq .url)
-          gh issue comment ${{ github.event.issue.number }} --body "Linked PR: $PR_URL"
-          echo "PR created: $PR_URL"
-
