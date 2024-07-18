@@ -46,15 +46,17 @@ val issueNumber = getArguments().first()
 val branch = "news/${getArguments().first()}"
 main(args)
 
-fun getArguments() = args.joinToString().split(" , ")
+fun getArguments() = args.joinToString().split(" , ").filter { it.isNotEmpty() }
 fun main(args: Array<String>) {
-    val argumentsList = args.joinToString().split(" , ")
+    val argumentsList = getArguments()
 
     groupLog("Arguments") {
         logDebug("Arguments => $args")
     }
 
     val issueBody = argumentsList.last()
+    val issueTitle = argumentsList[1]
+
     val authorData = fetchAuthorData(issueBody)
 
     val pageData = parseStringPages(issueBody)
@@ -63,6 +65,7 @@ fun main(args: Array<String>) {
 
     groupLog("News Data") {
         logInfo("Issue number => $issueNumber")
+        logInfo("Issue title => $issueTitle")
         logInfo("Branch => $branch")
         logInfo("Pages => $pageData")
         logInfo("Author => $authorData")
@@ -191,19 +194,19 @@ fun noticeFileUpdate(message: String, file: File) {
 }
 
 fun logError(message: String) {
-    println("::error::$message")
+    println("::error $message")
 }
 
 fun logWarning(message: String) {
-    println("::warning::$message")
+    println("::warning $message")
 }
 
 fun logInfo(message: String) {
-    println("::info::$message")
+    println("::info $message")
 }
 
 fun logDebug(message: String) {
-    println("::debug::$message")
+    println("::debug $message")
 }
 
 fun deleteTempFiles() {
