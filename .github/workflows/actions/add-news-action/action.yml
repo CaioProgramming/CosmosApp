@@ -19,7 +19,9 @@ runs:
     - name: Checkout New Issue Branch
       uses: actions/checkout@v2
       with:
-          ref: news/${{ inputs.issue-number }}
+          ref: "main"
+        - run: |
+            git checkout -b news/${{ inputs.issue-number }}
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
