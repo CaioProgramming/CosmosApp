@@ -21,8 +21,8 @@ jobs:
     steps:
       - name: Enabling dependency scripts
         run: |
-         chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
-         chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
+         chmod u+r+x .github/workflows/scripts/dependency-resolver.sh
+         chmod u+r+x .github/workflows/scripts/get-dependency.sh     
   validate-issue:
     runs-on: ubuntu-latest
     steps:      
