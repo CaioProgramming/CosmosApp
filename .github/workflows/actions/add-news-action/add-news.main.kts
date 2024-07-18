@@ -58,12 +58,13 @@ fun main(args: Array<String>) {
 
     val issueBody = argumentsList["body"]
     val issueTitle = argumentsList["title"]
+    
+    
+    val authorData = issueBody?.let { fetchAuthorData(it) }
 
-    val authorData = fetchAuthorData(issueBody)
+    val pageData = issueBody?.let { parseStringPages(it) }
 
-    val pageData = parseStringPages(issueBody)
-
-    val thumbnail = issueBody.getFieldForTag("thumbnail")
+    val thumbnail = issueBody?.getFieldForTag("thumbnail")
     logHelper.endGroup()
 
     logHelper.run {
@@ -221,7 +222,7 @@ fun parseStringPages(bodyPages: String): List<NewsItem> {
                     val page = bodyPages.getFieldForTag("pagina_$it")
                     logHelper.endGroup()
                     page?.let { it1 -> NewsItem("", it1, "") } ?: run {
-                        logHelper.logError("Page $it not found")
+                        logHelper.logWarning("Page $it not found")
                         null
                     }
                 } else {
