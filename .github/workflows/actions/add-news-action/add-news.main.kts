@@ -77,10 +77,9 @@ fun main(args: Array<String>) {
             val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
             val newJsonContent = json.encodeToString(modifiedNews)
-
+            deleteTempFiles()
             it.writeText(newJsonContent)
             updateRemote("News added to ${it.path}")
-            deleteTempFiles()
 
         }
 
