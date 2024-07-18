@@ -47,17 +47,26 @@ val branch = "news/$issueNumber"
 main(args)
 
 fun main(args: Array<String>) {
-    println("Adding news to file")
     val argumentsList = args.joinToString().split(" , ")
+
+    groupLog("Arguments") {
+        println("Arguments => $argumentsList")
+    }
 
     val issueBody = argumentsList.last()
     val authorData = fetchAuthorData(issueBody)
-    println("Author data => $authorData")
 
     val pageData = parseStringPages(issueBody)
-    println("Page data => $pageData")
 
     val thumbnail = issueBody.getFieldForTag("thumbnail")
+
+    groupLog("News Data") {
+        println("Issue number => $issueNumber")
+        println("Branch => $branch")
+        println("Pages => $pageData")
+        println("Author => $authorData")
+        println("Thumbnail => $thumbnail")
+    }
 
     authorData?.let {
         var newItem = NewsObject(issueNumber, pageData, authorData)
@@ -72,8 +81,9 @@ fun main(args: Array<String>) {
                     newItem = newItem.copy(pages = pages)
                 }
             }
-
-            println("\n\nNew item => $newItem\n\n")
+            groupLog("News object") {
+                println(newItem)
+            }
             val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
             val newJsonContent = json.encodeToString(modifiedNews)
@@ -86,20 +96,29 @@ fun main(args: Array<String>) {
     }
 }
 
+fun groupLog(title: String, logs: () -> Unit) {
+    println("::group::$title")
+    logs()
+    println("::endgroup::")
+}
+
 fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String): File? {
     val rootPath = System.getProperty("user.dir")
-    println("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
-    val rootFile = File("$rootPath/$dir")
-    if (rootFile.exists()) {
-        val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
-        println("Current files on $dir => $folders")
-        println("Searching for file $filePath in $rootPath")
-
-        val requiredFile = rootFile.listFiles().find { it.name == filePath }
-        return requiredFile
+    var requiredFile: File? = null
+    groupLog("Searching for file $filePath") {
+        println("Root files => ${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
+        println("Current dir => $dir")
+        val rootFile = File("$rootPath/$dir")
+        if (rootFile.exists()) {
+            val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
+            println("Current files on $dir => $folders")
+            println("Searching for file $filePath in $rootPath")
+            requiredFile = rootFile.listFiles().find { it.name == filePath }
+        }
+        println("Cant find file $filePath on $dir")
     }
-    println("Cant find file $filePath on $dir")
-    return null
+
+    return requiredFile
 }
 
 fun pullBranch() {
@@ -115,10 +134,14 @@ fun fetchBranch() {
     println(mergeResult)
 
     // Check if merge was successful or if there were conflicts
-    if (mergeResult.contains("Automatic merge failed; fix conflicts and then commit the result.")) {
-        println("Merge conflicts detected. Please resolve them before pushing.")
-    } else {
-        println("Update sucessful")
+    groupLog("Branch fetch result") {
+        if (mergeResult.contains("Already up to date.")) {
+            println("Branch is already up to date.")
+        } else if (mergeResult.contains("CONFLICT")) {
+            println("Merge conflicts detected. Please resolve them before pushing.")
+        } else {
+            println("Branch fetch successful.")
+        }
     }
 }
 
@@ -133,23 +156,27 @@ fun updateRemote(message: String) {
 }
 
 fun executeGitCommand(command: List<String>): String {
-    val processBuilder = ProcessBuilder(command)
-    processBuilder.redirectErrorStream(true)
-    val process = processBuilder.start()
-
-    val reader = BufferedReader(InputStreamReader(process.inputStream))
-    var line: String?
     val output = StringBuilder()
 
-    while (reader.readLine().also { line = it } != null) {
-        println(line)
-        output.append(line)
+    groupLog("Executing ${command.size} git commands") {
+        val processBuilder = ProcessBuilder(command)
+        processBuilder.redirectErrorStream(true)
+        val process = processBuilder.start()
+
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        var line: String?
+
+        while (reader.readLine().also { line = it } != null) {
+            println(line)
+            output.append(line)
+        }
+
+        val exitCode = process.waitFor()
+        if (exitCode != 0) {
+            println("Error executing command: $command")
+        }
     }
 
-    val exitCode = process.waitFor()
-    if (exitCode != 0) {
-        println("Error executing command: $command")
-    }
     return output.toString()
 }
 
@@ -159,14 +186,17 @@ fun deleteTempFiles() {
     val tempDir = File(tempDirPath)
 
     // Step 2: Delete the files
-    if (tempDir.exists() && tempDir.isDirectory) {
-        tempDir.deleteRecursively()
-        println("Temporary files deleted successfully.")
-    } else {
-        println("Temporary directory does not exist or is not a directory.")
+    groupLog("Temp Files delete"){
+        if (tempDir.exists() && tempDir.isDirectory) {
+            tempDir.deleteRecursively()
+            println("Temporary files deleted successfully.")
+        } else {
+            println("Temporary directory does not exist or is not a directory.")
+        }
+
+        updateRemote("Deleted temporary files")
     }
 
-    updateRemote("Deleted temporary files")
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
@@ -225,46 +255,54 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
     return null
 }
 
+
 fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
     val lineBreakTag = "#"
-    println("getting value for tag { $field }")
-    return try {
-        if (!this.contains(tagRef)) {
-            println("tag $field not found")
-            null
-        } else {
-            val start = this.indexOf(tagRef) + tagRef.length
+    var fieldValue: String? = null
+    groupLog("Finding value for { $field }") {
+       fieldValue =  try {
+            if (!this.contains(tagRef)) {
+                println("tag $field not found")
+                null
+            } else {
+                val start = this.indexOf(tagRef) + tagRef.length
 
-            fun String.getFieldForTag(field: String): String? {
-                val tagRef = "###$field "
-                return try {
-                    if (!this.contains(tagRef)) {
-                        null
-                    } else {
-                        if (!this.contains(lineBreakTag)) {
-                            println("No line break found, cant map tag.")
-                            return null
+                fun String.getFieldForTag(field: String): String? {
+                    return try {
+                        if (!this.contains(tagRef)) {
+                            println("::endgroup::")
+                            null
+                        } else {
+                            if (!this.contains(lineBreakTag)) {
+                                println("No line break found, cant map tag.")
+                                println("::endgroup::")
+                                return null
+                            }
+
+                            val start = this.indexOf(tagRef) + tagRef.length
+                            val valueAfterTag = this.substring(start)
+                            var endIndex =
+                                valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                                    ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                            endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
+                            valueAfterTag.substring(0, endIndex)
                         }
-
-                        val start = this.indexOf(tagRef) + tagRef.length
-                        val valueAfterTag = this.substring(start)
-                        var endIndex =
-                            valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
-                                ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
-                        endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
-                        valueAfterTag.substring(0, endIndex)
+                    } catch (e: Exception) {
+                        println("::endgroup::")
+                        null
                     }
-                } catch (e: Exception) {
-                    null
                 }
+                val valueAfterTag = this.substring(start)
+                println("tag($field) value = $valueAfterTag")
+                valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
             }
-            val valueAfterTag = this.substring(start)
-            println("tag($field) value = $valueAfterTag")
-            return valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
+        } catch (e: Exception) {
+            println("error getting $field value => ${e.message}")
+            println("::endgroup::")
+            null
         }
-    } catch (e: Exception) {
-        println("error getting $field value => ${e.message}")
-        null
     }
+    return fieldValue
+
 }
