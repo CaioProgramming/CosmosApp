@@ -18,8 +18,8 @@ fun main(args: Array<String>) {
     
     logHelper.startGroup("Parsing issue data to json")
     logHelper.logDebug("Arguments: ${args.joinToString()}")
-    
-    val issueData: Map<String, String> = json.decodeFromString(args.first().substring(1, args.first().length - 1)
+    val argument = args.first().substring(1, args.first().length - 1)
+    val issueData: Map<String, String> = json.decodeFromString(argument)
     logHelper.logDebug("Issue data: $issueData")
     
     val issueFile = File(".github/workflows/.temp/issue.json")
