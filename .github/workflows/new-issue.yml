@@ -24,7 +24,7 @@ jobs:
           chmod u+r+x .github/workflows/scripts/get-dependency.sh
       - name: Validate Issue
         if: contains(github.event.issue.labels.*.name, 'news')
-        uses: ./.github/workflows/actions/add-news-action/action
+        uses: ./.github/workflows/actions/add-news-action/
         with:
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
