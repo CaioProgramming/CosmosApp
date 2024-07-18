@@ -25,9 +25,10 @@ jobs:
     steps:
       - name: Enabling dependency scripts
         run: |  
-         currentDir=${{ github.workspace }}
-         chmod u+r+x $currentDir/.github/workflows/scripts/dependency-resolver.sh
-         chmod u+r+x $currentDir/.github/workflows/scripts/get-dependency.sh     
+         echo "${{ github.workspace }} files"
+         echo ls ${{ github.workspace }}
+         chmod u+r+x ${{ github.workspace }}/.github/workflows/scripts/dependency-resolver.sh
+         chmod u+r+x ${{ github.workspace }}/.github/workflows/scripts/get-dependency.sh     
   validate-issue:
     needs: [setup-git, download-kotlin, setup-enablers]
     runs-on: ubuntu-latest
