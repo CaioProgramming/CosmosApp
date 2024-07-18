@@ -1,14 +1,11 @@
 name: 'Add News Action'
 description: 'Include news in the json resources based on opened issue'
 inputs:
-  branch-name:
-    description: 'The name of the branch to edit the file on'
+  issue-number:
+    description: 'The number of the issue'
     required: true
   issue-body:
     description: 'The body of the issue'
-    required: true
-  issue-number:
-    description: 'The number of the issue'
     required: true
 runs:
   using: 'composite'

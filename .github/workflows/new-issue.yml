@@ -36,7 +36,6 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'news')
         uses: ./.github/workflows/actions/add-news-action
         with:
-          branch-name: "news/${{ github.event.issue.number }}"
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
 
