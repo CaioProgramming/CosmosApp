@@ -42,11 +42,11 @@ val json =
         ignoreUnknownKeys = true
     }
 val logHelper = LogHelper()
-val issueNumber = getArguments().first()
-val branch = "news/${getArguments().first()}"
+val issueNumber = getArguments()["number"]
+val branch = "news/$issueNumber"
 main(args)
 
-fun getArguments() = args.joinToString().split(",").filter { it.isNotEmpty() }
+fun getArguments() : Map<String, String> = Json.decodeFromString(args.first())
 fun main(args: Array<String>) {
     val argumentsList = getArguments()
 
@@ -56,8 +56,8 @@ fun main(args: Array<String>) {
         endGroup()
     }
 
-    val issueBody = argumentsList.last()
-    val issueTitle = argumentsList[1]
+    val issueBody = argumentsList["body"]
+    val issueTitle = argumentsList["title"]
 
     val authorData = fetchAuthorData(issueBody)
 
@@ -285,16 +285,16 @@ fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
     val lineBreakTag = "#"
     logHelper.startGroup("Tag Map for $field")
+    logHelper.logDebug("Searching for tag $tagRef on { $this }")
 
     return try {
-        logHelper.logDebug("Searching for tag $tagRef on { $this }")
         if (!this.contains(tagRef)) {
             logHelper.logWarning("tag $field not found")
             null
         } else {
             val start = this.indexOf(tagRef) + tagRef.length
             if (!this.contains(lineBreakTag)) {
-                logHelper.logError("End tag not found, cant complete mapping.")
+                logHelper.logWarning("End tag not found, cant complete mapping.")
                 null
             } else {
                 val valueAfterTag = this.substring(start)
