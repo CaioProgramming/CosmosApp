@@ -30,7 +30,7 @@ jobs:
          chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
          chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
   validate-issue:
-    needs: []
+    needs: [setup-git, download-kotlin, setup-enablers]
     runs-on: ubuntu-latest
     steps:      
       - name: Checking issue
