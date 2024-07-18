@@ -2,8 +2,8 @@
 
 import java.io.File
 
-main()
 val logHelper = LogHelper()
+main()
 fun main() {
     logHelper.startGroup("Enabling scripts")
     val rootPath = System.getProperty("user.dir")
