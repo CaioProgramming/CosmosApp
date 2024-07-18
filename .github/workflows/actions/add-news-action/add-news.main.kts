@@ -106,8 +106,8 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
-fun pullBranch() {
-    executeGitCommand(listOf("git", "pull", "--rebase"))
+fun pullBranch(issue: String) {
+    executeGitCommand(listOf("git", "pull", "--rebase", "origin", "news/$issue"))
 }
 
 fun fetchBranch(issueNumber: String) {
@@ -132,7 +132,7 @@ fun updateRemote(message: String, issue: String) {
     deleteTempFiles()
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
-    pullBranch()
+    pullBranch(issue)
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
 }
 
