@@ -23,6 +23,7 @@ runs:
       shell: bash           
     - name: Checkout Branch for issue ${{ inputs.issue-number }}
       run: git checkout -b news/${{ inputs.issue-number }}
+      shell: bash
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
