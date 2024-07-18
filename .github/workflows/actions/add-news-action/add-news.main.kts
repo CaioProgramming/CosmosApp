@@ -41,6 +41,7 @@ val json =
         prettyPrint = true
         ignoreUnknownKeys = true
     }
+val logHelper = LogHelper()
 val issueNumber = getArguments().first()
 val branch = "news/${getArguments().first()}"
 main(args)
@@ -49,8 +50,10 @@ fun getArguments() = args.joinToString().split(",").filter { it.isNotEmpty() }
 fun main(args: Array<String>) {
     val argumentsList = getArguments()
 
-    groupLog("Arguments") {
+    logHelper.run {
+        startGroup("Arguments")
         logDebug("Arguments => ${getArguments()}")
+        endGroup()
     }
 
     val issueBody = argumentsList.last()
@@ -61,14 +64,18 @@ fun main(args: Array<String>) {
     val pageData = parseStringPages(issueBody)
 
     val thumbnail = issueBody.getFieldForTag("thumbnail")
+    logHelper.endGroup()
 
-    groupLog("News Data") {
+    logHelper.run {
+        startGroup("News Data")
         logInfo("Issue number => $issueNumber")
         logInfo("Issue title => $issueTitle")
         logInfo("Branch => $branch")
         logInfo("Pages => $pageData")
         logInfo("Author => $authorData")
         logInfo("Thumbnail => $thumbnail")
+        endGroup()
+
     }
 
     authorData?.let {
@@ -84,9 +91,7 @@ fun main(args: Array<String>) {
                     newItem = newItem.copy(pages = pages)
                 }
             }
-            groupLog("News object") {
-                logInfo("New item value => { $newItem }")
-            }
+
             val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
             val newJsonContent = json.encodeToString(modifiedNews)
@@ -96,36 +101,32 @@ fun main(args: Array<String>) {
             updateRemote("News added to ${it.path}")
 
         } ?: run {
-            logError("File news.json not found")
+            logHelper.logError("File news.json not found")
         }
 
     }
 }
 
-fun groupLog(title: String, logs: () -> Unit) {
-    println("::group::$title")
-    logs()
-    println("::endgroup::")
-}
+
 
 fun searchForFile(dir: String = System.getProperty("user.dir"), fileName: String): File? {
     val rootPath = System.getProperty("user.dir")
-    var requiredFile: File? = null
-    groupLog("Searching for file $fileName in $dir") {
-        logDebug("Root files =>\n${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
-        logInfo("Requested directory => $dir")
-        val rootFile = File("$rootPath/$dir")
-        if (rootFile.exists()) {
-            val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
-            logDebug("Current files on ${rootFile.path} => $folders")
-            logDebug("Searching for file $fileName in ${rootFile.path}")
-            requiredFile = rootFile.listFiles().find { it.name == fileName }
-        } else {
-            logError("Cant find file $fileName on $dir")
-        }
+    logHelper.startGroup("File search")
+    logHelper.logDebug("Root files =>\n${File(rootPath).listFiles()?.joinToString("\n -") {  it.name }}")
+    logHelper.logInfo("Requested directory => $dir")
+    val rootFile = File("$rootPath/$dir")
+    return if (rootFile.exists()) {
+        val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
+        logHelper.logInfo("Current files on ${rootFile.path} => $folders")
+        logHelper.logDebug("Searching for file $fileName in ${rootFile.path}")
+        logHelper.endGroup()
+        rootFile.listFiles().find { it.name == fileName }
+    } else {
+        logHelper.logError("Cant find file $fileName on $dir")
+        logHelper.endGroup()
+        null
     }
 
-    return requiredFile
 }
 
 fun pullBranch() {
@@ -138,53 +139,50 @@ fun fetchBranch() {
 
     // Merge the fetched changes into your local branch
     val mergeResult = executeGitCommand(listOf("git", "merge", "origin/$branch"))
-    logInfo(mergeResult)
 
     // Check if merge was successful or if there were conflicts
-    groupLog("Branch fetch result") {
-        if (mergeResult.contains("Already up to date.")) {
-            logWarning("Branch is already up to date.")
-        } else if (mergeResult.contains("CONFLICT")) {
-            logError("Merge conflicts detected. Please resolve them before pushing.")
-        } else {
-            logDebug("Branch fetch successful.")
-        }
+    logHelper.startGroup("Branch fetch result")
+    if (mergeResult.contains("Already up to date.")) {
+        logHelper.logWarning("Branch is already up to date.")
+    } else if (mergeResult.contains("CONFLICT")) {
+        logHelper.logError("Merge conflicts detected. Please resolve them before pushing.")
+    } else {
+        logHelper.logDebug("Branch fetch successful.")
     }
 }
 
 fun updateRemote(message: String) {
-    groupLog("Updating remote") {
+    logHelper.run {
+        startGroup("Updating remote")
         logInfo(message)
         fetchBranch()
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit", "-m", message))
         pullBranch()
         executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+        endGroup()
     }
-
 }
 
 fun executeGitCommand(command: List<String>): String {
     val output = StringBuilder()
+    logHelper.startGroup("Executing ${command.size} git commands")
+    val processBuilder = ProcessBuilder(command)
+    processBuilder.redirectErrorStream(true)
+    val process = processBuilder.start()
 
-    groupLog("Executing ${command.size} git commands") {
-        val processBuilder = ProcessBuilder(command)
-        processBuilder.redirectErrorStream(true)
-        val process = processBuilder.start()
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    var line: String?
 
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        var line: String?
-
-        while (reader.readLine().also { line = it } != null) {
-            output.append(line)
-        }
-
-        val exitCode = process.waitFor()
-        if (exitCode != 0) {
-            logError("Error executing command: $command")
-        }
+    while (reader.readLine().also { line = it } != null) {
+        output.append(line)
     }
 
+    val exitCode = process.waitFor()
+    if (exitCode != 0) {
+        logHelper.logError("Error executing command: $command")
+    }
+    logHelper.endGroup()
     return output.toString()
 }
 
@@ -193,78 +191,71 @@ fun noticeFileUpdate(message: String, file: File) {
 
 }
 
-fun logError(message: String) {
-    println("::error::$message")
-}
 
-fun logWarning(message: String) {
-    println("::warning::$message")
-}
-
-fun logInfo(message: String) {
-    println("::info::$message")
-}
-
-fun logDebug(message: String) {
-    println("::debug::$message")
-}
 
 fun deleteTempFiles() {
     // Step 1: Identify the temporary files
     val tempDirPath = ".github/workflows/.temp"
     val tempDir = File(tempDirPath)
-
-    // Step 2: Delete the files
-    groupLog("Temp Files delete"){
+    logHelper.run {
+        startGroup("Deleting temporary files")
         if (tempDir.exists() && tempDir.isDirectory) {
             tempDir.deleteRecursively()
             logDebug("Temporary files deleted successfully.")
+            updateRemote("Deleted temporary files")
+
         } else {
             logWarning("Temporary directory does not exist or is not a directory.")
         }
-
-        updateRemote("Deleted temporary files")
+        endGroup()
     }
-
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
     var newsItems = emptyList<NewsItem>()
-    groupLog("Map pages on { $bodyPages }") {
-       newsItems = try {
-            val pages =
-                List(5) {
-                    if (it > 0) {
-                        val page = bodyPages.getFieldForTag("pagina_$it")
-                        page?.let { it1 -> NewsItem("", it1, "") } ?: run {
-                            logError("Page $it not found")
-                            null
-                        }
-                    } else {
+    logHelper.startGroup("Parsing pages")
+    newsItems = try {
+        val pages =
+            List(5) {
+                if (it > 0) {
+                    val page = bodyPages.getFieldForTag("pagina_$it")
+                    logHelper.endGroup()
+                    page?.let { it1 -> NewsItem("", it1, "") } ?: run {
+                        logHelper.logError("Page $it not found")
                         null
                     }
-                }.filterNotNull()
-            pages
-        } catch (e: Exception) {
-            logError("Error getting pages")
-            emptyList()
-        }
+                } else {
+                    null
+                }
+            }.filterNotNull()
+        pages
+    } catch (e: Exception) {
+        logHelper.logError("Error getting pages")
+        emptyList()
     }
+    logHelper.endGroup()
     return newsItems
 
 }
 
 fun fetchAuthorData(body: String): AuthorObject? {
+    logHelper.startGroup("Fetching author data")
     return try {
         val author = body.getFieldForTag("author")
+        logHelper.endGroup()
         val reference = body.getFieldForTag("link")
+        logHelper.endGroup()
         safeLet(author, reference) { a, r ->
+            logHelper.endGroup()
             AuthorObject(a, r)
         } ?: run {
+            logHelper.endGroup()
             return null
         }
+
     } catch (e: Exception) {
-        logError("Error getting reference data => ${e.message}")
+        logHelper.logError("Error getting reference data => ${e.message}")
+        logHelper.endGroup()
         return null
     }
 }
@@ -293,35 +284,66 @@ fun <T1 : Any, T2 : Any, R : Any> safeLet(
 fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
     val lineBreakTag = "#"
-    var fieldValue: String? = null
-    groupLog("Finding value for { $field }") {
-       fieldValue =  try {
-            if (!this.contains(tagRef)) {
-                logError("tag $field not found")
+    logHelper.startGroup("Tag Map for $field")
+
+    return try {
+        if (!this.contains(tagRef)) {
+            logHelper.logWarning("tag $field not found")
+            null
+        } else {
+            val start = this.indexOf(tagRef) + tagRef.length
+            if (!this.contains(lineBreakTag)) {
+                logHelper.logError("End tag not found, cant complete mapping.")
                 null
             } else {
-                val start = this.indexOf(tagRef) + tagRef.length
-                if (!this.contains(lineBreakTag)) {
-                    logError("End tag not found, cant complete mapping.")
-                    null
-                }
-
                 val valueAfterTag = this.substring(start)
                 var endIndex =
                     valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
                         ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
                 endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
                 valueAfterTag.substring(0, endIndex)
-                println("tag($field) value = $valueAfterTag")
+                logHelper.logInfo("tag($field) value = $valueAfterTag")
                 valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
             }
-        } catch (e: Exception) {
-            logError("error getting $field value => ${e.message}")
-            null
         }
+    } catch (e: Exception) {
+        logHelper.logError("error getting $field value => ${e.message}")
+        null
     }
-    return fieldValue
 
 }
 
 
+class LogHelper {
+
+    fun startGroup(title: String) {
+        println("::group::$title")
+        logInfo("Group started: $title")
+        logWarning("Remember to close the group")
+    }
+
+    fun logNotice(message: String) {
+        println("::notice::$message")
+    }
+
+    fun logError(message: String) {
+        println("::error::$message")
+    }
+
+    fun logWarning(message: String) {
+        println("::warning::$message")
+    }
+
+    fun logInfo(message: String) {
+        println("::info::$message")
+    }
+
+    fun logDebug(message: String) {
+        println("::debug::$message")
+    }
+
+    fun endGroup() {
+        println("::endgroup::")
+    }
+
+}
