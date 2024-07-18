@@ -40,7 +40,7 @@ runs:
       run: |
         jsonString=$(jq -n --arg number "${{ inputs.issue-number }}" --arg title "${{ inputs.issue-title }}" --arg body "${{ inputs.issue-body }}" '{number: $number, title: $title, body: $body}')
         echo "::debug::Using json $jsonString" &&
-        "kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts "$jsonString""
+        kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts "\"$jsonString\""
       shell: bash  
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
       env:
