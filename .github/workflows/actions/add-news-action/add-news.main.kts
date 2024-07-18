@@ -4,7 +4,6 @@
 @file:DependsOn("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader
@@ -107,9 +106,11 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
+fun pullBranch() {
+    executeGitCommand(listOf("git", "pull", "--rebase"))
+}
 
-
-fun updateLocalBranch(issueNumber: String) {
+fun fetchBranch(issueNumber: String) {
     // Fetch changes from the remote repository
     executeGitCommand(listOf("git", "fetch", "origin", "news/$issueNumber"))
 
@@ -117,23 +118,21 @@ fun updateLocalBranch(issueNumber: String) {
     val mergeResult = executeGitCommand(listOf("git", "merge", "origin/news/$issueNumber"))
     println(mergeResult)
 
-    executeGitCommand(listOf("git", "pull", "--rebase"))
-
     // Check if merge was successful or if there were conflicts
     if (mergeResult.contains("Automatic merge failed; fix conflicts and then commit the result.")) {
         println("Merge conflicts detected. Please resolve them before pushing.")
     } else {
-        // Push your changes after successful merge
         println("Update sucessful")
     }
 }
 
 fun updateRemote(message: String, issue: String) {
     println(message)
-    updateLocalBranch(issue)
+    fetchBranch(issue)
     deleteTempFiles()
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
+    pullBranch()
     executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
 }
 
