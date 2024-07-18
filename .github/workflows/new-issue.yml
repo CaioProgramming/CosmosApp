@@ -29,3 +29,4 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           issue-body: ${{ github.event.issue.body }}
           issue-title: ${{ github.event.issue.title }}
+          secret-token: ${{ secrets.GITHUB_TOKEN }}

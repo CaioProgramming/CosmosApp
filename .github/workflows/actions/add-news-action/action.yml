@@ -10,7 +10,9 @@ inputs:
   issue-title:
     description: 'The title of the issue'
     required: true  
-    
+  secret-token:
+    description: 'Github secret token'
+    required: true  
 runs:
   using: 'composite'
   steps:
@@ -37,7 +39,7 @@ runs:
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
       uses: peter-evans/create-pull-request@v6.1.0
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ $inputs.secret-token }}
         commit-message: "Add news for issue ${{ inputs.issue-number }}"
         title: "[News] [${{ inputs.issue-number }}] - ${{ inputs.issue-title }}"
         body: "This PR adds news for issue ${{ inputs.issue-number }}."
