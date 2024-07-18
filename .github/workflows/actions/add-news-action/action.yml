@@ -52,6 +52,6 @@ runs:
         reviewers: ${{ github.actor }}
         draft: false
         signoff: true
-        changes: "This PR adds news for issue ${{ inputs.issue-number }}."
+        changes: "Include issue data to news.json resource"
 
             
