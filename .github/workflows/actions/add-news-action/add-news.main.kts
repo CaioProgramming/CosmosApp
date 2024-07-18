@@ -42,7 +42,7 @@ val json =
         prettyPrint = true
         ignoreUnknownKeys = true
     }
-val issueNumber = args.first()
+val issueNumber = args.joinToString().split(" , ").first()
 val branch = "news/$issueNumber"
 main(args)
 
