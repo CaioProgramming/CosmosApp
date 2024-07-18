@@ -42,18 +42,13 @@ val json =
         prettyPrint = true
         ignoreUnknownKeys = true
     }
-
+val issueNumber = args.first()
+val branch = "news/$issueNumber"
 main(args)
 
 fun main(args: Array<String>) {
     println("Adding news to file")
     val argumentsList = args.joinToString().split(" , ")
-
-    val filePath = argumentsList.first()
-    println("resource => $filePath")
-
-    val issueNumber = argumentsList[1]
-    println("issue number => $issueNumber")
 
     val issueBody = argumentsList.last()
     val authorData = fetchAuthorData(issueBody)
@@ -84,7 +79,9 @@ fun main(args: Array<String>) {
             val newJsonContent = json.encodeToString(modifiedNews)
 
             it.writeText(newJsonContent)
-            updateRemote("News added to $filePath", issueNumber)
+            updateRemote("News added to ${it.path}")
+            deleteTempFiles()
+
         }
 
     }
@@ -106,16 +103,16 @@ fun searchForFile(dir: String = System.getProperty("user.dir"), filePath: String
     return null
 }
 
-fun pullBranch(issue: String) {
-    executeGitCommand(listOf("git", "pull", "--rebase", "origin", "news/$issue"))
+fun pullBranch() {
+    executeGitCommand(listOf("git", "pull", "--rebase", "origin", branch))
 }
 
-fun fetchBranch(issueNumber: String) {
+fun fetchBranch() {
     // Fetch changes from the remote repository
-    executeGitCommand(listOf("git", "fetch", "origin", "news/$issueNumber"))
+    executeGitCommand(listOf("git", "fetch", "origin", branch))
 
     // Merge the fetched changes into your local branch
-    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/news/$issueNumber"))
+    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/$branch"))
     println(mergeResult)
 
     // Check if merge was successful or if there were conflicts
@@ -126,14 +123,14 @@ fun fetchBranch(issueNumber: String) {
     }
 }
 
-fun updateRemote(message: String, issue: String) {
+fun updateRemote(message: String) {
     println(message)
-    fetchBranch(issue)
-    deleteTempFiles()
+    fetchBranch()
     executeGitCommand(listOf("git", "add", "."))
     executeGitCommand(listOf("git", "commit", "-m", message))
-    pullBranch(issue)
-    executeGitCommand(listOf("git", "push", "--set-upstream", "origin", "news/$issue"))
+    pullBranch()
+    executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+
 }
 
 fun executeGitCommand(command: List<String>): String {
@@ -170,9 +167,7 @@ fun deleteTempFiles() {
         println("Temporary directory does not exist or is not a directory.")
     }
 
-    // Step 3: Push the changes
-    executeGitCommand(listOf("git", "add", "."))
-    executeGitCommand(listOf("git", "commit", "-m", "Deleted temporary files"))
+    updateRemote("Deleted temporary files")
 }
 
 fun parseStringPages(bodyPages: String): List<NewsItem> {
