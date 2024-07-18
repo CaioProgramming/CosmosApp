@@ -23,9 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Enabling dependency scripts
-        run: |
-         currentDir=$(pwd) 
-         echo "Listing all directories on $currentDir"
+        run: |  
+         echo "Listing all directories"
+         echo "Current directory: $(pwd)"
          find . -type d
          chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
          chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
