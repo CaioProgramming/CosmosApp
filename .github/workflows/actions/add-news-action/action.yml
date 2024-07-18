@@ -31,6 +31,7 @@ runs:
       shell: bash
     - name: Upload Issue To Json File
       run: '.github/workflows/actions/add-news-action/generate-issue-file.main.kts "{ number: ${{inputs.issue-number}}, title: \"${{inputs.issue-title}}\", body: \"${{inputs.issue-body}}\" }"'
+      shell: bash  
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
       env:
         PLUGIN_VERSION: 1.9.22
