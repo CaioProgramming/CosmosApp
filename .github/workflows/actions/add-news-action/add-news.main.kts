@@ -79,16 +79,16 @@ fun main(args: Array<String>) {
 
     }
 
-    authorData?.let {
-        var newItem = NewsObject(issueNumber, pageData, authorData)
+    safeLet(pageData, authorData) { page, a ->
+        var newItem = NewsObject(issueNumber, page, a)
         searchForFile("resources","news.json")?.let {
             val jsonContent = it.readText()
             val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
             thumbnail?.let { thumb ->
-                if (pageData.isNotEmpty()) {
-                    val pages = pageData.toMutableList()
-                    pages[0] = pages.first().copy(thumbnailURL = thumb)
+                if (page.isNotEmpty()) {
+                    val pages = page.toMutableList()
+                    pages[0] = pages.first().copy(thumbnailURL = thumb, title = issueTitle)
                     newItem = newItem.copy(pages = pages)
                 }
             }
@@ -103,7 +103,11 @@ fun main(args: Array<String>) {
 
         } ?: run {
             logHelper.logError("File news.json not found")
-        }
+        }    } ?: run {
+        logHelper.logError("Can't fetch data for new issue")
+    }
+    authorData?.let {
+
 
     }
 }
