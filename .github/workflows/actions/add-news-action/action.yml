@@ -17,12 +17,9 @@ runs:
   using: 'composite'
   steps:
     - name: Checkout New Issue Branch
-      uses: actions/checkout@v2
-      with:
-        ref: "main"
-      - run: |
-          git checkout -b news/${{ inputs.issue-number }}
-        shell: bash    
+    - run: |
+        git checkout -b news/${{ inputs.issue-number }}
+      shell: bash    
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
