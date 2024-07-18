@@ -45,7 +45,7 @@ val issueNumber = getArguments().first()
 val branch = "news/${getArguments().first()}"
 main(args)
 
-fun getArguments() = args.joinToString().split(" , ").filter { it.isNotEmpty() }
+fun getArguments() = args.joinToString().split(",").filter { it.isNotEmpty() }
 fun main(args: Array<String>) {
     val argumentsList = getArguments()
 
@@ -251,7 +251,7 @@ fun parseStringPages(bodyPages: String): List<NewsItem> {
         }
     }
     return newsItems
-   
+
 }
 
 fun fetchAuthorData(body: String): AuthorObject? {
