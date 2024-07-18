@@ -17,15 +17,15 @@ runs:
   using: 'composite'
   steps:
     - name: Enable Action Scripts
-    - run: |
+      run: |
           chmod u+r+x .github/workflows/actions/add-news-action/run-enabler.main.kts
           kotlinc -script .github/workflows/actions/add-news-action/run-enabler.main.kts
-    shell: bash           
+      shell: bash           
     - name: Checkout Branch for issue ${{ inputs.issue-number }}
       uses: actions/checkout@v2
       with:
         ref: main
-    - run: git checkout -b news/${{ inputs.issue-number }}
+      run: git checkout -b news/${{ inputs.issue-number }}
       shell: bash    
     - name: Download Kotlin Serialization Plugin
       env:
