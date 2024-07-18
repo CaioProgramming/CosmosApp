@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
-
+import kotlin.math.log
 
 
 @Serializable
@@ -89,8 +89,11 @@ fun main(args: Array<String>) {
             val newJsonContent = json.encodeToString(modifiedNews)
             deleteTempFiles()
             it.writeText(newJsonContent)
+            noticeFileUpdate("News $issueNumber added to ${it.path}", it)
             updateRemote("News added to ${it.path}")
 
+        } ?: run {
+            logError("File news.json not found")
         }
 
     }
@@ -138,7 +141,7 @@ fun fetchBranch() {
         if (mergeResult.contains("Already up to date.")) {
             println("Branch is already up to date.")
         } else if (mergeResult.contains("CONFLICT")) {
-            println("Merge conflicts detected. Please resolve them before pushing.")
+            logError("Merge conflicts detected. Please resolve them before pushing.")
         } else {
             println("Branch fetch successful.")
         }
@@ -146,12 +149,14 @@ fun fetchBranch() {
 }
 
 fun updateRemote(message: String) {
-    println(message)
-    fetchBranch()
-    executeGitCommand(listOf("git", "add", "."))
-    executeGitCommand(listOf("git", "commit", "-m", message))
-    pullBranch()
-    executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+    groupLog("Updating remote") {
+        println(message)
+        fetchBranch()
+        executeGitCommand(listOf("git", "add", "."))
+        executeGitCommand(listOf("git", "commit", "-m", message))
+        pullBranch()
+        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+    }
 
 }
 
@@ -167,17 +172,26 @@ fun executeGitCommand(command: List<String>): String {
         var line: String?
 
         while (reader.readLine().also { line = it } != null) {
-            println(line)
             output.append(line)
         }
 
         val exitCode = process.waitFor()
         if (exitCode != 0) {
-            println("Error executing command: $command")
+
+            logError("Error executing command: $command")
         }
     }
 
     return output.toString()
+}
+
+fun noticeFileUpdate(message: String, file: File) {
+    println("::notice file=${file.path}::$message")
+
+}
+
+fun logError(message: String) {
+    println("::error::$message")
 }
 
 fun deleteTempFiles() {
@@ -263,43 +277,26 @@ fun String.getFieldForTag(field: String): String? {
     groupLog("Finding value for { $field }") {
        fieldValue =  try {
             if (!this.contains(tagRef)) {
-                println("tag $field not found")
+                logError("tag $field not found")
                 null
             } else {
                 val start = this.indexOf(tagRef) + tagRef.length
-
-                fun String.getFieldForTag(field: String): String? {
-                    return try {
-                        if (!this.contains(tagRef)) {
-                            println("::endgroup::")
-                            null
-                        } else {
-                            if (!this.contains(lineBreakTag)) {
-                                println("No line break found, cant map tag.")
-                                println("::endgroup::")
-                                return null
-                            }
-
-                            val start = this.indexOf(tagRef) + tagRef.length
-                            val valueAfterTag = this.substring(start)
-                            var endIndex =
-                                valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
-                                    ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
-                            endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
-                            valueAfterTag.substring(0, endIndex)
-                        }
-                    } catch (e: Exception) {
-                        println("::endgroup::")
-                        null
-                    }
+                if (!this.contains(lineBreakTag)) {
+                    logError("End tag not found, cant complete mapping.")
+                    null
                 }
+
                 val valueAfterTag = this.substring(start)
+                var endIndex =
+                    valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                        ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
+                endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
+                valueAfterTag.substring(0, endIndex)
                 println("tag($field) value = $valueAfterTag")
                 valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
             }
         } catch (e: Exception) {
-            println("error getting $field value => ${e.message}")
-            println("::endgroup::")
+            logError("error getting $field value => ${e.message}")
             null
         }
     }
