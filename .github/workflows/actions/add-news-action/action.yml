@@ -36,7 +36,7 @@ runs:
       run: |
         plugin=$(.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION)
         echo "::debug::Using plugin $plugin" &&
-        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.issue-number }}, ${{ inputs.issue-title }}, ${{ inputs.issue-body }}"
+        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts "${{ inputs.issue-number }},${{ inputs.issue-title }},${{ inputs.issue-body }}"
       shell: bash
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
       uses: peter-evans/create-pull-request@v6.1.0

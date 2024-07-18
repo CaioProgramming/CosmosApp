@@ -287,6 +287,7 @@ fun String.getFieldForTag(field: String): String? {
     logHelper.startGroup("Tag Map for $field")
 
     return try {
+        logHelper.logDebug("Searching for tag $tagRef on { $this }")
         if (!this.contains(tagRef)) {
             logHelper.logWarning("tag $field not found")
             null
