@@ -335,7 +335,7 @@ class LogHelper {
     }
 
     fun logInfo(message: String) {
-        println("::info::$message")
+        println("::notice::$message")
     }
 
     fun logDebug(message: String) {
