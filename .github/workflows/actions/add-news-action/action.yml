@@ -37,7 +37,9 @@ runs:
       run: .github/workflows/scripts/dependency-resolver.sh $COMPILER_PLUGIN $PLUGIN_VERSION $COMPILER_GROUP
       shell: bash
     - name: Upload Issue To Json File
-      run: 'kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts   '{"number":"${{inputs.issue-number}}","title":"${{inputs.issue-title}}","body":"${{inputs.issue-body}}"}'
+      run: |
+      jsonString=$(jq -n --arg number "${{ inputs.issue-number }}" --arg title "${{ inputs.issue-title }}" --arg body "${{ inputs.issue-body }}" '{number: $number, title: $title, body: $body}')
+      'kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts "$jsonString"
       shell: bash  
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
       env:
