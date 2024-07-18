@@ -13,6 +13,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
   download-kotlin:
+    needs: setup-git
     runs-on: ubuntu-latest
     steps:
       - uses: fwilhe2/setup-kotlin@main
@@ -24,8 +25,10 @@ jobs:
     steps:
       - name: Enabling dependency scripts
         run: |  
+         currentDir=${{ github.workspace }}
          echo "Listing all directories"
          echo "Current directory: $(pwd)"
+         echo "env dir $currentDir"
          find . -type d
          chmod u+r+x ./.github/workflows/scripts/dependency-resolver.sh
          chmod u+r+x ./.github/workflows/scripts/get-dependency.sh     
