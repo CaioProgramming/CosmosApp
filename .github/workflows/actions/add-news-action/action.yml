@@ -29,7 +29,9 @@ runs:
         fetch-depth: 0
     - name: Checkout New Branch
       run: |
+        git fetch origin
         git checkout -b news/${{ inputs.issue-number }}
+        git rebase origin/main
         git commit --allow-empty -m "Start news for issue ${{ inputs.issue-number }}"
         git push origin news/${{ inputs.issue-number }}
       shell: bash  
