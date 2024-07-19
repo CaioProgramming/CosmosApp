@@ -84,4 +84,10 @@ runs:
         branch: news/${{ inputs.issue-number }}
         base: main
         title: "[News] ${{ inputs.issue-title }}"
+    - name: Comment PR on Issue
+      uses: alexrogalskiy/github-action-issue-commenter@master
+      with:
+        message: '[Pull Request](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}) created for this issue '
+        requestId: ${{ inputs.issue-number }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
