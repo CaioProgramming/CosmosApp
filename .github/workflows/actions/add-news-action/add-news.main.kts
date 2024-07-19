@@ -80,13 +80,21 @@ fun updateData(newItem: NewsObject) {
         val jsonContent = it.readText()
         val newsJson = json.decodeFromString<NewsResponse>(jsonContent)
 
+        logHelper.logDebug("Current news => ${newsJson.news.size}")
+
         val modifiedNews = newsJson.copy(news = newsJson.news.plus(newItem))
 
+        logHelper.logDebug("Updated news => ${modifiedNews.news.size}")
+
         val newJsonContent = json.encodeToString(modifiedNews)
-        it.writeText(newJsonContent)
-        noticeFileUpdate("News ${newItem.id} added to ${it.path}", it)
+
+        val rootPath = System.getProperty("user.dir")
+        val relativeFile = File(it.path.replace(rootPath, ""))
+
+        relativeFile.writeText(newJsonContent)
+        noticeFileUpdate("News ${newItem.id} added to ${relativeFile.path}", it)
         deleteTempFiles()
-        updateRemote("News added to ${it.path}", "news/${newItem.id}")
+        updateRemote("News added to news.json", "news/${newItem.id}")
 
     } ?: run {
         logHelper.logError("File news.json not found")
@@ -205,7 +213,7 @@ fun noticeFileUpdate(
     message: String,
     file: File,
 ) {
-    println("::notice file=${file.path}::$message")
+    println("::notice file=${file.name}::$message")
 }
 
 fun deleteTempFiles() {
@@ -320,6 +328,7 @@ fun String.getFieldForTag(field: String): String? {
 
 class LogHelper {
     fun startGroup(title: String) {
+        endGroup()
         println("::group::$title")
         logInfo("Group started: $title")
         logWarning("Remember to close the group")
