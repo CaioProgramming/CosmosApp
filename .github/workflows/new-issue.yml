@@ -8,8 +8,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
       - name: Setup Git User
         run: |
           git config --global user.name 'github-actions[bot]'
