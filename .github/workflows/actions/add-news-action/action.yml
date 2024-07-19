@@ -60,8 +60,8 @@ runs:
             - Auto-generated Pull request
             # 📰 ${{ inputs.issue-title }}
             ### Including News for issue [${{ inputs.issue-number }}](https://github.com/${{ github.repository }}/issues/${{ inputs.issue-number }})
-            
         branch: news/${{ inputs.issue-number }}
+        base: main
         labels: news
         draft: false
         signoff: true
