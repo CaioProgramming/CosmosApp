@@ -89,5 +89,5 @@ runs:
       with:
         message: '[Pull Request](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}) created for this issue '
         requestId: ${{ inputs.issue-number }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.secret-token }}
         
