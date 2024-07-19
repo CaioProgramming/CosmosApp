@@ -71,10 +71,16 @@ runs:
       run: sleep 10 # Waits for 30 seconds
       shell: bash 
     - name: Create pull request
-      uses: thomaseizinger/create-pull-request@master
+      uses: peter-evans/create-pull-request@v6
       with:
-        GITHUB_TOKEN: ${{ inputs.secret-token }}
-        head: news/${{ inputs.issue-number }}
-        base: main
-        title: "An automatically created PR!"
+        token: ${{ inputs.secret-token }}
+        labels: |
+          news
+          bot-generated
+        body: |
+          # ${{ inputs.issue-title }}
+          This is an automatically created PR for issue [${{ inputs.issue-title }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}).
+        delete-branch: true
+        branch: news/${{ inputs.issue-number }}
+        title: "[News] ${{ inputs.issue-title }}"
         
