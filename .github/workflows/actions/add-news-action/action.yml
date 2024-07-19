@@ -65,16 +65,7 @@ runs:
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
       shell: bash
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
-      uses: peter-evans/create-pull-request@v6.1.0
-      with:
-        token: ${{ inputs.secret-token }}
-        title: "[News] [${{ inputs.issue-number }}] - ${{ inputs.issue-title }}"
-        body: |
-            - Auto-generated Pull request
-            # 📰 ${{ inputs.issue-title }}
-            ### Including News for issue [${{ inputs.issue-number }}](https://github.com/${{ github.repository }}/issues/${{ inputs.issue-number }})
-        branch: news/${{ inputs.issue-number }}
-        labels: news
-        draft: false
-        signoff: true
+      run: |
+        gh pr create --title "Add news for issue ${{ inputs.issue-number }}" --body "This PR adds news for issue ${{ inputs.issue-number }}" --base main --head news/${{ inputs.issue-number }}
+      shell: bash  
         
