@@ -54,7 +54,7 @@ runs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.secret-token }}
         branch: "news/${{ inputs.issue-number }}"
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
       uses: peter-evans/create-pull-request@v6.1.0
