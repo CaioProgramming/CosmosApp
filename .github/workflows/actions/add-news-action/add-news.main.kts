@@ -169,10 +169,11 @@ fun fetchBranch() {
 
 fun updateRemote(message: String, branch: String) {
     logHelper.run {
-        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
 
         startGroup("Updating remote")
         logInfo(message)
+        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
+
 
         executeGitCommand(listOf("git", "add", "."))
 
