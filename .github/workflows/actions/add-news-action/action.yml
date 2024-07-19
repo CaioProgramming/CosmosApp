@@ -27,7 +27,10 @@ runs:
         ref: main
         fetch-depth: 0
     - name: Checkout New Branch
-      run: git checkout -b news/${{ inputs.issue-number }}
+      run: |
+        git fetch origin main:main
+        git checkout main
+        git checkout -b news/${{ inputs.issue-number }}
       shell: bash  
     - name: Download Kotlin Serialization Plugin
       env:
