@@ -45,9 +45,9 @@ fun main(args: Array<String>) {
     val newsResource = File("resources/news.json").readText()
 
     val newsData: NewsResponse = json.decodeFromString(newsResource)
-    
+    val descriptionText = generateMDText(newsData.news.last())
     val descriptionFile = File(".github/workflows/.temp/last-new.txt")
-    descriptionFile.writeText(json.encodeToString(newsData))
+    descriptionFile.writeText(descriptionText)
     
     logHelper.logNotice("Temp news file created")
 
