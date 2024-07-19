@@ -10,13 +10,13 @@ jobs:
     steps:
       - name: Checking Issue Labels
         id: validate-issue
-        run: echo "::set-output name=next-job-tag::${{ github.event.issue.labels.first.name}}
+        run: echo ::set-output name=next-job-tag::${{ github.event.issue.labels.first.name}}
   include-news:
     runs-on: ubuntu-latest
     needs: setup-workflow
     outputs:
       pull-request-url: ${{ steps.run-news.outputs.pull-request-url }}
-    if: ${{ github.event.issue.labels.*.name == 'news' }}
+    if: ${{ needs.setup-workflow.outputs.next-job-tag == 'news' }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
