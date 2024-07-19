@@ -31,7 +31,7 @@ runs:
       run: |
         git fetch origin
         git checkout -b news/${{ inputs.issue-number }}
-        git pull --rebase main new/${{ inputs.issue-number }}
+        git rebase origin/main
         git commit --allow-empty -m "Start news for issue ${{ inputs.issue-number }}"
         git push origin news/${{ inputs.issue-number }}
       shell: bash  
@@ -75,7 +75,7 @@ runs:
       uses: thomaseizinger/create-pull-request@master
       with:
         GITHUB_TOKEN: ${{ inputs.secret-token }}
-        head: ${{ github.ref }}
+        head: main
         base: news/${{ inputs.issue-number }}
         title: "An automatically created PR!"
         
