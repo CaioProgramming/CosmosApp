@@ -85,8 +85,8 @@ fun updateData(newItem: NewsObject) {
         val newJsonContent = json.encodeToString(modifiedNews)
         it.writeText(newJsonContent)
         noticeFileUpdate("News ${newItem.id} added to ${it.path}", it)
-        updateRemote("News added to ${it.path}")
         deleteTempFiles()
+        updateRemote("News added to ${it.path}", "news/${newItem.id}")
 
     } ?: run {
         logHelper.logError("File news.json not found")
@@ -108,7 +108,6 @@ fun main(args: Array<String>) {
     val issueBody = issueData["body"]
     val issueTitle = issueData["title"]
     val issueNumber = issueData["number"]
-    branch = "news/$issueNumber"
 
     safeLet(issueNumber, issueBody, issueTitle) { number, body, title ->
         val data = parseBody(number, title, body)
@@ -166,23 +165,19 @@ fun fetchBranch() {
     }
 }
 
-fun updateRemote(message: String) {
+fun updateRemote(message: String, branch: String) {
     logHelper.run {
         startGroup("Updating remote")
         logInfo(message)
         executeGitCommand(listOf("git", "add", "."))
-        executeGitCommand(listOf("git", "commit", "-m", message))
-        executeGitCommand(listOf("git", "push", "--set-upstream", "origin"))
+        executeGitCommand(listOf("git", "commit","-m", message))
+        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
         endGroup()
     }
 }
 
 fun executeGitCommand(command: List<String>): String {
-    branch?.let {
-        command.plus(it)
-    } ?: run {
-        logHelper.logError("Branch not set")
-    }
+    
     val output = StringBuilder()
     logHelper.startGroup("Executing ${command.size} git commands")
     logHelper.logDebug("Requested commands ${command.joinToString("\n")}")
