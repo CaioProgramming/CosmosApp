@@ -18,9 +18,11 @@ runs:
   
   steps:
     - name: Install GitHub CLI
+      env:
+        GH_TOKEN: ${{ inputs.secret-token }}
       run: |
-        sudo apt-get update
-        sudo apt-get install -y gh
+        gh auth setup-git
+        gh auth login --with-token < $GH_TOKEN
       shell: bash
     - name: Enable Action Scripts
       run: |
