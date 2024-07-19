@@ -93,8 +93,7 @@ fun updateData(newItem: NewsObject) {
         relativeFile.writeText(newJsonContent)
         noticeFileUpdate("News ${newItem.id} added to ${relativeFile.path}", it)
         deleteTempFiles()
-        updateRemote("News added to news.json", "news/${newItem.id}")
-
+        logHelper.logDebug("New { ${newItem.id} } added to news.json")
     } ?: run {
         logHelper.logError("File news.json not found")
     }
@@ -140,72 +139,6 @@ fun searchForFile(
         logHelper.logError("Cant find file $fileName on $dir")
         null
     }
-}
-
-
-fun pullBranch() {
-    executeGitCommand(listOf("git", "pull", "--rebase", "origin"))
-}
-
-
-
-fun fetchBranch() {
-    // Fetch changes from the remote repository
-    executeGitCommand(listOf("git", "fetch", "origin"))
-
-    // Merge the fetched changes into your local branch
-    val mergeResult = executeGitCommand(listOf("git", "merge"))
-
-    // Check if merge was successful or if there were conflicts
-    logHelper.startGroup("Branch fetch result")
-    if (mergeResult.contains("Already up to date.")) {
-        logHelper.logWarning("Branch is already up to date.")
-    } else if (mergeResult.contains("CONFLICT")) {
-        logHelper.logError("Merge conflicts detected. Please resolve them before pushing.")
-    } else {
-        logHelper.logDebug("Branch fetch successful.")
-    }
-}
-
-fun updateRemote(message: String, branch: String) {
-    logHelper.run {
-
-        startGroup("Updating remote")
-        logInfo(message)
-
-        executeGitCommand(listOf("git", "add", "."))
-
-        executeGitCommand(listOf("git", "status"))
-        
-        executeGitCommand(listOf("git", "commit","-m", message))
-
-
-       //executeGitCommand(listOf("git", "reflog", "show", "--no-abbrev-commit"))
-    }
-}
-
-fun executeGitCommand(command: List<String>): String {
-    
-    val output = StringBuilder()
-    logHelper.startGroup("Executing ${command.size} git commands")
-    logHelper.logDebug("Requested commands ${command.joinToString("\n")}")
-    val processBuilder = ProcessBuilder(command)
-    processBuilder.redirectErrorStream(true)
-    val process = processBuilder.start()
-
-    val reader = BufferedReader(InputStreamReader(process.inputStream))
-    var line: String?
-
-    while (reader.readLine().also { line = it } != null) {
-        logHelper.logDebug("- Command output: $line")
-        output.append(line)
-    }
-
-    val exitCode = process.waitFor()
-    if (exitCode != 0) {
-        logHelper.logError("Error executing command: $command with exit code $exitCode and output: $output")
-    }
-    return output.toString()
 }
 
 fun noticeFileUpdate(

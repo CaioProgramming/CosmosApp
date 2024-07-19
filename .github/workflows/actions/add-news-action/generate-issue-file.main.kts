@@ -25,34 +25,11 @@ fun main(args: Array<String>) {
     val issueFile = File(".github/workflows/.temp/issue.json")
     issueFile.writeText(json.encodeToString(issueData))
     
-    executeGitCommand(listOf("git", "add", ".github/workflows/.temp/issue.json"))
     logHelper.logNotice("Issue file created")
 
-    executeGitCommand(listOf("git", "commit", "-m", "Adds issue temp file"))
     logHelper.endGroup()
 }
 
-fun executeGitCommand(command: List<String>): String {
-    val output = StringBuilder()
-    logHelper.startGroup("Executing ${command.size} git commands")
-    val processBuilder = ProcessBuilder(command)
-    processBuilder.redirectErrorStream(true)
-    val process = processBuilder.start()
-
-    val reader = BufferedReader(InputStreamReader(process.inputStream))
-    var line: String?
-
-    while (reader.readLine().also { line = it } != null) {
-        output.append(line)
-    }
-
-    val exitCode = process.waitFor()
-    if (exitCode != 0) {
-        logHelper.logError("Error executing command: $command with exit code $exitCode and output: $output")
-    }
-    logHelper.endGroup()
-    return output.toString()
-}
 
 
 class LogHelper {
