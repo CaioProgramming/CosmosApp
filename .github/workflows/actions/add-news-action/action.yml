@@ -55,11 +55,10 @@ runs:
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
       shell: bash
     - name: Commit Changes
-      uses: flex-development/gh-commit@1.0.0
-      with:
-        message: "Add news for issue ${{ inputs.issue-number }}"
-        ref: news/${{ inputs.issue-number }}
-        token: ${{ inputs.secret-token }}
+      run: |
+        git add .
+        git commit -m "Add news for issue ${{ inputs.issue-number }}"
+      shell: bash  
     - name: Push Changes
       uses: ad-m/github-push-action@master
       with:
