@@ -82,5 +82,6 @@ runs:
           This is an automatically created PR for issue [${{ inputs.issue-title }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}).
         delete-branch: true
         branch: news/${{ inputs.issue-number }}
+        base: origin/main
         title: "[News] ${{ inputs.issue-title }}"
         
