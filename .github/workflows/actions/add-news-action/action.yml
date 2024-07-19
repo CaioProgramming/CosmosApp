@@ -67,6 +67,8 @@ runs:
       with:
         github_token: ${{ inputs.secret-token }}
         branch: "news/${{ inputs.issue-number }}"  
+    - name: Wait before creating PR
+      run: sleep 30 # Waits for 30 seconds
     - name: Create pull request
       uses: thomaseizinger/create-pull-request@master
       with:
