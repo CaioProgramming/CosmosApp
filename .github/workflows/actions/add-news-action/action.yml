@@ -53,7 +53,7 @@ runs:
       shell: bash
     - name: Push changes
       uses: ad-m/github-push-action@master
-       with:
+      with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: "news/${{ inputs.issue-number }}"
     - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
