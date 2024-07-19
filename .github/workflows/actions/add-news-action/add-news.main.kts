@@ -177,6 +177,8 @@ fun updateRemote(message: String, branch: String) {
     logHelper.run {
         startGroup("Updating remote")
         logInfo(message)
+        executeGitCommand(listOf("git", "status"))
+        executeGitCommand(listOf("git", "diff"))
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit","-m", message))
         executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
