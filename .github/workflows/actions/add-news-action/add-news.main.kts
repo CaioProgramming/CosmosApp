@@ -89,7 +89,7 @@ fun updateData(newItem: NewsObject) {
         val newJsonContent = json.encodeToString(modifiedNews)
 
         val rootPath = System.getProperty("user.dir")
-        val relativeFile = File(it.path.replace(rootPath, ""))
+        val relativeFile = File(it.path.replace("rootPath/", ""))
 
         relativeFile.writeText(newJsonContent)
         noticeFileUpdate("News ${newItem.id} added to ${relativeFile.path}", it)
