@@ -11,8 +11,10 @@ jobs:
       - name: Checking Issue Labels
         id: validate-issue
         run: |
-          LABEL=${{ github.event.issue.labels.first.name}}
-          echo ::set-output name=next-job-tag::$LABEL
+          LABELS_JSON='${{ toJson(github.event.issue.labels) }}'
+          FIRST_LABEL=$(echo "$LABELS_JSON" | jq -r '.[0].name')
+          echo "First label: $FIRST_LABEL"
+          echo "::set-output name=next-job-tag::$FIRST_LABEL"
         shell: bash
   include-news:
     runs-on: ubuntu-latest
