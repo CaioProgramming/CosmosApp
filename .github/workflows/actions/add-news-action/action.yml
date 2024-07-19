@@ -64,6 +64,6 @@ runs:
       with:
         GITHUB_TOKEN: ${{ inputs.secret-token }}
         head: ${{ github.ref }}
-        base: main
+        base: news/${{ inputs.issue-number }}
         title: "An automatically created PR!"
         
