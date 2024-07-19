@@ -30,6 +30,7 @@ runs:
     - name: Checkout New Branch
       run: |
         git checkout -b news/${{ inputs.issue-number }}
+        git push origin news/${{ inputs.issue-number }}
       shell: bash  
     - name: Download Kotlin Serialization Plugin
       env:
