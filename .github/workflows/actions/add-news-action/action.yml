@@ -55,14 +55,14 @@ runs:
       uses: peter-evans/create-pull-request@v6.1.0
       with:
         token: ${{ inputs.secret-token }}
-        commit-message: "Add news for issue ${{ inputs.issue-number }}"
         title: "[News] [${{ inputs.issue-number }}] - ${{ inputs.issue-title }}"
-        body: "This PR adds news for issue ${{ inputs.issue-number }}."
+        body: |
+            - Auto-generated Pull request
+            # 📰 ${{ inputs.issue-title }}
+            ### Including News for issue [${{ inputs.issue-number }}](https://github.com/${{ github.repository }}/issues/${{ inputs.issue-number }})
+            
         branch: news/${{ inputs.issue-number }}
-        base: main
         labels: news
-        assignees: ${{ github.actor }}
-        reviewers: ${{ github.actor }}
         draft: false
         signoff: true
         changes: "This PR adds news for issue ${{ inputs.issue-number }}."
