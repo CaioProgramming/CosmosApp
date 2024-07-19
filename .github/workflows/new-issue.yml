@@ -10,7 +10,9 @@ jobs:
     steps:
       - name: Redirecting Issue
         id: validate-issue
-        run: echo "::set-output name=next-job-tag::${{ github.event.issue.labels.*.name }}"
+        run: |
+          FIRST_LABEL=$(echo '${{ toJson(github.event.issue.labels.*.name) }}' | jq -r '.[0]')
+          echo "::set-output name=next-job-tag::$FIRST_LABEL"
   include-news:
     runs-on: ubuntu-latest
     needs: setup-workflow
