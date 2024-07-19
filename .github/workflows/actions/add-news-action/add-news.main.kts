@@ -42,6 +42,7 @@ val json =
         ignoreUnknownKeys = true
     }
 val logHelper = LogHelper()
+var branch: String? = null
 main(args)
 
 
@@ -59,6 +60,7 @@ fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObjec
     }
 
     val thumbnail = body.getFieldForTag("thumbnail")
+
     thumbnail?.let {
         val newPages = pageData.toMutableList()
         newPages[0] = newPages.first().copy(thumbnailURL = it)
@@ -92,12 +94,13 @@ fun updateData(newItem: NewsObject) {
     logHelper.endGroup()
 }
 
-fun getArgsMap() = json.decodeFromString<Map<String, String>>(getIssueFile().readText())
 
 fun main(args: Array<String>) {
 
+    val argsMap = json.decodeFromString<Map<String, String>>(getIssueFile().readText())
+
     logHelper.startGroup("Issue temp data")
-    val issueData = getArgsMap()
+    val issueData = argsMap
     logHelper.logDebug("Issue data: $issueData")
     logHelper.endGroup()
 
@@ -105,8 +108,7 @@ fun main(args: Array<String>) {
     val issueBody = issueData["body"]
     val issueTitle = issueData["title"]
     val issueNumber = issueData["number"]
-
-    issueBody?.let { logHelper.maskLog(it) }
+    branch = "news/$issueNumber"
 
     safeLet(issueNumber, issueBody, issueTitle) { number, body, title ->
         val data = parseBody(number, title, body)
@@ -139,21 +141,19 @@ fun searchForFile(
     }
 }
 
-fun getBranch() = getArgsMap()["branch"] ?: "main"
 
 fun pullBranch() {
-    val branch = getBranch()
-    executeGitCommand(listOf("git", "pull", "--rebase", "origin", branch))
+    executeGitCommand(listOf("git", "pull", "--rebase", "origin"))
 }
 
 
 
 fun fetchBranch() {
     // Fetch changes from the remote repository
-    executeGitCommand(listOf("git", "fetch", "origin", getBranch()))
+    executeGitCommand(listOf("git", "fetch", "origin"))
 
     // Merge the fetched changes into your local branch
-    val mergeResult = executeGitCommand(listOf("git", "merge", "origin/${getBranch()}"))
+    val mergeResult = executeGitCommand(listOf("git", "merge"))
 
     // Check if merge was successful or if there were conflicts
     logHelper.startGroup("Branch fetch result")
@@ -174,12 +174,17 @@ fun updateRemote(message: String) {
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit", "-m", message))
         pullBranch()
-        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", getBranch()))
+        executeGitCommand(listOf("git", "push", "--set-upstream", "origin"))
         endGroup()
     }
 }
 
 fun executeGitCommand(command: List<String>): String {
+    branch?.let {
+        command.plus(it)
+    } ?: run {
+        logHelper.logError("Branch not set")
+    }
     val output = StringBuilder()
     logHelper.startGroup("Executing ${command.size} git commands")
     val processBuilder = ProcessBuilder(command)
@@ -291,7 +296,7 @@ fun String.getFieldForTag(field: String): String? {
     val tagRef = "### $field"
     val lineBreakTag = "#"
     logHelper.startGroup("Tag Map for $field")
-    logHelper.logDebug("Searching for tag $tagRef on { $this }")
+    logHelper.logDebug("Searching for tag $tagRef on { ${this.substring(0, 20)} }")
 
     return try {
         if (!this.contains(tagRef)) {
@@ -309,7 +314,7 @@ fun String.getFieldForTag(field: String): String? {
                         ?: valueAfterTag.indexOf(lineBreakTag).takeIf { it >= 0 }
                 endIndex = endIndex ?: valueAfterTag.length // Use string length if no newline is found
                 valueAfterTag.substring(0, endIndex)
-                logHelper.logInfo("tag($field) value = $valueAfterTag")
+                logHelper.logInfo("tag($field) value = ${valueAfterTag.substring(0, 20)}")
                 valueAfterTag.substring(0, valueAfterTag.indexOf(lineBreakTag))
             }
         }
