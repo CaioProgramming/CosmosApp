@@ -172,8 +172,6 @@ fun updateRemote(message: String, branch: String) {
 
         startGroup("Updating remote")
         logInfo(message)
-        executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
-
 
         executeGitCommand(listOf("git", "add", "."))
 
