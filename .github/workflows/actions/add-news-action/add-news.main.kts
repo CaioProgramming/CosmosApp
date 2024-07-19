@@ -52,7 +52,7 @@ fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObjec
     logHelper.startGroup("Parsing body data")
     val authorData = fetchAuthorData(body)
 
-    var pageData = parseStringPages(body).also { logHelper.endGroup() }
+    var pageData = parseStringPages(body)
     
 
     pageData = pageData.toMutableList().apply {
@@ -68,7 +68,6 @@ fun parseBody(issueNumber: String, issueTitle: String, body: String) : NewsObjec
     } ?: kotlin.run {
         logHelper.logWarning("Thumbnail not found")
     }
-    logHelper.endGroup()
 
     return NewsObject(issueNumber, pageData, authorData)
 }
@@ -99,7 +98,6 @@ fun updateData(newItem: NewsObject) {
     } ?: run {
         logHelper.logError("File news.json not found")
     }
-    logHelper.endGroup()
 }
 
 
@@ -110,8 +108,6 @@ fun main(args: Array<String>) {
     logHelper.startGroup("Issue temp data")
     val issueData = argsMap
     logHelper.logDebug("Issue data: $issueData")
-    logHelper.endGroup()
-
 
     val issueBody = issueData["body"]
     val issueTitle = issueData["title"]
@@ -139,11 +135,9 @@ fun searchForFile(
         val folders = rootFile.listFiles().joinToString("\n") { " - ${it.name}" }
         logHelper.logInfo("Current files on ${rootFile.path} => $folders")
         logHelper.logDebug("Searching for file $fileName in ${rootFile.path}")
-        logHelper.endGroup()
         rootFile.listFiles().find { it.name == fileName }
     } else {
         logHelper.logError("Cant find file $fileName on $dir")
-        logHelper.endGroup()
         null
     }
 }
@@ -178,14 +172,13 @@ fun updateRemote(message: String, branch: String) {
         startGroup("Updating remote")
         logInfo(message)
         executeGitCommand(listOf("git", "add", "."))
-        
+
         executeGitCommand(listOf("git", "commit","-m", message))
 
         executeGitCommand(listOf("git", "status"))
         executeGitCommand(listOf("git", "diff"))
 
         executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
-        endGroup()
     }
 }
 
@@ -210,7 +203,6 @@ fun executeGitCommand(command: List<String>): String {
     if (exitCode != 0) {
         logHelper.logError("Error executing command: $command with exit code $exitCode and output: $output")
     }
-    logHelper.endGroup()
     return output.toString()
 }
 
@@ -230,10 +222,8 @@ fun deleteTempFiles() {
         if (tempDir.exists() && tempDir.isDirectory) {
             tempDir.deleteRecursively()
             logDebug("Temporary files deleted successfully.")
-            endGroup()
         } else {
             logWarning("Temporary directory does not exist or is not a directory.")
-            endGroup()
         }
     }
 }
@@ -244,7 +234,6 @@ fun parseStringPages(bodyPages: String): List<NewsItem> {
                 List(5) {
                     if (it > 0) {
                         val page = bodyPages.getFieldForTag("pagina_$it")
-                        logHelper.endGroup()
                         page?.let { it1 -> NewsItem("", it1, "") } ?: run {
                             logHelper.logWarning("Page $it not found")
                             null
@@ -263,19 +252,14 @@ fun fetchAuthorData(body: String): AuthorObject? {
     logHelper.startGroup("Fetching author data")
     return try {
         val author = body.getFieldForTag("author")
-        logHelper.endGroup()
         val reference = body.getFieldForTag("link")
-        logHelper.endGroup()
         safeLet(author, reference) { a, r ->
-            logHelper.endGroup()
             AuthorObject(a, r)
         } ?: run {
-            logHelper.endGroup()
             return null
         }
     } catch (e: Exception) {
         logHelper.logError("Error getting reference data => ${e.message}")
-        logHelper.endGroup()
         return null
     }
 }
@@ -359,7 +343,7 @@ class LogHelper {
         println("::debug::$message")
     }
 
-    fun endGroup() {
+    private fun endGroup() {
         println("::endgroup::")
     }
 
