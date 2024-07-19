@@ -185,6 +185,7 @@ fun executeGitCommand(command: List<String>): String {
     }
     val output = StringBuilder()
     logHelper.startGroup("Executing ${command.size} git commands")
+    logHelper.logDebug("Requested commands ${command.joinToString("\n")}")
     val processBuilder = ProcessBuilder(command)
     processBuilder.redirectErrorStream(true)
     val process = processBuilder.start()
@@ -193,6 +194,7 @@ fun executeGitCommand(command: List<String>): String {
     var line: String?
 
     while (reader.readLine().also { line = it } != null) {
+        logHelper.logDebug("- Command output: $line")
         output.append(line)
     }
 
