@@ -106,4 +106,5 @@ runs:
     - name: Return PR URL
       id: pr-url
       run: echo "::set-output name=pull-request-url::${{ steps.create-pull-request.outputs.pull-request-url }}"    
+      shell: bash
         
