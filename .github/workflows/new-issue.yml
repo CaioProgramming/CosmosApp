@@ -10,7 +10,10 @@ jobs:
     steps:
       - name: Checking Issue Labels
         id: validate-issue
-        run: echo ::set-output name=next-job-tag::${{ github.event.issue.labels.first.name}}
+        run: |
+          LABEL=${{ github.event.issue.labels.first.name}}
+          echo ::set-output name=next-job-tag::$LABEL
+        shell: bash
   include-news:
     runs-on: ubuntu-latest
     needs: setup-workflow
