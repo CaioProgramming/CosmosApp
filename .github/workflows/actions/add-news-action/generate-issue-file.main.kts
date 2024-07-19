@@ -48,7 +48,7 @@ fun executeGitCommand(command: List<String>): String {
 
     val exitCode = process.waitFor()
     if (exitCode != 0) {
-        logHelper.logError("Error executing command: $command")
+        logHelper.logError("Error executing command: $command with exit code $exitCode and output: $output")
     }
     logHelper.endGroup()
     return output.toString()

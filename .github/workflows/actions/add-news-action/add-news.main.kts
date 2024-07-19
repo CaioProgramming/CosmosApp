@@ -170,10 +170,8 @@ fun updateRemote(message: String) {
     logHelper.run {
         startGroup("Updating remote")
         logInfo(message)
-        fetchBranch()
         executeGitCommand(listOf("git", "add", "."))
         executeGitCommand(listOf("git", "commit", "-m", message))
-        pullBranch()
         executeGitCommand(listOf("git", "push", "--set-upstream", "origin"))
         endGroup()
     }
@@ -200,7 +198,7 @@ fun executeGitCommand(command: List<String>): String {
 
     val exitCode = process.waitFor()
     if (exitCode != 0) {
-        logHelper.logError("Error executing command: $command")
+        logHelper.logError("Error executing command: $command with exit code $exitCode and output: $output")
     }
     logHelper.endGroup()
     return output.toString()
@@ -223,7 +221,6 @@ fun deleteTempFiles() {
             tempDir.deleteRecursively()
             logDebug("Temporary files deleted successfully.")
             endGroup()
-            updateRemote("Deleted temporary files")
         } else {
             logWarning("Temporary directory does not exist or is not a directory.")
             endGroup()
