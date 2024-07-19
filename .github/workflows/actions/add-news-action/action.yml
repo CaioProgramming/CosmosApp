@@ -31,6 +31,11 @@ runs:
         git checkout main
         git checkout -b news/${{ inputs.issue-number }}
       shell: bash  
+    - name: Push New Branch
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ inputs.secret-token }}
+        branch: "news/${{ inputs.issue-number }}"
     - name: Download Kotlin Serialization Plugin
       env:
         PLUGIN_VERSION: 1.9.22
