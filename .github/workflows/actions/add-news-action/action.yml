@@ -22,8 +22,8 @@ runs:
         GH_TOKEN: ${{ inputs.secret-token }}
       run: |
         gh auth setup-git
-        gh auth login --with-token < $GH_TOKEN
-      shell: bash
+        gh auth login --with-token < "$GH_TOKEN"
+     shell: bash
     - name: Enable Action Scripts
       run: |
         chmod u+r+x .github/workflows/actions/add-news-action/run-enabler.main.kts
