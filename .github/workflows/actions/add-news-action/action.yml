@@ -1,5 +1,9 @@
 name: 'Add News Action'
 description: 'Include news in the json resources based on opened issue'
+outputs:
+  pull-request-url:
+    description: 'Open pull request url'
+    
 inputs:
   issue-number:
     description: 'The number of the issue'
@@ -15,7 +19,6 @@ inputs:
     required: true  
 runs:
   using: 'composite'
-  
   steps:
     - name: Enable Action Scripts
       run: |
@@ -84,10 +87,7 @@ runs:
         branch: news/${{ inputs.issue-number }}
         base: main
         title: "[News] ${{ inputs.issue-title }}"
-    - name: Comment PR on Issue
-      uses: alexrogalskiy/github-action-issue-commenter@master
-      with:
-        message: '[Pull Request](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}) created for this issue '
-        requestId: ${{ inputs.issue-number }}
-        GITHUB_TOKEN: ${{ inputs.secret-token }}
+    - name: Return PR URL
+      id: pr-url
+      run: echo "::set-output name=pull-request-url::${{ steps.create-pull-request.outputs.pull-request-url }}"    
         
