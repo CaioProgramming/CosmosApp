@@ -59,7 +59,6 @@ runs:
       shell: bash
     - name: Push Changes
       run: |
-        git stash apply
         git add --all
         git commit -m "Add news for issue ${{ inputs.issue-number }}"
       shell: bash  
