@@ -74,7 +74,7 @@ runs:
       uses: thomaseizinger/create-pull-request@master
       with:
         GITHUB_TOKEN: ${{ inputs.secret-token }}
-        head: main
+        head: news/${{ inputs.issue-number }}
         base: news/${{ inputs.issue-number }}
         title: "An automatically created PR!"
         
