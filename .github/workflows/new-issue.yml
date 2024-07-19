@@ -10,16 +10,7 @@ jobs:
     steps:
       - name: Checking Issue Labels
         id: validate-issue
-        run: |
-          
-          LABELS_JSON='${{ toJson(github.event.issue.labels.*.name) }}'
-          FIRST_LABEL='"$LABELS_JSON" | jq -r '.[0]'
-          echo "Issue labels: $LABELS_JSON"
-          # If you want to process labels further in the script, you can use jq or similar tools
-          echo "Labels as a list:"
-          echo "$LABELS_JSON" | jq -r '.[]'
-          echo first Label "$FIRST_LABEL" | jq -r '.[0]'
-          echo "::set-output name=next-job-tag::$FIRST_LABEL"
+        run: echo "::set-output name=next-job-tag::${{ github.event.issue.labels.first.name}}
   include-news:
     runs-on: ubuntu-latest
     needs: setup-workflow
