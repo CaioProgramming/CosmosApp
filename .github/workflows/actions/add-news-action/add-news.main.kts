@@ -177,10 +177,10 @@ fun updateRemote(message: String, branch: String) {
         executeGitCommand(listOf("git", "status"))
         
         executeGitCommand(listOf("git", "commit","-m", message))
-        
+        /*
         executeGitCommand(listOf("git", "push", "--set-upstream", "origin", branch))
 
-       executeGitCommand(listOf("git", "reflog", "show", "--no-abbrev-commit"))
+       executeGitCommand(listOf("git", "reflog", "show", "--no-abbrev-commit"))*/
     }
 }
 
