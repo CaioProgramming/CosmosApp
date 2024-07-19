@@ -9,6 +9,30 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 
+@Serializable
+data class NewsObject(
+    val id: String? = null,
+    val pages: List<NewsItem> = emptyList(),
+    val reference: AuthorObject? = null,
+)
+
+@Serializable
+data class NewsItem(
+    val title: String? = null,
+    val description: String? = null,
+    val thumbnailURL: String? = null,
+)
+
+@Serializable
+data class AuthorObject(
+    val author: String? = null,
+    val reference: String? = null,
+)
+
+@Serializable
+data class NewsResponse(
+    val news: List<NewsObject> = emptyList(),
+)
 val logHelper = LogHelper()
 val json = Json { prettyPrint = true
     ignoreUnknownKeys = true
@@ -16,21 +40,36 @@ val json = Json { prettyPrint = true
 
 fun main(args: Array<String>) {
     
-    logHelper.startGroup("Parsing issue data to json")
+    logHelper.startGroup("Fetching last included news")
     logHelper.logDebug("Arguments: ${args.joinToString()}")
-    val argument = args.first().substring(1, args.first().length - 1)
-    val issueData: Map<String, String> = json.decodeFromString(argument)
-    logHelper.logDebug("Issue data: $issueData")
+    val newsResource = File("resources/news.json").readText()
+
+    val newsData: NewsResponse = json.decodeFromString(newsResource)
     
-    val issueFile = File(".github/workflows/.temp/issue.json")
-    issueFile.writeText(json.encodeToString(issueData))
+    val descriptionFile = File(".github/workflows/.temp/last-new.txt")
+    descriptionFile.writeText(json.encodeToString(newsData))
     
-    logHelper.logNotice("Issue file created")
+    logHelper.logNotice("Temp news file created")
 
     logHelper.endGroup()
 }
 
+fun generateMDText(newsObject: NewsObject) : String {
+    val newsItem = newsObject.pages.first()
+    val pagesDescription = newsObject.pages.joinToString("\n") {
+       "\n## ${it.title}\n" +
+        it.description.toString()
+    }
 
+    return """
+        |![${newsItem.title}](${newsItem.thumbnailURL})  
+        |## ${newsItem.title}
+        | $pagesDescription
+        | Published by [${newsObject.reference?.author}](${newsObject.reference?.reference})
+        |
+    """.trimMargin()
+
+}
 
 class LogHelper {
 
