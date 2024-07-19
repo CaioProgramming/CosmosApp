@@ -17,13 +17,6 @@ runs:
   using: 'composite'
   
   steps:
-    - name: Install GitHub CLI
-      env:
-        GH_TOKEN: ${{ inputs.secret-token }}
-      run: |
-        gh auth setup-git
-        gh auth login --with-token < "$GH_TOKEN"
-      shell: bash
     - name: Enable Action Scripts
       run: |
         chmod u+r+x .github/workflows/actions/add-news-action/run-enabler.main.kts
@@ -66,8 +59,11 @@ runs:
         echo "::debug::Using plugin $plugin" &&
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
       shell: bash
-    - name: "Open Pull request for Issue ${{ inputs.issue-number }}"
-      run: |
-        gh pr create --title "Add news for issue ${{ inputs.issue-number }}" --body "This PR adds news for issue ${{ inputs.issue-number }}" --base main --head news/${{ inputs.issue-number }}
-      shell: bash  
+    - name: Create pull request
+      uses: thomaseizinger/create-pull-request@master
+      with:
+        GITHUB_TOKEN: ${{ inputs.secret-token }}
+        head: ${{ github.ref }}
+        base: main
+        title: "An automatically created PR!"
         
