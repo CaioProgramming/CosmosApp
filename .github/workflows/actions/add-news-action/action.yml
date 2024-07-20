@@ -60,23 +60,6 @@ runs:
         echo "::debug::Using plugin $plugin" &&
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
       shell: bash
-    - name: Generate Last New Temp File
-      id: pr-description
-      env:
-        PLUGIN_VERSION: 1.9.22
-        PLUGIN_NAME: kotlin-serialization-compiler-plugin  
-      run: |
-        plugin=$(.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION)
-        echo "::debug::Using plugin $plugin" &&
-        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/generate-pr-description.main.kts &&
-        description=$(cat .github/workflows/.temp/last-new.txt)
-        echo "::debug::Using description $description" &&
-        echo "::set-output name=pr_description::$description"    
-      shell: bash   
-    - name: Delete Temp Files
-      run: |
-        rm -rf .github/workflows/temp/*
-      shell: bash   
     - name: Commit Changes
       run: |
         git add --all
@@ -87,11 +70,6 @@ runs:
       with:
         github_token: ${{ inputs.secret-token }}
         branch: "news/${{ inputs.issue-number }}"  
-    - name: Wait before creating PR
-      run: 
-        echo Waiting 5 seconds before create PR...
-        sleep 5 # Waits for 30 seconds
-      shell: bash 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v6
       with:
@@ -99,7 +77,10 @@ runs:
         labels: |
           news
           bot-generated
-        body: ${{ steps.pr-description.outputs.pr_description }}
+        body: |
+         _This PR was created automatically by the Add News Action
+         ## Issue ${{ inputs.issue-number }} - ${{ inputs.issue-title }}
+         This include the news requested on issue ${{ inputs.issue-number }}(${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }})
         delete-branch: true
         branch: news/${{ inputs.issue-number }}
         base: main
