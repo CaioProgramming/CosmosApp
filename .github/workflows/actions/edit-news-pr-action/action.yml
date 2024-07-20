@@ -35,11 +35,11 @@ runs:
        github-token: ${{ inputs.secret-token }}
        script: |
           await github.rest.pulls.update({
-            pull_number: ${{ inputs.pull-request-id }},
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: ${{ steps.write-description.outputs.pr_description }}
-          })
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ inputs.pull-request-id }},
+              body: ${{ steps.write-description.outputs.pr_description }}
+            });
   - name: Fact Checker
     uses: oilbeater/smart-review@main
     with:
