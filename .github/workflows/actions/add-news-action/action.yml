@@ -92,7 +92,7 @@ runs:
          _This PR was created automatically by the Add News Action_
          ## Issue ${{ inputs.issue-number }} - ${{ inputs.issue-title }}
          This include the news requested on issue [${{ inputs.issue-number }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }})
-         $BODY
+         ${{ steps.write-description.outputs.description }}
         delete-branch: true
         branch: news/${{ inputs.issue-number }}
         base: main
