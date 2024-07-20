@@ -21,7 +21,7 @@ jobs:
     needs: validate-issue
     outputs:
       pull-request-url: ${{ steps.run-news.outputs.pull-request-url }}
-    if: ${{ needs.setup-workflow.outputs.next-job-tag == 'news' }}
+    if: ${{ needs.validate-issue.outputs.next-job-tag == 'news' }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
