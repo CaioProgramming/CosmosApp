@@ -70,6 +70,7 @@ runs:
         echo "::debug::Using plugin $plugin" &&
         kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/generate-pr-description.main.kts &&
         description=$(cat .github/workflows/.temp/last-new.txt)
+        echo "::debug::Using description $description" &&
         echo "::set-output name=pr_description::$description"    
       shell: bash   
     - name: Delete Temp Files
