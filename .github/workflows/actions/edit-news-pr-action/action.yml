@@ -17,7 +17,7 @@ runs:
   using: 'composite'
   steps:
   - name: Enable Required Scripts
-    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text.sh
+    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
     shell: bash
   - name: Check out Branch ${{ inputs.pull-request-branch }}
     uses: actions/checkout@v2
@@ -27,7 +27,7 @@ runs:
   - name: Write Last New Description
     id: write-description
     run: |
-        PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text.sh
+        PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
         echo $PR_DESCRIPTION
         echo "::set-output name=pr_description::$PR_DESCRIPTION"
     shell: bash  
