@@ -96,7 +96,7 @@ runs:
         branch: news/${{ inputs.issue-number }}
         base: main
         title: "[News] ${{ inputs.issue-title }}"
-        - name: Comment Issue
+    - name: Comment Issue
       uses: alexrogalskiy/github-action-issue-commenter@master
       with:
         message: '[Pull Request](${{steps.create-pull-request.pull-request-url}}) created for this issue'
