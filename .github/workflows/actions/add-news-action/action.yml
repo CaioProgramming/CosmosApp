@@ -71,6 +71,14 @@ runs:
       with:
         github_token: ${{ inputs.secret-token }}
         branch: "news/${{ inputs.issue-number }}"  
+    - name: Write Last New Description
+      id: write-description
+      run: |
+          chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
+          PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
+          echo $PR_DESCRIPTION
+          echo "::set-output name=pr_description::$PR_DESCRIPTION"
+      shell: bash  
     - name: Create pull request
       uses: peter-evans/create-pull-request@v6
       with:
@@ -79,9 +87,10 @@ runs:
           news
           bot-generated
         body: |
-         _This PR was created automatically by the Add News Action
+         _This PR was created automatically by the Add News Action_
          ## Issue ${{ inputs.issue-number }} - ${{ inputs.issue-title }}
-         This include the news requested on issue ${{ inputs.issue-number }}(${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }})
+         This include the news requested on issue [${{ inputs.issue-number }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }})
+         ${{ steps.write-description.outputs.pr_description }}
         delete-branch: true
         branch: news/${{ inputs.issue-number }}
         base: main

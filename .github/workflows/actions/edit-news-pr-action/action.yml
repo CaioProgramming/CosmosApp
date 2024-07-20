@@ -29,17 +29,6 @@ runs:
       echo $PR_DESCRIPTION
       echo "::set-output name=pr_description::$PR_DESCRIPTION"
     shell: bash  
-  - name: Edit Pull Request   
-    uses: actions/github-script@v5
-    with:
-       github-token: ${{ inputs.secret-token }}
-       script: |
-          await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ inputs.pull-request-id }},
-              body: ${{ steps.write-description.outputs.pr_description }}
-            });
   - name: Fact Checker
     uses: oilbeater/smart-review@main
     with:
