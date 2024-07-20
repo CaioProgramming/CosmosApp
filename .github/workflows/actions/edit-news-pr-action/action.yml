@@ -2,23 +2,49 @@ name: Validate News
 description: 'Validate news in the json resources based on new pull request'
 inputs:
   pull-request-id:
-	description: 'The number of the pull request'
-	required: true  
+    description: 'The number of the pull request'
+    required: true  
   pull-request-branch:
-	description: 'Open pull request url'
-	required: true
+    description: 'Open pull request url'
+    required: true
   secret-token:
-	description: 'Github secret token'
-	required: true
+    description: 'Github secret token'
+    required: true
   ai-secret-token:
-	description: 'AI secret token'
-	required: true 
+    description: 'AI secret token'
+    required: true 
 runs:
   using: 'composite'
   steps:
-	- name: Enable Required Scripts
-	  run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text.sh
-	  shell: bash
-	- name: Check out Branch ${{ inputs.pull-request-branch }}
-	  uses: actions/checkout@v2
-	  with:
+  - name: Enable Required Scripts
+    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text.sh
+    shell: bash
+  - name: Check out Branch ${{ inputs.pull-request-branch }}
+    uses: actions/checkout@v2
+    with:
+      ref: ${{ inputs.pull-request-branch }}
+      fetch-depth: 0
+  - name: Write Last New Description
+    id: write-description
+    run: |
+        PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text.sh
+        echo $PR_DESCRIPTION
+        echo "::set-output name=pr_description::$PR_DESCRIPTION"
+    shell: bash  
+  - name: Comment On Pull Request   
+    uses: actions/github-script@v5
+    with:
+       github-token: ${{ inputs.secret-token }}
+       script: |
+          github.issues.createComment({
+          issue_number: ${{ inputs.pull-request-id }},
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          body: ${{ steps.write-description.outputs.pr_description }}
+          })
+  - name: Fact Checker
+    uses: oilbeater/smart-review@main
+    with:
+      apiKey: ${{ inputs.ai-secret-token }}
+      githubToken: ${{ inputs.secret-token }} 
+      system-message: "Validate if the new ${{ steps.write-description.outputs.pr_description }} is trustable."       
