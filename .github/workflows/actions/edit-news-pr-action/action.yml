@@ -16,14 +16,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
-  - name: Enable Required Scripts
-    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-    shell: bash
   - name: Check out Branch ${{ inputs.pull-request-branch }}
     uses: actions/checkout@v2
     with:
       ref: ${{ inputs.pull-request-branch }}
       fetch-depth: 0
+  - name: Enable Required Scripts
+    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
+    shell: bash    
   - name: Write Last New Description
     id: write-description
     run: |
