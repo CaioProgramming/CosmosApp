@@ -45,10 +45,4 @@ jobs:
         issue-body: ${{ github.event.issue.body }}
         issue-title: ${{ github.event.issue.title }}
         secret-token: ${{ secrets.GITHUB_TOKEN }}    
-    - name: Comment Issue
-      uses: alexrogalskiy/github-action-issue-commenter@master
-      with:
-        message: '[Pull Request](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }}) created for this issue'
-        requestId: ${{ github.event.issue.number }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 
