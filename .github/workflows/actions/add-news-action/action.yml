@@ -75,8 +75,8 @@ runs:
       id: write-description
       run: |
           chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-          echo "::set-output name=description::.github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh"
-      shell: bash  
+          OUTPUT=$(bash .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh)
+          echo "::set-output name=description::$OUTPUT"      shell: bash  
     - name: Create pull request
       id: create-pull-request
       uses: peter-evans/create-pull-request@v6
@@ -99,7 +99,7 @@ runs:
     - name: Comment Issue
       uses: alexrogalskiy/github-action-issue-commenter@master
       with:
-        message: '[Pull Request](${{steps.create-pull-request.pull-request-url}}) created for this issue'
+        message: '🥳 Yay! your [Pull Request](${{steps.create-pull-request.pull-request-url}}) was created successfully!'
         requestId: ${{ github.event.issue.number }}
         GITHUB_TOKEN: ${{ inputs.secret-token }}
         
