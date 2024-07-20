@@ -33,6 +33,7 @@ runs:
     - name: Checkout New Branch
       run: |
         git fetch origin
+        git pull origin main
         git checkout -b news/${{ inputs.issue-number }}
         git rebase origin/main
         git commit --allow-empty -m "Start news for issue ${{ inputs.issue-number }}"
