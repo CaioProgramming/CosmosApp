@@ -21,12 +21,10 @@ runs:
     with:
       ref: ${{ inputs.pull-request-branch }}
       fetch-depth: 0
-  - name: Enable Required Scripts
-    run: chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-    shell: bash    
   - name: Write Last New Description
     id: write-description
     run: |
+        chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
         PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
         echo $PR_DESCRIPTION
         echo "::set-output name=pr_description::$PR_DESCRIPTION"
