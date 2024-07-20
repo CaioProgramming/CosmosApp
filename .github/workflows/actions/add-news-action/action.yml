@@ -101,5 +101,5 @@ runs:
       with:
         message: '[Pull Request](${{steps.create-pull-request.pull-request-url}}) created for this issue'
         requestId: ${{ github.event.issue.number }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.secret-token }}
         
