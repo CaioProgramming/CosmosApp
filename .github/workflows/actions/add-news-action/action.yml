@@ -75,9 +75,7 @@ runs:
       id: write-description
       run: |
           chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-          PR_DESCRIPTION= .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-          echo $PR_DESCRIPTION
-          echo "::set-output name=description::$PR_DESCRIPTION"
+          echo "::set-output name=description::.github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh"
       shell: bash  
     - name: Create pull request
       uses: peter-evans/create-pull-request@v6
