@@ -7,7 +7,7 @@ lastElementAuthor=$(jq '.news[-1].pages[0].reference.author' "$jsonFilePath")
 lastElementLink=$(jq '.news[-1].pages[0].reference.link' "$jsonFilePath")
 descriptions=$(jq -r '.news[-1].pages | map(.description) | join(" ")' "$resourcePath")
 
-ecat << 'EOF'
+cat << 'EOF'
 ![${lastElementTitle}](${lastElementThumbnail})
 # ${lastElementTitle}
   
