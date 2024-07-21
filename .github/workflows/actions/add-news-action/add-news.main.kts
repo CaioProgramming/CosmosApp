@@ -93,6 +93,7 @@ fun updateData(newItem: NewsObject) {
         relativeFile.writeText(newJsonContent)
         noticeFileUpdate("News ${newItem.id} added to ${relativeFile.path}", it)
         logHelper.logDebug("New { ${newItem.id} } added to news.json")
+        println(json.encodeToString(modifiedNews))
     } ?: run {
         logHelper.logError("File news.json not found")
     }

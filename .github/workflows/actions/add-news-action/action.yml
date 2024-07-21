@@ -53,13 +53,15 @@ runs:
         kotlinc -script .github/workflows/actions/add-news-action/generate-issue-file.main.kts "\"$jsonString\""
       shell: bash  
     - name: Include Issue(${{ inputs.issue-number }}) data to Json
+      id: new-issue
       env:
         PLUGIN_VERSION: 1.9.22
         PLUGIN_NAME: kotlin-serialization-compiler-plugin
       run: |
         plugin=$(.github/workflows/scripts/get-dependency.sh $PLUGIN_NAME $PLUGIN_VERSION)
         echo "::debug::Using plugin $plugin" &&
-        kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts
+        newItem= $(bash kotlinc -script -Xplugin="$plugin" .github/workflows/actions/add-news-action/add-news.main.kts)
+        echo "::set-output name=new-item::$newItem"
       shell: bash
     - name: Commit Changes
       run: |
@@ -73,9 +75,11 @@ runs:
         branch: "news/${{ inputs.issue-number }}"  
     - name: Write Last New Description
       id: write-description
+      env:
+        NEW_ITEM: ${{ steps.new-issue.outputs.new-item }}
       run: |
           chmod u+r+x .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh
-          OUTPUT=$(bash .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh)
+          OUTPUT=$(bash .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh $NEW_ITEM)
           echo "::set-output name=description::$OUTPUT"
       shell: bash  
     - name: Create pull request
