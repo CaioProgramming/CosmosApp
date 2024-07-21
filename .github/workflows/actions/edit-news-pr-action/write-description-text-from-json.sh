@@ -1,6 +1,5 @@
 #!/bin/bash
 cd ./resources
-ls -a
 jsonFilePath="./news.json"
 
 jsonContent=$(cat "$jsonFilePath")
