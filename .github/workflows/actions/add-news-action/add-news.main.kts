@@ -254,7 +254,6 @@ class LogHelper {
         endGroup()
         println("::group::$title")
         logInfo("Group started: $title")
-        logWarning("Remember to close the group")
     }
 
     fun logNotice(message: String) {
