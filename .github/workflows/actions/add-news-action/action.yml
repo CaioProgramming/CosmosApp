@@ -78,6 +78,10 @@ runs:
           OUTPUT=$(bash .github/workflows/actions/edit-news-pr-action/write-description-text-from-json.sh)
           echo "::set-output name=description::$OUTPUT"
       shell: bash  
+    - name: Show description Output
+      run: |
+        echo ${{ steps.write-description.outputs.description }}
+      shell: bash
     - name: Create pull request
       id: create-pull-request
       uses: peter-evans/create-pull-request@v6
