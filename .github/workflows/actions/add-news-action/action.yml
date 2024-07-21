@@ -88,11 +88,13 @@ runs:
         labels: |
           news
           bot-generated
+        env:
+          DESCRIPTION: ${{ steps.write-description.outputs.description }}  
         body: |
          _This PR was created automatically by the Add News Action_
          ## Issue ${{ inputs.issue-number }} - ${{ inputs.issue-title }}
          This include the news requested on issue [${{ inputs.issue-number }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue-number }})
-         "${{ steps.write-description.outputs.description }}"
+         $DESCRIPTION
         delete-branch: true
         branch: news/${{ inputs.issue-number }}
         base: main
