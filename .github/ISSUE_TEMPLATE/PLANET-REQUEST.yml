@@ -1,0 +1,68 @@
+name: Planet Request 🪐
+description: Adicione informações sobre planetas.
+labels: ["planets"]
+body:
+- type: input
+  id: title
+  attributes:
+    label: Title
+    description: Name of the planet.
+    placeholder: e.g., Mercúrio
+  validations:
+    required: true
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: A brief description of the planet.
+    placeholder: "e.g., Mercúrio é o planeta mais próximo do Sol..."
+  validations:
+    required: true
+- type: input
+  id: resource
+  attributes:
+    label: Resource
+    description: Link de um recurso SVG.
+    placeholder: e.g., mercury
+  validations:
+    required: true
+- type: input
+  id: earthDistance
+  attributes:
+    label: earthdistance
+    description: Distância aproximada da terra.
+    placeholder: e.g., 77
+  validations:
+    required: true
+- type: input
+  id: sunDistance
+  attributes:
+    label: sunDistance
+    description: Distância aproximada do sol.
+    placeholder: e.g., 57.9
+  validations:
+    required: true
+- type: input
+  id: temperature
+  attributes:
+    label: temperature
+    description: Temperatura média do planeta(em °C).
+    placeholder: e.g., 350
+  validations:
+    required: true
+- type: input
+  id: yearDuration
+  attributes:
+    label: yearDuration
+    description: Duração do ano no planeta.
+    placeholder: e.g., 88
+  validations:
+    required: true
+- type: input
+  id: rotationSpeed
+  attributes:
+    label: rotationSpeed
+    description: Velocidade de rotação em km do planeta.
+    placeholder: e.g., 10.892
+  validations:
+    required: true

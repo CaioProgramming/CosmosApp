@@ -1,0 +1,26 @@
+name: Nova Curiosidade 🌌
+description: Adicione curiosidades sobre astronomia ao app.
+body:
+- type: markdown
+  attributes:
+    value: |
+      ## Adicione uma curiosidade ao app
+      Preencha os campos abaixo para adicionar uma curiosidade ao app.
+- type: input
+  id: callout
+  attributes:
+    label: callout
+    description: Texto de chamada.
+    placeholder: ex Saiba mais sobre...
+- type: input
+  id: description
+  attributes:
+    label: description
+    description: Descreva a curiosidade.
+    placeholder: Curiosidade
+- type: input
+  id: thumbnail
+  attributes:
+    label: thumbnail
+    description: URL da imagem de capa da curiosidade.
+    placeholder: https://example.com/image.jpg

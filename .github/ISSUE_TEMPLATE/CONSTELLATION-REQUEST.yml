@@ -1,0 +1,62 @@
+name: Constellation Request 🌌
+description: Envie informações sobre constelações.
+labels: ["constellation"]
+body:
+- type: input
+  id: name
+  attributes:
+    label: Name
+    description: Nome da constelação.
+    placeholder: e.g., Andrômeda
+  validations:
+    required: true
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: Uma breve descrição da constelação.
+    placeholder: "e.g., Constelação visível do Hemisfério Norte..."
+  validations:
+    required: true
+- type: dropdown
+  id: location
+  attributes:
+    label: location
+    description: Localização da constelação.
+    multiple: false
+    options:
+    - H. Norte
+    - H. Sul
+    - Equador
+    default: 0
+  validations:
+    required: true
+- type: input
+  id: nickNames
+  attributes:
+    label: nicknames
+    description: Nomes alternativos para as constelações, separe os nomes por vírgula.
+    placeholder: e.g., Andromeda, Princesa Encadeada
+- type: input
+  id: distance
+  attributes:
+    label: Distance (in light-years)
+    description: The distance of the constellation from Earth in light-years.
+    placeholder: e.g., 2537000
+  validations:
+    required: true
+- type: input
+  id: magnitude
+  attributes:
+    label: Magnitude
+    description: The apparent magnitude of the constellation.
+    placeholder: e.g., 3.44
+  validations:
+    required: true
+- type: textarea
+  id: icon
+  attributes:
+    label: Icon
+    description: Please attach only the svg icon.
+  validations:
+    required: true

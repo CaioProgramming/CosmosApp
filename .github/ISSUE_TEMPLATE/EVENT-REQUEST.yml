@@ -1,0 +1,44 @@
+name: Event Request 📅
+description: Adicione eventos da comunidade de astronomia ao app.
+body:
+- type: markdown
+  attributes:
+    value: |
+      ## Adicione um evento ao app
+      Preencha os campos abaixo para adicionar um evento ao app.
+- type: input
+  id: description
+  attributes:
+    label: description
+    description: Descreva oque acontecerá no evento.
+    placeholder: Descrição do evento
+- type: input
+  id: date
+  attributes:
+    label: date
+    description: Data do evento
+    placeholder: 01/01/2022
+- type: input
+  id: thumbnail
+  attributes:
+    label: thumbnail
+    description: URL da imagem de capa do evento.
+    placeholder: https://example.com/image.jpg
+- type: checkboxes
+  id: visibility
+  attributes:
+    label: visibility
+    description: Selecione as tags onde o evento será visível.
+    options:
+    - label: WW
+    - label: ARG
+    - label: BR
+    - label: COL
+    - label: URU
+    - label: CHI
+- type: input
+  id: link
+  attributes:
+    label: link
+    description: Link para mais informações sobre o evento.
+    placeholder: https://example.com

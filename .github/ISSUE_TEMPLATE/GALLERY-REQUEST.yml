@@ -1,0 +1,31 @@
+name: Galeria de Fotos 📸
+description: Adicione coleções de fotos ao app.
+labels: ["gallery"]
+body:
+- type: markdown
+  attributes:
+    value: |
+      ## Adicione uma galeria de fotos ao app
+      Preencha os campos abaixo para adicionar uma galeria de fotos ao app.
+- type: input
+  id: title
+  attributes:
+    label: title
+    description: Título da coleção.
+    placeholder: e.g., Galáxias
+  validations:
+    required: true
+- type: input
+  id: description
+  attributes:
+    label: description
+    description: Descrição da coleção.
+    placeholder: Descrição da coleção
+  validations:
+    required: true
+- type: textarea
+  id: images
+  attributes:
+    label: images
+    description: URLs das imagens da coleção, para cada link separe por vírgula.
+    placeholder: https://example.com/image1.jpg, https://example.com/image2.jpg
