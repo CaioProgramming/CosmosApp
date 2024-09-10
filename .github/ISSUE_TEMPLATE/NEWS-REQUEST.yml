@@ -1,84 +1,84 @@
-name: "News Request 📰"
+name: "Adicionar notícia 📰"
 description: Adicione uma notícia ao app.
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ## Adicione uma notícia ao site
-        Preencha os campos abaixo para adicionar uma notícia ao site.
-  - type: input
-    id: author
-    attributes:
-      label: author
-      description: Autor da notícia
-      placeholder: Autor da notícia
-          
-  - type: input
-    id: reference
-    attributes:
-      label: link
-      description: Inclue o link da notícia.
-      placeholder: www.astronomos.com.br
-  
-  - type: input
-    id: thumbnail
-    attributes:
-      label: thumbnail
-      description: Insira o link da imagem de capa da notícia.
-      placeholder: www.astronomos.com.br/imagem.jpg
-  - type: markdown
-    attributes:
-      value: |
-        ### As notícias podem ter até 5 páginas no máximo. Preencha da melhor forma para que possamos publicar.
-  - type: markdown
-    attributes:
-      value: |
-        ## Página 1
-  - type: textarea
-    id: page1
-    attributes:
-      label: pagina_1
-      description: Conteúdo da página 1
-      placeholder: Conteúdo da página 1
-  - type: markdown
-    attributes:
-      value: |
-        ## Página 2
-  - type: textarea
-    id: page2
-    attributes:
-      label: pagina_2
-      description: Conteúdo da página 2
-      placeholder: Conteúdo da página 2
-  - type: markdown
-    attributes:
-      value: |
-        ## Página 3
+- type: markdown
+  attributes:
+    value: |
+      ## Adicione uma notícia ao site
+      Preencha os campos abaixo para adicionar uma notícia ao site.
+- type: input
+  id: author
+  attributes:
+    label: author
+    description: Autor da notícia
+    placeholder: Autor da notícia
 
-  - type: textarea
-    id: page3
-    attributes:
-      label: pagina_3
-      description: Conteúdo da página 1
-      placeholder: Conteúdo da página 1
-  - type: markdown
-    attributes:
-      value: |
-        ## Página 4
-  - type: textarea
-    id: page4
-    attributes:
-      label: pagina_4
-      description: Conteúdo da página 4
-      placeholder: Conteúdo da página 4
-  - type: markdown
-    attributes:
-      value: |
-        ## Página 5
-  - type: textarea
-    id: page5
-    attributes:
-      label: pagina_5
-      description: Conteúdo da página 5
-      placeholder: Conteúdo da página 5
-labels: ["news", "pending publication"]     
+- type: input
+  id: reference
+  attributes:
+    label: link
+    description: Inclue o link da notícia.
+    placeholder: www.astronomos.com.br
+
+- type: input
+  id: thumbnail
+  attributes:
+    label: thumbnail
+    description: Insira o link da imagem de capa da notícia.
+    placeholder: www.astronomos.com.br/imagem.jpg
+- type: markdown
+  attributes:
+    value: |
+      ### As notícias podem ter até 5 páginas no máximo. Preencha da melhor forma para que possamos publicar.
+- type: markdown
+  attributes:
+    value: |
+      ## Página 1
+- type: textarea
+  id: page1
+  attributes:
+    label: pagina_1
+    description: Conteúdo da página 1
+    placeholder: Conteúdo da página 1
+- type: markdown
+  attributes:
+    value: |
+      ## Página 2
+- type: textarea
+  id: page2
+  attributes:
+    label: pagina_2
+    description: Conteúdo da página 2
+    placeholder: Conteúdo da página 2
+- type: markdown
+  attributes:
+    value: |
+      ## Página 3
+
+- type: textarea
+  id: page3
+  attributes:
+    label: pagina_3
+    description: Conteúdo da página 1
+    placeholder: Conteúdo da página 1
+- type: markdown
+  attributes:
+    value: |
+      ## Página 4
+- type: textarea
+  id: page4
+  attributes:
+    label: pagina_4
+    description: Conteúdo da página 4
+    placeholder: Conteúdo da página 4
+- type: markdown
+  attributes:
+    value: |
+      ## Página 5
+- type: textarea
+  id: page5
+  attributes:
+    label: pagina_5
+    description: Conteúdo da página 5
+    placeholder: Conteúdo da página 5
+labels: ["news"]
