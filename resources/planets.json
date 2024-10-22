@@ -8,7 +8,8 @@
       "sunDistance": 57.9,
       "temperature": 350,
       "yearDuration": 88,
-      "rotationSpeed": 10.892
+      "rotationSpeed": 10.892,
+      "gravity": 3.7
     },
     {
       "title": "Vênus",
@@ -18,7 +19,8 @@
       "earthDistance": 38,
       "temperature": 465,
       "yearDuration": 225,
-      "rotationSpeed": 6.52
+      "rotationSpeed": 6.52,
+      "gravity": 8.87
     },
     {
       "title": "Terra",
@@ -28,7 +30,8 @@
       "sunDistance": 147.1,
       "temperature": 15,
       "yearDuration": 365,
-      "rotationSpeed": 1.670
+      "rotationSpeed": 1.670,
+      "gravity": 9.8
     },
     {
       "title": "Marte",
@@ -38,7 +41,8 @@
       "sunDistance": 227.9,
       "temperature": -65,
       "yearDuration": 687,
-      "rotationSpeed": 870
+      "rotationSpeed": 870,
+      "gravity": 3.7
     },
     {
       "title": "Júpiter",
@@ -48,7 +52,8 @@
       "sunDistance": 778.6,
       "temperature": -110,
       "yearDuration": 4333,
-      "rotationSpeed": 45
+      "rotationSpeed": 45,
+      "gravity": 24.8
     },
     {
       "title": "Saturno",
@@ -58,7 +63,8 @@
       "sunDistance": 1433.5,
       "temperature": -140,
       "yearDuration": 10759,
-      "rotationSpeed": 34
+      "rotationSpeed": 34,
+      "gravity": 10.4
     },
     {
       "title": "Urano",
@@ -68,7 +74,8 @@
       "sunDistance": 2872.5,
       "temperature": -195,
       "yearDuration": 30687,
-      "rotationSpeed": 17
+      "rotationSpeed": 17,
+      "gravity": 8.8
     },
     {
       "title": "Netuno",
@@ -78,7 +85,8 @@
       "sunDistance": 4495.1,
       "temperature": -200,
       "yearDuration": 60190,
-      "rotationSpeed": 16
+      "rotationSpeed": 16,
+      "gravity": 11.15
     }
   ],
   "constellations": [
@@ -87,7 +95,9 @@
       "description": "Constelação visível do Hemisfério Norte. Recebe esse nome em homenagem à princesa Andrômeda, da Mitologia Grega, esposa de Perseu.",
       "location": "H.Norte",
       "nickNames": [
-        "M31", "NGC 224", "Nebulosa de Andrômeda"
+        "M31",
+        "NGC 224",
+        "Nebulosa de Andrômeda"
       ],
       "distance": 2537000,
       "magnitude": 3.44,
@@ -98,7 +108,8 @@
       "description": "É uma constelação visível do Hemisfério Sul. As famosasTrês Marias, conjunto de três estrelas que aparecem alinhadas no céu noturno, fazem parte dessa constelação. Órion tem 81 estrelas.",
       "location": "H.Sul",
       "nickNames": [
-        "M42", "Nebulosa de Órion"
+        "M42",
+        "Nebulosa de Órion"
       ],
       "distance": 1500,
       "icon": "ORION"
@@ -108,7 +119,8 @@
       "description": "É a constelação mais famosa do Hemisfério Norte, conhecida há milhares de anos e muito citada em obras literárias e cinematográficas. É composta por 7 estrelas.",
       "location": "H.Norte",
       "nickNames": [
-        "Grande Carro", "Ursa Maior"
+        "Grande Carro",
+        "Ursa Maior"
       ],
       "distance": 250000,
       "magnitude": 4.01,
@@ -119,7 +131,8 @@
       "description": "É uma versão menor da Ursa Maior, também com 7 estrelas. Entre elas está a Estrela Polar, fundamental para a localização em navegações na parte norte do mundo.",
       "location": "H.Norte",
       "nickNames": [
-        "Grande Carro", "Ursa Maior"
+        "Grande Carro",
+        "Ursa Maior"
       ],
       "distance": 530,
       "magnitude": 5.04,
@@ -130,7 +143,8 @@
       "description": "Constelação visível do Hemisfério Sul, está próxima à Constelação de Órion. Tem o formato característico de um cachorro. A famosa estrela Sirius faz parte dessa constelação.",
       "location": "H.Sul",
       "nickNames": [
-        "Grande Carro", "Ursa Maior"
+        "Grande Carro",
+        "Ursa Maior"
       ],
       "distance": 25000,
       "magnitude": -0.1,
